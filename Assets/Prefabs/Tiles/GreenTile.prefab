@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &80094398988872442
+--- !u!1 &1167966880579624046
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,23 +8,22 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 319505746755694363}
-  - component: {fileID: 5657419342267117306}
-  - component: {fileID: -3139665928183177686}
+  - component: {fileID: 2199679966967287239}
+  - component: {fileID: 3545326662716014708}
   m_Layer: 0
-  m_Name: TileBackground
+  m_Name: GreenTile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &319505746755694363
+--- !u!4 &2199679966967287239
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 80094398988872442}
+  m_GameObject: {fileID: 1167966880579624046}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -33,13 +32,13 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!212 &5657419342267117306
+--- !u!212 &3545326662716014708
 SpriteRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 80094398988872442}
+  m_GameObject: {fileID: 1167966880579624046}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
@@ -77,32 +76,14 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -5727891299187845929, guid: 87fe400bafa333c4f96fafdef1897aa9, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Sprite: {fileID: -9163426285224168042, guid: b49a49c075675664b880fb9423722c9f, type: 3}
+  m_Color: {r: 0.6117647, g: 0.89019614, b: 0.30980393, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.5917969, y: 0.5917969}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &-3139665928183177686
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 80094398988872442}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 14d9f7de5f63e6645be11f59efbba2a8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  tilePrefabs:
-  - {fileID: 7793718202423598248, guid: 3d97c84f4a0ff264a9f4433ca45b99d1, type: 3}
-  - {fileID: 2294568990504206909, guid: 1e242b38b4052fe4f9b272681ee254c4, type: 3}
-  - {fileID: 3513409571920337605, guid: b1047e2e9abe03148bf63157acfe0f18, type: 3}
-  - {fileID: 1167966880579624046, guid: 1f4fcfe7970bcaa43a38fa0f3fb67b03, type: 3}
-  - {fileID: 6813439669782754178, guid: b3e711a76e152dd4ebd6ed06b766fe1c, type: 3}

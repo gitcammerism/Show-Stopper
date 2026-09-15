@@ -128,6 +128,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 960946557}
+  - component: {fileID: 960946558}
   m_Layer: 0
   m_Name: GameBoard
   m_TagString: Untagged
@@ -144,12 +145,27 @@ Transform:
   m_GameObject: {fileID: 960946556}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.13589896, y: -0.32025743, z: 0.041424785}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &960946558
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 960946556}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33b870cda957db4469dfe3751cc02e87, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  boardWidth: 5
+  boardHeight: 7
+  tilePrefab: {fileID: 80094398988872442, guid: 5d314ac089be014439b152ff8dc0aeca, type: 3}
 --- !u!1 &1318378140
 GameObject:
   m_ObjectHideFlags: 0
