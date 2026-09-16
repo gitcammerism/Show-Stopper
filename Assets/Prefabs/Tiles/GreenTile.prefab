@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2199679966967287239}
   - component: {fileID: 3545326662716014708}
+  - component: {fileID: 6685221693824756879}
   m_Layer: 0
   m_Name: GreenTile
   m_TagString: Untagged
@@ -87,3 +88,15 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &6685221693824756879
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1167966880579624046}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7592757c8abb61a468f4368094bea9ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
