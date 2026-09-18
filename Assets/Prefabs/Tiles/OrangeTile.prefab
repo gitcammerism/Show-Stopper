@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1136108274370554979}
   - component: {fileID: 7518815034866480620}
+  - component: {fileID: -5982448953389110995}
   m_Layer: 0
   m_Name: OrangeTile
   m_TagString: Untagged
@@ -87,3 +88,15 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &-5982448953389110995
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2294568990504206909}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7592757c8abb61a468f4368094bea9ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
