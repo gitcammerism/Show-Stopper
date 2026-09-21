@@ -24,6 +24,7 @@ public class TestButton : MonoBehaviour
     public void Press(Vector2 screenPosition, float time)
     {
         Vector3 screenCoords = new Vector3(screenPosition.x, screenPosition.y, 0);
+        // if this specific button is pressed, debug log something
 
     }
 }
