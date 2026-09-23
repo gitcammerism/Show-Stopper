@@ -4,13 +4,12 @@ using UnityEngine;
 using static Unity.Mathematics.math;
 
 /*
- * Last Modified: 09/21/2026 by Chandler Guzman
+ * Last Modified: 09/23/2026 by Chandler Guzman
  * 
  * This script tracks & handles the current state of the game and starts a new game when prompted by Match3GameController.
  *
  * Chandler TO-DO:
- * - Continue working using tutorial (at 2.7 - Filling Holes)
- *      -> https://catlikecoding.com/unity/tutorials/prototypes/match-3/#2.7
+ * - 
  */
 
 public class Match3Skin : MonoBehaviour
@@ -24,12 +23,16 @@ public class Match3Skin : MonoBehaviour
     private MatchGrid2D<Tile> _tiles;
     private float2 _tileOffset;
 
+    [SerializeField] private TileSwapper tileSwapper;
+    float busyDuration;
+
     public bool IsPlaying => true;
-    public bool IsBusy => false;
+    public bool IsBusy => busyDuration > 0f;
 
     // Starts a new game by calling Match3Game.StartNewGame().
     public void StartNewGame () 
     {
+        busyDuration = 0f;
         game.StartNewGame();
 
         // Ensures tiles will be centered on the origin.
@@ -63,10 +66,19 @@ public class Match3Skin : MonoBehaviour
     private Tile SpawnTile (TileState t, float x, float y) =>
         tilePrefabs[(int)t - 1].Spawn(new Vector3(x + _tileOffset.x, y + _tileOffset.y));
 
-    // If there are matches, process them.
+    // Invoke specific actions depending on the game state.
     public void DoWork () 
     {
+        // If the game is busy with animations, hold off on game state changes.
+        if (busyDuration > 0f)
+        {
+            tileSwapper.Update();
+            busyDuration -= Time.deltaTime;
+            if (busyDuration > 0f) return;
+        }
+
         if (game.HasMatches) ProcessMatches();
+        else if (game.NeedsFilling) DropTiles();
     }
 
     // Invokes Match3Game's ProcessMatches and despawns all cleared tiles.
@@ -79,6 +91,33 @@ public class Match3Skin : MonoBehaviour
             int2 c = game.ClearedTileCoordinates[i];
             _tiles[c].Despawn();
             _tiles[c] = null;
+        }
+    }
+
+    // Invokes Match3Game's DropTiles method and handles fallen + new tiles.
+    private void DropTiles()
+    {
+        game.DropTiles();
+
+        for (int i = 0; i < game.DroppedTiles.Count; i++)
+        {
+            TileDrop drop = game.DroppedTiles[i];
+            Tile tile;
+
+            // If the given tile fell, adjust its position.
+            if (drop.fromY < _tiles.SizeY)
+            {
+                tile = _tiles[drop.coordinates.x, drop.fromY];
+                tile.transform.localPosition = new Vector3(
+                    drop.coordinates.x + _tileOffset.x, drop.coordinates.y + _tileOffset.y
+                );
+            }
+            else // If not, spawn a new tile.
+            {
+                tile = SpawnTile(game[drop.coordinates], drop.coordinates.x, drop.coordinates.y);
+            }
+
+            _tiles[drop.coordinates] = tile;
         }
     }
 
@@ -110,12 +149,15 @@ public class Match3Skin : MonoBehaviour
     // Attempts the given move and swaps both tiles if successful.
     private void DoMove (Move move)
     {
-        if (game.TryMove(move))
+        // Calls tileSwapper to handle tile swapping + animation.
+        bool success = game.TryMove(move);
+        Tile a = _tiles[move.From], b = _tiles[move.To];
+        busyDuration = tileSwapper.Swap(a, b, !success);
+
+        if (success)
         {
-            (_tiles[move.From].transform.localPosition, _tiles[move.To].transform.localPosition)
-                =
-            (_tiles[move.To].transform.localPosition, _tiles[move.From].transform.localPosition);
-            _tiles.Swap(move.From, move.To);
+            _tiles[move.From] = b;
+            _tiles[move.To] = a;
         }
     }
 

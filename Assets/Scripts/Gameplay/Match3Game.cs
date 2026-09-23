@@ -5,12 +5,13 @@ using Random = UnityEngine.Random;
 using static Unity.Mathematics.math;
 
 /*
- * Last Modified: 09/21/2026 by Chandler Guzman
+ * Last Modified: 09/23/2026 by Chandler Guzman
  * 
  * This script tracks the game state and handles the logic for the match-3 game.
  *
  * Chandler TO-DO:
- * - 
+ * - Continue working using tutorial (at 3.2 - Disappearing Tiles)
+ *      -> https://catlikecoding.com/unity/tutorials/prototypes/match-3/#3.2
  */
 
 public class Match3Game : MonoBehaviour
@@ -31,25 +32,30 @@ public class Match3Game : MonoBehaviour
     public List<int2> ClearedTileCoordinates 
     { get; private set; }
 
+    // List that stores tiles that have dropped to fill in board gaps.
+    public List<TileDrop> DroppedTiles
+    { get; private set; }
+
     // Bool that tracks whether the game grid needs to be filled after a match.
     public bool NeedsFilling 
     { get; private set; }
 
     // Starts a new game by creating & filling a new grid.
-    public void StartNewGame ()
+    public void StartNewGame()
     {
         if (_grid.IsUndefined)
         {
             _grid = new(gridSize);
             _matches = new();
             ClearedTileCoordinates = new();
+            DroppedTiles = new();
         }
 
         FillGrid();
     }
 
     // Fills up the game grid with random tiles.
-    private void FillGrid ()
+    private void FillGrid()
     {
         for (int y = 0; y < gridSize.y; y++)
         {
@@ -95,11 +101,44 @@ public class Match3Game : MonoBehaviour
         }
     }
 
+    // Drops all tiles that need to fill gaps in the game board.
+    public void DropTiles()
+    {
+        DroppedTiles.Clear();
+
+        for (int x = 0; x < gridSize.x; x++)
+        {
+            int holeCount = 0;
+            for (int y = 0; y < gridSize.y; y++)
+            {
+                // Checks for holes in the grid and adds them to DroppedTiles.
+                if (_grid[x, y] == TileState.None) holeCount += 1;
+                else if (holeCount > 0)
+                {
+                    _grid[x, y - holeCount] = _grid[x, y];
+                    DroppedTiles.Add(new TileDrop(x, y - holeCount, holeCount));
+                }
+            }
+
+            // Begins generating tiles to fill holes in the grid.
+            for (int h = 1; h <= holeCount; h++)
+            {
+                _grid[x, gridSize.y - h] = (TileState)Random.Range(1, 6);
+                DroppedTiles.Add(new TileDrop(x, gridSize.y - h, holeCount));
+            }
+        }
+
+        NeedsFilling = false;
+
+        // Look for any new matches as a result of tiles dropping.
+        FindMatches();
+    }
+
     // Returns if there are currently matches to process.
     public bool HasMatches => _matches.Count > 0;
 
     // Returns whether and matches were found.
-    private bool FindMatches ()
+    private bool FindMatches()
     {
         // Searches for horizontal matches.
         for (int y = 0; y < gridSize.y; y++)
