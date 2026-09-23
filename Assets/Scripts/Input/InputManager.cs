@@ -17,6 +17,8 @@ public class InputManager : MonoBehaviour
     private TouchControls _touchControls;
     // Singleton instance
     public static InputManager instance;
+
+    private Camera _mainCamera;
 	private void Awake()
 	{
         // check if instance exists
@@ -29,6 +31,8 @@ public class InputManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
 
         _touchControls = new TouchControls();
+
+        _mainCamera = Camera.main;
     }
 
     private void OnEnable()
@@ -75,5 +79,15 @@ public class InputManager : MonoBehaviour
     private void FingerDown(Finger finger)
     {
         if (OnStartTouch != null) OnStartTouch(finger.screenPosition, Time.time);
+    }
+
+    public void OnPress(InputAction.CallbackContext context)
+    {
+        if (!context.started) return;
+
+        var rayHit = Physics2D.GetRayIntersection(_mainCamera.ScreenPointToRay(_touchControls.Touch.TouchPosition.ReadValue<Vector2>()));
+        if (!rayHit.collider) return;
+
+        Debug.Log(rayHit.collider.gameObject.name);
     }
 }

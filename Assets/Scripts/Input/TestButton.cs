@@ -25,6 +25,16 @@ public class TestButton : MonoBehaviour
     {
         Vector3 screenCoords = new Vector3(screenPosition.x, screenPosition.y, 0);
         // if this specific button is pressed, debug log something
+        Collider2D collider = GetComponent<Collider2D>();
+        if(collider == Physics2D.OverlapPoint(screenCoords))
+        {
+            Debug.Log("Button pressed!");
+        }
+
+    }
+
+    public void Update()
+    {
 
     }
 }
