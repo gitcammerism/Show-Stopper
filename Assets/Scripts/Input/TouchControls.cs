@@ -156,7 +156,7 @@ public partial class @TouchControls: IInputActionCollection2, IDisposable
                     ""name"": """",
                     ""id"": ""d38c5347-0769-4f4d-9ef4-9d2df4e4ae89"",
                     ""path"": ""<Touchscreen>/primaryTouch/press"",
-                    ""interactions"": """",
+                    ""interactions"": ""Press"",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""TouchHold"",

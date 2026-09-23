@@ -1,5 +1,7 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
+// THIS IS AN EXAMPLE SCRIPT FOR HOW TO APPLY INPUT SYSTEM TO OBJECTS
 public class TestButton : MonoBehaviour
 {
     // important note to document somewhere (TDD) : when subscribing to touch event, whatever function it calls needs to take Vector2 and float params
@@ -13,28 +15,30 @@ public class TestButton : MonoBehaviour
 
     private void OnEnable()
     {
+        // subscribe to touch event
         _inputManager.OnStartTouch += Press;
     }
 
     private void OnDisable()
     {
+        // unsubscribe from touch event
         _inputManager.OnEndTouch -= Press;
     }
 
-    public void Press(Vector2 screenPosition, float time)
+    // Press gets called whenever the OnStartTouch event is called
+    public void Press(Vector2 screenPosition, float time, InputAction.CallbackContext context)
     {
-        Vector3 screenCoords = new Vector3(screenPosition.x, screenPosition.y, 0);
-        // if this specific button is pressed, debug log something
-        Collider2D collider = GetComponent<Collider2D>();
-        if(collider == Physics2D.OverlapPoint(screenCoords))
+        //Vector3 screenCoords = new Vector3(screenPosition.x, screenPosition.y, 0);
+
+        if(_inputManager.OnPress(context, this.gameObject) == 1)
         {
-            Debug.Log("Button pressed!");
+            Debug.Log("successful Press");
+            // get some actual logic
         }
-
+        else
+        {
+            Debug.Log("Press fail");
+        }
     }
 
-    public void Update()
-    {
-
-    }
 }
