@@ -1,4 +1,6 @@
+using System.Collections;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 /*
  * Last Modified: 09/16/2026 by Chandler Guzman
@@ -38,23 +40,25 @@ public class Match3GameController : MonoBehaviour
     }
 
     // Checks if the player is currently dragging a tile
-    void HandleInput () 
-    { 
-        if (!_isDragging && Input.GetMouseButtonDown(0))
+    private void HandleInput () 
+    {
+        //if (!_isDragging && Input.GetMouseButtonDown(0))
+        if (!_isDragging && Mouse.current.leftButton.wasPressedThisFrame)
         {
             // If the player is not already dragging, start tracking their drag
             _dragStart = Input.mousePosition;
             _isDragging = true;
         }
-        else if (_isDragging && Input.GetMouseButtonDown(0)) 
+        // else if (_isDragging && Input.GetMouseButtonDown(0)) 
+        else if (_isDragging && Mouse.current.leftButton.wasReleasedThisFrame)
         {
             // If the player is already dragging, evaluate the drag in Match3Skin
             _isDragging = match3.EvaluateDrag(_dragStart, Input.mousePosition);
         }
-        else
-        {
-            // Player is not dragging
-            _isDragging = false;
-        }
+        //else if 
+        //{
+        //    // Player is not dragging
+        //    _isDragging = false;
+        //}
     }
 }
