@@ -57,8 +57,6 @@ public class InputManager : MonoBehaviour
     // using New Input System
     private void StartTouch(InputAction.CallbackContext context)
     {
-        //Debug.Log("Touch started " + _touchControls.Touch.TouchPosition.ReadValue<Vector2>()); // will return position of touch in screen coords
-
         // if touch is read, every method subscribed to OnStartTouch gets called
         if (OnStartTouch != null) OnStartTouch(_touchControls.Touch.TouchPosition.ReadValue<Vector2>(), (float)context.startTime, context);
     }
