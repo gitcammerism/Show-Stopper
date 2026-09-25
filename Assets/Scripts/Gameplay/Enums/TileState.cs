@@ -6,5 +6,5 @@
 
 public enum TileState
 {
-    None, A, B, C, D, E
+    None, Comfort, Food, Toy, Treat, Water
 }

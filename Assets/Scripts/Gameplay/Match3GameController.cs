@@ -55,10 +55,5 @@ public class Match3GameController : MonoBehaviour
             // If the player is already dragging, evaluate the drag in Match3Skin
             _isDragging = match3.EvaluateDrag(_dragStart, Input.mousePosition);
         }
-        //else if 
-        //{
-        //    // Player is not dragging
-        //    _isDragging = false;
-        //}
     }
 }

@@ -24,15 +24,15 @@ public class Match3Skin : MonoBehaviour
     private float2 _tileOffset;
 
     [SerializeField] private TileSwapper tileSwapper;
-    float busyDuration;
+    private float _busyDuration;
 
     public bool IsPlaying => true;
-    public bool IsBusy => busyDuration > 0f;
+    public bool IsBusy => _busyDuration > 0f;
 
     // Starts a new game by calling Match3Game.StartNewGame().
     public void StartNewGame () 
     {
-        busyDuration = 0f;
+        _busyDuration = 0f;
         game.StartNewGame();
 
         // Ensures tiles will be centered on the origin.
@@ -70,11 +70,11 @@ public class Match3Skin : MonoBehaviour
     public void DoWork () 
     {
         // If the game is busy with animations, hold off on game state changes.
-        if (busyDuration > 0f)
+        if (_busyDuration > 0f)
         {
             tileSwapper.Update();
-            busyDuration -= Time.deltaTime;
-            if (busyDuration > 0f) return;
+            _busyDuration -= Time.deltaTime;
+            if (_busyDuration > 0f) return;
         }
 
         if (game.HasMatches) ProcessMatches();
@@ -152,7 +152,7 @@ public class Match3Skin : MonoBehaviour
         // Calls tileSwapper to handle tile swapping + animation.
         bool success = game.TryMove(move);
         Tile a = _tiles[move.From], b = _tiles[move.To];
-        busyDuration = tileSwapper.Swap(a, b, !success);
+        _busyDuration = tileSwapper.Swap(a, b, !success);
 
         if (success)
         {

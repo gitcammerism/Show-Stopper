@@ -1,10 +1,9 @@
-using UnityEditor;
 using UnityEngine;
 
 /*
  * Last Modified: 09/23/2026 by Chandler Guzman
  * 
- * This class handles the animation of tile-swapping.
+ * This class handles the linear interpolation ("animation") of tile-swapping.
  */
 
 [System.Serializable]
