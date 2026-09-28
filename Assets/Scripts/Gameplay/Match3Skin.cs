@@ -8,8 +8,11 @@ using static Unity.Mathematics.math;
 public class Match3Skin : MonoBehaviour
 {
     // Game setup.
+    [SerializeField] private TextMeshPro gameOverText, totalScoreText;
     [SerializeField] private Match3Game game;
     [SerializeField] private Tile[] tilePrefabs;
+    [SerializeField] private FloatingScore floatingScorePrefab;
+    private float _floatingScoreZ;
     private MatchGrid2D<Tile> _tiles;
     private float2 _tileOffset;
 
@@ -27,13 +30,15 @@ public class Match3Skin : MonoBehaviour
     [SerializeField, Range(0f, 10f)]
     private float newDropOffset = 2f;
        
-    public bool IsPlaying => true;
+    public bool IsPlaying => IsBusy || game.PossibleMove.IsValid;
     public bool IsBusy => _busyDuration > 0f;
 
     // Starts a new game by calling Match3Game.StartNewGame().
     public void StartNewGame () 
     {
         _busyDuration = 0f;
+        totalScoreText.SetText("0");
+        gameOverText.gameObject.SetActive(false);
         game.StartNewGame();
 
         // Ensures tiles will be centered on the origin.
@@ -80,6 +85,7 @@ public class Match3Skin : MonoBehaviour
 
         if (game.HasMatches) ProcessMatches();
         else if (game.NeedsFilling) DropTiles();
+        else if (!IsPlaying) gameOverText.gameObject.SetActive(true);
     }
 
     // Invokes Match3Game's ProcessMatches and makes all cleared tiles disappear.
@@ -92,6 +98,24 @@ public class Match3Skin : MonoBehaviour
             int2 c = game.ClearedTileCoordinates[i];
             _busyDuration = Mathf.Max(_tiles[c].Disappear(), _busyDuration);
             _tiles[c] = null;
+        }
+
+        totalScoreText.SetText("{0}", game.TotalScore);
+
+        for (int i = 0; i < game.Scores.Count; i++)
+        {
+            SingleScore score = game.Scores[i];
+            floatingScorePrefab.Show(
+                new Vector3(
+                    score.position.x + _tileOffset.x, 
+                    score.position.y + _tileOffset.y,
+                    _floatingScoreZ
+                ), 
+                score.value
+            );
+
+            // Avoids weird overlapping of floating scores.
+            _floatingScoreZ = _floatingScoreZ <= -0.02f ? 0f : _floatingScoreZ - 0.001f;
         }
     }
 
