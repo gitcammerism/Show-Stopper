@@ -5,8 +5,6 @@ using Random = UnityEngine.Random;
 using static Unity.Mathematics.math;
 
 /*
- * Last Modified: 09/23/2026 by Chandler Guzman
- * 
  * This script tracks the game state and handles the logic for the match-3 game.
  *
  * Chandler TO-DO:
@@ -27,6 +25,8 @@ public class Match3Game : MonoBehaviour
 
     // List that stores the matches made by the player for processing.
     private List<Match> _matches;
+
+    //
 
     // List that stores tiles that have been matched.
     public List<int2> ClearedTileCoordinates 

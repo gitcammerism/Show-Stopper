@@ -3,29 +3,30 @@ using Unity.Mathematics;
 using UnityEngine;
 using static Unity.Mathematics.math;
 
-/*
- * Last Modified: 09/23/2026 by Chandler Guzman
- * 
- * This script tracks & handles the current state of the game and starts a new game when prompted by Match3GameController.
- *
- * Chandler TO-DO:
- * - 
- */
+// This script tracks & handles the current state of the game and starts a new game when prompted by Match3GameController.
 
 public class Match3Skin : MonoBehaviour
 {
+    // Game setup.
     [SerializeField] private Match3Game game;
     [SerializeField] private Tile[] tilePrefabs;
-    
-    [SerializeField, Range(0.1f, 1f)]
-    private float _dragThreshold = 0.5f;
-
     private MatchGrid2D<Tile> _tiles;
     private float2 _tileOffset;
 
+    // Drag threshold for input.
+    [SerializeField, Range(0.1f, 1f)]
+    private float _dragThreshold = 0.5f;
+
+    // Tile animation setup.
     [SerializeField] private TileSwapper tileSwapper;
     private float _busyDuration;
 
+    [SerializeField, Range(0.1f, 20f)]
+    private float dropSpeed = 8f;
+
+    [SerializeField, Range(0f, 10f)]
+    private float newDropOffset = 2f;
+       
     public bool IsPlaying => true;
     public bool IsBusy => _busyDuration > 0f;
 
@@ -81,7 +82,7 @@ public class Match3Skin : MonoBehaviour
         else if (game.NeedsFilling) DropTiles();
     }
 
-    // Invokes Match3Game's ProcessMatches and despawns all cleared tiles.
+    // Invokes Match3Game's ProcessMatches and makes all cleared tiles disappear.
     private void ProcessMatches ()
     {
         game.ProcessMatches();
@@ -89,7 +90,7 @@ public class Match3Skin : MonoBehaviour
         for (int i = 0; i < game.ClearedTileCoordinates.Count; i++)
         {
             int2 c = game.ClearedTileCoordinates[i];
-            _tiles[c].Despawn();
+            _busyDuration = Mathf.Max(_tiles[c].Disappear(), _busyDuration);
             _tiles[c] = null;
         }
     }
@@ -108,16 +109,14 @@ public class Match3Skin : MonoBehaviour
             if (drop.fromY < _tiles.SizeY)
             {
                 tile = _tiles[drop.coordinates.x, drop.fromY];
-                tile.transform.localPosition = new Vector3(
-                    drop.coordinates.x + _tileOffset.x, drop.coordinates.y + _tileOffset.y
-                );
             }
             else // If not, spawn a new tile.
             {
-                tile = SpawnTile(game[drop.coordinates], drop.coordinates.x, drop.coordinates.y);
+                tile = SpawnTile(game[drop.coordinates], drop.coordinates.x, drop.fromY + newDropOffset);
             }
 
             _tiles[drop.coordinates] = tile;
+            _busyDuration = Mathf.Max(tile.Fall(drop.coordinates.y + _tileOffset.y, dropSpeed), _busyDuration);
         }
     }
 

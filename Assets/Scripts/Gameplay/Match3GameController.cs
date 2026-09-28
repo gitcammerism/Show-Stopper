@@ -2,14 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-/*
- * Last Modified: 09/23/2026 by Chandler Guzman
- * 
- * This script controls the game start and end, taking in player input and processing it through Match3Skin.
- *
- * Chandler TO-DO:
- * - At some point, remove old commented-out logic from HandleInput()
- */
+//This script controls the game start and end, taking in player input and processing it through Match3Skin.
 
 public class Match3GameController : MonoBehaviour
 {
