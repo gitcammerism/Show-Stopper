@@ -32,12 +32,12 @@ public class TestButton : MonoBehaviour
 
         if(_inputManager.OnPress(context, this.gameObject) == 1)
         {
-            Debug.Log("successful Press");
+            //Debug.Log("successful Press");
             // get some actual logic
         }
         else
         {
-            Debug.Log("Press fail");
+            //Debug.Log("Press fail");
         }
     }
 

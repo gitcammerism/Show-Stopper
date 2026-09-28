@@ -96,9 +96,9 @@ public partial class @TouchControls: IInputActionCollection2, IDisposable
                     ""name"": ""TouchInput"",
                     ""type"": ""PassThrough"",
                     ""id"": ""85f83744-ceba-4ace-9c98-b239dd1d4f6f"",
-                    ""expectedControlType"": """",
+                    ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": """",
+                    ""interactions"": ""Press"",
                     ""initialStateCheck"": false
                 },
                 {

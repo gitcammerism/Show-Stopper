@@ -3,8 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.EnhancedTouch;
+/*
+ * This script uses the Input Asset and its generated C# script to take in player input.
+ * It calls events when touch is registered, which calls all methods subscribed to them in other scripts.
+ * This script is a singleton.
+ */
 
-// ensure that this script runs before all others
+
+// Ensures that this script runs before all others
 [DefaultExecutionOrder(-1)]
 public class InputManager : MonoBehaviour
 {
@@ -15,12 +21,12 @@ public class InputManager : MonoBehaviour
     public event EndTouchEvent OnEndTouch;
 
     private TouchControls _touchControls;
+
     // Singleton instance
     public static InputManager instance;
 
     private Camera _mainCamera;
 
-    public GameObject targetObject;
 	private void Awake()
 	{
         // check if instance exists
@@ -55,16 +61,17 @@ public class InputManager : MonoBehaviour
     }
 
     // using New Input System
+    // if touch is read, every method subscribed to OnStartTouch gets called
     private void StartTouch(InputAction.CallbackContext context)
     {
-        // if touch is read, every method subscribed to OnStartTouch gets called
-        if (OnStartTouch != null) OnStartTouch(_touchControls.Touch.TouchPosition.ReadValue<Vector2>(), (float)context.startTime, context);
+        if (OnStartTouch != null) OnStartTouch(ScreenToWorld(_mainCamera, _touchControls.Touch.TouchPosition.ReadValue<Vector2>()), (float)context.startTime, context);
+
     }
 
+    // if touch stops, every method subscribed to OnEndTouch gets called
     private void EndTouch(InputAction.CallbackContext context)
     {
-        // if touch stops, every method subscribed to OnEndTouch gets called
-        if (OnEndTouch != null) OnEndTouch(_touchControls.Touch.TouchPosition.ReadValue<Vector2>(), (float)context.time, context);
+        if (OnEndTouch != null) OnEndTouch(ScreenToWorld(_mainCamera, _touchControls.Touch.TouchPosition.ReadValue<Vector2>()), (float)context.time, context);
     }
 
     public int OnPress(InputAction.CallbackContext context, GameObject target)
@@ -88,6 +95,13 @@ public class InputManager : MonoBehaviour
         return camera.ScreenToWorldPoint(position);
     }
 
+    public Vector2 PrimaryPosition()
+    {
+        return ScreenToWorld(_mainCamera, _touchControls.Touch.TouchPosition.ReadValue<Vector2>());
+    }
+
+
+    
     //// using EnhancedTouch system
     //private void FingerDown(Finger finger)
     //{
