@@ -406,7 +406,7 @@ GameObject:
   - component: {fileID: 316821517}
   - component: {fileID: 316821516}
   m_Layer: 5
-  m_Name: Button (3)
+  m_Name: SavePref Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -527,7 +527,7 @@ GameObject:
   - component: {fileID: 433418931}
   - component: {fileID: 433418930}
   m_Layer: 5
-  m_Name: Button
+  m_Name: SaveGame Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -597,13 +597,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 11500000, guid: 2b3c29a54c6adc840be4e218cd137622, type: 3}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
+      - m_Target: {fileID: 784847486}
+        m_TargetAssemblyTypeName: DataPersistenceManager, Assembly-CSharp
+        m_MethodName: SaveGame
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -871,7 +871,7 @@ GameObject:
   - component: {fileID: 655929734}
   - component: {fileID: 655929733}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Resource Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1045,7 +1045,7 @@ GameObject:
   - component: {fileID: 670939092}
   - component: {fileID: 670939091}
   m_Layer: 5
-  m_Name: Button (4)
+  m_Name: DeletePref Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1186,7 +1186,7 @@ MonoBehaviour:
   testResource: 0
   audioTest: 0
   resourceText: {fileID: 655929733}
-  audioText: {fileID: 0}
+  audioText: {fileID: 1520013961}
 --- !u!114 &784847486
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1475,7 +1475,7 @@ GameObject:
   - component: {fileID: 883123637}
   - component: {fileID: 883123636}
   m_Layer: 5
-  m_Name: Button (5)
+  m_Name: AddResource Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1683,7 +1683,7 @@ GameObject:
   - component: {fileID: 1143241534}
   - component: {fileID: 1143241533}
   m_Layer: 5
-  m_Name: Button (2)
+  m_Name: NewGame Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1752,7 +1752,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1143241534}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 784847486}
+        m_TargetAssemblyTypeName: DataPersistenceManager, Assembly-CSharp
+        m_MethodName: NewGame
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1143241534
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2130,7 +2142,7 @@ GameObject:
   - component: {fileID: 1520013962}
   - component: {fileID: 1520013961}
   m_Layer: 5
-  m_Name: Text (TMP) (1)
+  m_Name: Audio Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2266,7 +2278,7 @@ GameObject:
   - component: {fileID: 1774201367}
   - component: {fileID: 1774201368}
   m_Layer: 5
-  m_Name: Slider
+  m_Name: Audio Slider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2358,7 +2370,7 @@ GameObject:
   - component: {fileID: 1795270234}
   - component: {fileID: 1795270233}
   m_Layer: 5
-  m_Name: Button (6)
+  m_Name: SubtractResource Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2628,7 +2640,7 @@ GameObject:
   - component: {fileID: 1817888141}
   - component: {fileID: 1817888140}
   m_Layer: 5
-  m_Name: Button (1)
+  m_Name: LoadGame Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2697,7 +2709,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1817888141}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 784847486}
+        m_TargetAssemblyTypeName: DataPersistenceManager, Assembly-CSharp
+        m_MethodName: LoadGame
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1817888141
 MonoBehaviour:
   m_ObjectHideFlags: 0

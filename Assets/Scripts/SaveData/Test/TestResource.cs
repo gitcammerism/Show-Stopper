@@ -2,7 +2,7 @@ using TMPro;
 using UnityEngine;
 
 // Temporary script just for save testing
-public class TestResource : MonoBehaviour
+public class TestResource : MonoBehaviour, IDataPersistence
 {
     public int testResource;
     public int audioTest;
@@ -15,6 +15,19 @@ public class TestResource : MonoBehaviour
     {
         UpdateResourceText();
         UpdateAudioSlider();
+    }
+
+    // Taken from IDataPersistence
+    // LoadData loads saved data about the test resource
+    // SaveData saves the data about the test resource
+    public void LoadData(GameData data)
+    {
+        this.testResource = data.testResource;
+    }
+
+    public void SaveData(ref GameData data)
+    {
+        data.testResource = this.testResource;
     }
 
     public void UpdateResourceText()
