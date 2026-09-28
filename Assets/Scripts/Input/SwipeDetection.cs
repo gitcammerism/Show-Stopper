@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
+// CAMI TODO: implement dragging object logic
 
 public class SwipeDetection : MonoBehaviour
 {
@@ -11,7 +12,7 @@ public class SwipeDetection : MonoBehaviour
     private Vector2 _endPosition;
     private float _endTime;
 
-    [SerializeField, Range(0, 1)]
+    [SerializeField, Range(0f, 1f)]
     private float _directionThreshold = 0.9f;
 
     private void Awake()
@@ -51,6 +52,7 @@ public class SwipeDetection : MonoBehaviour
         Vector3 direction = _endPosition - _startPosition;
         Vector2 direction2D = new Vector2(direction.x, direction.y).normalized;
         SwipeDirection(direction2D);
+
     }
 
     // Determines which cardinal direction the swipe is pointing
@@ -75,4 +77,24 @@ public class SwipeDetection : MonoBehaviour
             //Debug.Log("Swipe right");
         }
     }
+    
+    // Call this method from within individual object script
+    public void HandleObjectSwipe(GameObject target, Vector2 screenPos)
+    {
+        if(target != null)
+        {
+            StartCoroutine(DragUpdate(target, screenPos));
+        }
+    }
+
+    private IEnumerator DragUpdate(GameObject target, Vector2 screenPos)
+    {
+        while(screenPos != null)
+        {
+            // temp
+            yield return null;
+        }
+    }
+
+
 }
