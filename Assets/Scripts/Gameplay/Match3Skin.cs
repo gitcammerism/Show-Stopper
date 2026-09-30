@@ -144,7 +144,7 @@ public class Match3Skin : MonoBehaviour
         }
     }
 
-    // Handles dragging input using mouse click.
+    // Handles dragging input using touch.
     public bool EvaluateDrag (Vector3 start, Vector3 end)
     {
         // Determines the tile position of a & b then creates a Move struct based on the move performed.
