@@ -5,9 +5,13 @@ using UnityEngine;
 
 public class DataPersistenceManager : MonoBehaviour
 {
+    [Header("File Storage Config")]
+    [SerializeField] private string fileName;
+    
     private GameData gameData;
 
     public List<IDataPersistence> dataPersistenceObjects;
+    private FileDataHandler dataHandler;
     
     // Instance can be referenced publicy
     // Instance can only be modified in this class
@@ -22,6 +26,9 @@ public class DataPersistenceManager : MonoBehaviour
         }
 
         instance = this;
+
+        this.dataHandler = new FileDataHandler(Application.persistentDataPath, fileName);
+        this.dataPersistenceObjects = FindAllDataPersistenceObjects();
     }
 
     // When started, find all files using IDataPersistence
@@ -42,7 +49,8 @@ public class DataPersistenceManager : MonoBehaviour
     {
         Debug.Log("Loaded Game");
 
-        // COLIN TODO: Load save data from a file
+        // Load save data from a file
+        this.gameData = dataHandler.Load();
 
         // If no game data is found, start a new game instead
         if (this.gameData == null)
@@ -63,7 +71,13 @@ public class DataPersistenceManager : MonoBehaviour
     public void SaveGame()
     {
         Debug.Log("Saved Game");
-        
+
+        if (this.gameData == null)
+        {
+            Debug.Log("No data was found. Starting a New Game.");
+            NewGame();
+        }
+
         // Pass data to other scripts to update
         foreach (IDataPersistence dataPersistenceObj in dataPersistenceObjects)
         {
@@ -72,7 +86,8 @@ public class DataPersistenceManager : MonoBehaviour
 
         Debug.Log("Saved Resources = " + gameData.testResource);
 
-        // COLIN TODO: Save data to a file using handler
+        // Save data to a file using handler
+        dataHandler.Save(gameData);
     }
 
     // Finds all scripts utilizing IDataPersistence
