@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,14 +8,22 @@ public class ResourceManager : MonoBehaviour
     [System.NonSerialized] public Dictionary<TileState, int> levelProgress;
     private bool _goalReached = false;
 
-    void Start()
+    void OnEnable()
     {
         levelGoal = new();
+        Match3Game.OnMatchMade += CheckProgress;
     }
 
     // Update is called once per frame
     void Update()
     {
         
+    }
+
+    private void CheckProgress(Match match)
+    {
+        if (!levelGoal.ContainsKey(match.tile)) return;
+
+
     }
 }
