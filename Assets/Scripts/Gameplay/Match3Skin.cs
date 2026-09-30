@@ -8,7 +8,7 @@ using static Unity.Mathematics.math;
 public class Match3Skin : MonoBehaviour
 {
     // Game setup.
-    [SerializeField] private TextMeshPro gameOverText, totalScoreText;
+    [SerializeField] private TextMeshProUGUI gameOverText, totalScoreText;
     [SerializeField] private Match3Game game;
     [SerializeField] private Tile[] tilePrefabs;
     [SerializeField] private FloatingScore floatingScorePrefab;

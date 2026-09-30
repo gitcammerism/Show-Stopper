@@ -11,7 +11,6 @@ using TMPro;
  * Chandler TO-DO:
  * - Continue cleaning up and refinind code; tutorial is complete!
  * - Update TDD
- *      -> https://catlikecoding.com/unity/tutorials/prototypes/match-3/
  */
 
 public class Match3Game : MonoBehaviour
