@@ -144,7 +144,7 @@ public class Match3Skin : MonoBehaviour
         }
     }
 
-    // Handles dragging input using mouse click.
+    // Handles dragging input using touch.
     public bool EvaluateDrag (Vector3 start, Vector3 end)
     {
         // Determines the tile position of a & b then creates a Move struct based on the move performed.
@@ -163,7 +163,6 @@ public class Match3Skin : MonoBehaviour
         // If the move is valid and the new coordinates are valid, the tiles can be moved.
         if (move.IsValid && _tiles.AreValidCoordinates(move.From) && _tiles.AreValidCoordinates(move.To))
         {
-            Debug.Log("Move valid");
             DoMove(move);
             return false;
         }

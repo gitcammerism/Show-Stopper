@@ -7,12 +7,10 @@ public class TestButton : MonoBehaviour
     // important note to document somewhere (TDD) : when subscribing to touch event, whatever function it calls needs to take Vector2 and float params
     
     private InputManager _inputManager;
-    private SwipeDetection _swipeDetection;
 
     private void Awake()
     {
         _inputManager = InputManager.instance;
-        _swipeDetection = _inputManager.GetComponent<SwipeDetection>();
     }
 
     private void OnEnable()

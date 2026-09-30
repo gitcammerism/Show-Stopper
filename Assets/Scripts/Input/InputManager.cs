@@ -14,12 +14,13 @@ using UnityEngine.InputSystem.EnhancedTouch;
 [DefaultExecutionOrder(-1)]
 public class InputManager : MonoBehaviour
 {
-    // events for other scripts to call
+    // Start and End Touch delegates and events
     public delegate void StartTouchEvent(Vector3 position, float time, InputAction.CallbackContext context);
     public event StartTouchEvent OnStartTouch;
     public delegate void EndTouchEvent(Vector3 position, float time, InputAction.CallbackContext context);
     public event EndTouchEvent OnEndTouch;
 
+    // Input Asset script
     private TouchControls _touchControls;
 
     // Singleton instance
@@ -53,6 +54,7 @@ public class InputManager : MonoBehaviour
         _touchControls?.Disable();
     }
 
+    // Register touch input
     private void Start()
     {
         _touchControls.Touch.TouchPress.started += ctx => StartTouch(ctx);
@@ -84,8 +86,6 @@ public class InputManager : MonoBehaviour
         if(rayHit.collider.gameObject == target) return 1;
 
         return -1;
-
-        //Debug.Log(rayHit.collider.gameObject.name);
     }
 
     // Convert screen coordinates to world coordinates
@@ -95,16 +95,9 @@ public class InputManager : MonoBehaviour
         return camera.ScreenToWorldPoint(position);
     }
 
+    // currently not in use
     public Vector2 PrimaryPosition()
     {
         return ScreenToWorld(_mainCamera, _touchControls.Touch.TouchPosition.ReadValue<Vector3>());
     }
-
-
-    
-    //// using EnhancedTouch system
-    //private void FingerDown(Finger finger)
-    //{
-    //    if (OnStartTouch != null) OnStartTouch(finger.screenPosition, Time.time);
-    //}
 }
