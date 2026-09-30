@@ -15,9 +15,9 @@ using UnityEngine.InputSystem.EnhancedTouch;
 public class InputManager : MonoBehaviour
 {
     // events for other scripts to call
-    public delegate void StartTouchEvent(Vector2 position, float time, InputAction.CallbackContext context);
+    public delegate void StartTouchEvent(Vector3 position, float time, InputAction.CallbackContext context);
     public event StartTouchEvent OnStartTouch;
-    public delegate void EndTouchEvent(Vector2 position, float time, InputAction.CallbackContext context);
+    public delegate void EndTouchEvent(Vector3 position, float time, InputAction.CallbackContext context);
     public event EndTouchEvent OnEndTouch;
 
     private TouchControls _touchControls;
@@ -64,21 +64,21 @@ public class InputManager : MonoBehaviour
     // if touch is read, every method subscribed to OnStartTouch gets called
     private void StartTouch(InputAction.CallbackContext context)
     {
-        if (OnStartTouch != null) OnStartTouch(ScreenToWorld(_mainCamera, _touchControls.Touch.TouchPosition.ReadValue<Vector2>()), (float)context.startTime, context);
+        if (OnStartTouch != null) OnStartTouch(_touchControls.Touch.TouchPosition.ReadValue<Vector2>(), (float)context.startTime, context);
 
     }
 
     // if touch stops, every method subscribed to OnEndTouch gets called
     private void EndTouch(InputAction.CallbackContext context)
     {
-        if (OnEndTouch != null) OnEndTouch(ScreenToWorld(_mainCamera, _touchControls.Touch.TouchPosition.ReadValue<Vector2>()), (float)context.time, context);
+        if (OnEndTouch != null) OnEndTouch(_touchControls.Touch.TouchPosition.ReadValue<Vector2>(), (float)context.time, context);
     }
 
     public int OnPress(InputAction.CallbackContext context, GameObject target)
     {
         if (!context.started) return 0;
 
-        var rayHit = Physics2D.GetRayIntersection(_mainCamera.ScreenPointToRay(_touchControls.Touch.TouchPosition.ReadValue<Vector2>()));
+        var rayHit = Physics2D.GetRayIntersection(_mainCamera.ScreenPointToRay(_touchControls.Touch.TouchPosition.ReadValue<Vector3>()));
         if (!rayHit.collider) return 0;
 
         if(rayHit.collider.gameObject == target) return 1;
@@ -97,7 +97,7 @@ public class InputManager : MonoBehaviour
 
     public Vector2 PrimaryPosition()
     {
-        return ScreenToWorld(_mainCamera, _touchControls.Touch.TouchPosition.ReadValue<Vector2>());
+        return ScreenToWorld(_mainCamera, _touchControls.Touch.TouchPosition.ReadValue<Vector3>());
     }
 
 

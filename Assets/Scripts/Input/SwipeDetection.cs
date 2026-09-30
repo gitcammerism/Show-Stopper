@@ -32,13 +32,13 @@ public class SwipeDetection : MonoBehaviour
         _inputManager.OnEndTouch -= SwipeEnd;
     }
 
-    private void SwipeStart(Vector2 position, float time, InputAction.CallbackContext context)
+    private void SwipeStart(Vector3 position, float time, InputAction.CallbackContext context)
     {
         _startPosition = position;
         _startTime = time;
     }
 
-    private void SwipeEnd(Vector2 position, float time, InputAction.CallbackContext context)
+    private void SwipeEnd(Vector3 position, float time, InputAction.CallbackContext context)
     {
         _endPosition = position;
         _endTime = time;

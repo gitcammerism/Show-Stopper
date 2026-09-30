@@ -28,7 +28,7 @@ public class TestButton : MonoBehaviour
     }
 
     // Press gets called whenever the OnStartTouch event is called
-    public void Press(Vector2 screenPosition, float time, InputAction.CallbackContext context)
+    public void Press(Vector3 screenPosition, float time, InputAction.CallbackContext context)
     {
         //Vector3 screenCoords = new Vector3(screenPosition.x, screenPosition.y, 0);
 
