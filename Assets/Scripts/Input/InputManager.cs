@@ -20,6 +20,10 @@ public class InputManager : MonoBehaviour
     public delegate void EndTouchEvent(Vector3 position, float time, InputAction.CallbackContext context);
     public event EndTouchEvent OnEndTouch;
 
+    // Debug inputs delegates and events
+    public delegate void StartRestartEvent(float isPressed, InputAction.CallbackContext context);
+    public event StartRestartEvent OnStartRestart;
+
     // Input Asset script
     private TouchControls _touchControls;
 
@@ -60,6 +64,8 @@ public class InputManager : MonoBehaviour
         _touchControls.Touch.TouchPress.started += ctx => StartTouch(ctx);
         _touchControls.Touch.TouchPress.canceled += ctx => EndTouch(ctx);
 
+        _touchControls.Debug.RestartGame.started += ctx => RestartGame(ctx);
+
     }
 
     // using New Input System
@@ -74,6 +80,12 @@ public class InputManager : MonoBehaviour
     private void EndTouch(InputAction.CallbackContext context)
     {
         if (OnEndTouch != null) OnEndTouch(_touchControls.Touch.TouchPosition.ReadValue<Vector2>(), (float)context.time, context);
+    }
+
+    // DEBUG ONLY: if space bar is pressed, the game restarts
+    private void RestartGame(InputAction.CallbackContext context)
+    {
+        if (OnStartRestart != null) OnStartRestart(_touchControls.Debug.RestartGame.ReadValue<float>(), context);
     }
 
     public int OnPress(InputAction.CallbackContext context, GameObject target)
