@@ -46,6 +46,12 @@ public class FileDataHandler
                     }
                 }
 
+                // Decrypt the data
+                if (useEncryption)
+                {
+                    dataToLoad = EncryptDecrypt(dataToLoad);
+                }
+
                 // Deserializes the data from JSON
                 loadedData = JsonUtility.FromJson<GameData>(dataToLoad);
 
@@ -73,6 +79,12 @@ public class FileDataHandler
 
             // Serialize game data object to JSON
             string dataToStore = JsonUtility.ToJson(data, true);
+
+            // Encrypt the data
+            if (useEncryption)
+            {
+                dataToStore = EncryptDecrypt(dataToStore);
+            }
 
             // Write data to file
             using (FileStream stream = new FileStream(fullPath, FileMode.Create))
