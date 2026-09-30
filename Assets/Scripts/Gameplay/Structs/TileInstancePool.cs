@@ -1,14 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-/*
- * Last Modified: 09/16/2026 by Chandler Guzman
- * 
- * This is a struct that handles the spawning and despawning of match-3 tiles.
- *
- * Chandler TO-DO:
- * - 
- */
+// This is a struct that handles the spawning and despawning of match-3 tiles.
 
 public struct TileInstancePool<T> where T : MonoBehaviour
 {
