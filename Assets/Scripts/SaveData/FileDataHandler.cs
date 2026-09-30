@@ -101,6 +101,29 @@ public class FileDataHandler
         }
     }
 
+    // Delete all data
+    public void Delete()
+    {
+        // Use Path.Combine to account for different OS
+        string fullPath = Path.Combine(dataDirPath, dataFileName);
+        
+        try
+        {
+            // Ensure the data file exists
+            if (File.Exists(fullPath))
+            {
+                // Delete file
+                Directory.Delete(Path.GetDirectoryName(fullPath), true);
+            } else
+            {
+                Debug.LogWarning("No data found at: " + fullPath);
+            }
+        } catch (Exception e)
+        {
+            Debug.LogError("Failed to delete data: " + fullPath + "\n" + e);
+        }
+    }
+
     // Takes in string data and returns encrypted or decrypted data
     private string EncryptDecrypt(string data)
     {

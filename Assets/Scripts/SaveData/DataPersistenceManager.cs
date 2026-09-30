@@ -36,6 +36,15 @@ public class DataPersistenceManager : MonoBehaviour
         this.dataPersistenceObjects = FindAllDataPersistenceObjects();
     }
 
+    // Delete Game Data
+    public void DeleteData()
+    {
+        dataHandler.Delete();
+
+        // Load game to match deleted data
+        LoadGame();
+    }
+
     // Re-intalizes Game Data to start a new game with clear data
     public void NewGame()
     {
