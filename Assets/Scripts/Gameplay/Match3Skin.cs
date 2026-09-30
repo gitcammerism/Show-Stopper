@@ -8,7 +8,7 @@ using static Unity.Mathematics.math;
 public class Match3Skin : MonoBehaviour
 {
     // Game setup.
-    [SerializeField] private TextMeshProUGUI gameOverText, totalScoreText;
+    [SerializeField] private TextMeshProUGUI totalScoreText;
     [SerializeField] private Match3Game game;
     [SerializeField] private Tile[] tilePrefabs;
     [SerializeField] private FloatingScore floatingScorePrefab;
@@ -29,8 +29,11 @@ public class Match3Skin : MonoBehaviour
 
     [SerializeField, Range(0f, 10f)]
     private float newDropOffset = 2f;
+
+    [System.NonSerialized]
+    public bool gameOver = false;
        
-    public bool IsPlaying => IsBusy || game.PossibleMove.IsValid;
+    public bool IsPlaying => (IsBusy || game.PossibleMove.IsValid) && !gameOver;
     public bool IsBusy => _busyDuration > 0f;
 
     // Starts a new game by calling Match3Game.StartNewGame().
@@ -38,7 +41,6 @@ public class Match3Skin : MonoBehaviour
     {
         _busyDuration = 0f;
         totalScoreText.SetText("0");
-        gameOverText.gameObject.SetActive(false);
         game.StartNewGame();
 
         // Ensures tiles will be centered on the origin.
@@ -84,8 +86,7 @@ public class Match3Skin : MonoBehaviour
         }
 
         if (game.HasMatches) ProcessMatches();
-        else if (game.NeedsFilling) DropTiles();
-        else if (!IsPlaying) gameOverText.gameObject.SetActive(true);
+        else if (game.NeedsFilling) DropTiles(); 
     }
 
     // Invokes Match3Game's ProcessMatches and makes all cleared tiles disappear.
