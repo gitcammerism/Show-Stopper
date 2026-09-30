@@ -28,6 +28,7 @@ public class Match3GameController : MonoBehaviour
         {
             _inputManager.OnStartTouch += TouchStarted;
             _inputManager.OnEndTouch += TouchEnded;
+            _inputManager.OnStartRestart += GameRestarted;
         }
     }
 
@@ -41,15 +42,10 @@ public class Match3GameController : MonoBehaviour
         }
     }
 
-    // Checks if the game is ongoing and handles input if the game is not busy.
+    // Checks if the game is ongoing.
     void Update ()
     {
         if (match3.IsPlaying) match3.DoWork();
-
-        else if (Input.GetKeyDown(KeyCode.Space)) // temp debug key to restart game
-        {
-            match3.StartNewGame();
-        }
     }
 
     // Subscribes to OnStartTouch, checks if player is currently dragging a tile
@@ -57,19 +53,24 @@ public class Match3GameController : MonoBehaviour
     {
         if (!_isDragging && !match3.IsBusy)
         {
-            Debug.Log("TouchStarted: " + position);
             _dragStart = position;
             _isDragging = true;
         }
     }
     
+    // Subscribes to OnEndTouch, checks if player has lifted finger from screen
     private void TouchEnded(Vector3 position, float time, InputAction.CallbackContext context)
     {
         if (_isDragging && !match3.IsBusy)
         {
-            Debug.Log("TouchEnded: " + position);
             match3.EvaluateDrag(_dragStart, position);
             _isDragging = false;
         }
+    }
+
+    // temp debug key spacebar to restart game
+    private void GameRestarted(float isPressed, InputAction.CallbackContext context)
+    {
+        if (isPressed > 0.5f) match3.StartNewGame();
     }
 }
