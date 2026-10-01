@@ -10,7 +10,7 @@ using TMPro;
  * This script tracks the game state and handles the logic for the match-3 game.
  *
  * Chandler TO-DO:
- * - Continue cleaning up and refinind code; tutorial is complete!
+ * - Continue cleaning up and refining code; tutorial is complete!
  * - Update TDD
  */
 
@@ -55,6 +55,16 @@ public class Match3Game : MonoBehaviour
 
     public static event Action<Match> OnMatchMade;
 
+    private void OnEnable()
+    {
+        ResourceManager.OnGoalReached += StopGame;
+    }
+
+    private void OnDisable()
+    {
+        ResourceManager.OnGoalReached -= StopGame;
+    }
+    
     // Starts a new game by creating & filling a new grid.
     public void StartNewGame()
     {
@@ -269,6 +279,12 @@ public class Match3Game : MonoBehaviour
         }
 
         // Clears the match list and changes bool to true to indicate grid needs to be refilled.
+        _matches.Clear();
+        NeedsFilling = true;
+    }
+
+    private void StopGame()
+    {
         _matches.Clear();
         NeedsFilling = true;
     }
