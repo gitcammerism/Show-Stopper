@@ -34,6 +34,8 @@ public class DataPersistenceManager : MonoBehaviour
     {
         this.dataHandler = new FileDataHandler(Application.persistentDataPath, fileName, useEncryption);
         this.dataPersistenceObjects = FindAllDataPersistenceObjects();
+
+        LoadGame();
     }
 
     // Delete Game Data
@@ -109,5 +111,10 @@ public class DataPersistenceManager : MonoBehaviour
             .OfType<IDataPersistence>();
 
         return new List<IDataPersistence>(dataPersistenceObjects);
+    }
+
+    private void OnApplicationQuit()
+    {
+        SaveGame();
     }
 }
