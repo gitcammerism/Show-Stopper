@@ -101,8 +101,8 @@ public class Match3GameController : MonoBehaviour
     // Notifies Match3Skin that the game should end, then stops the timer.
     private void GameWinNotify()
     {
-        match3.GameOverNotify(true);
         StopTimer?.Invoke();
+        match3.GameOverNotify(true);
     }
 
     // Handles the winning of a level.

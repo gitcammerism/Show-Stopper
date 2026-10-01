@@ -37,7 +37,7 @@ public class Match3Skin : MonoBehaviour
     public static event Action OnGameLost;
     public static event Action OnGameWon;
        
-    public bool IsPlaying => (IsBusy || game.PossibleMove.IsValid) && !gameOver;
+    public bool IsPlaying => (IsBusy || game.PossibleMove.IsValid) && (!gameOver || !game.PossibleMove.IsValid);
     public bool IsBusy => _busyDuration > 0f;
 
     // Starts a new game by calling Match3Game.StartNewGame().
@@ -123,6 +123,8 @@ public class Match3Skin : MonoBehaviour
             // Avoids weird overlapping of floating scores.
             _floatingScoreZ = _floatingScoreZ <= -0.02f ? 0f : _floatingScoreZ - 0.001f;
         }
+        
+        if (gameOver && game.NeedsFilling) DropTiles();
     }
 
     // Invokes Match3Game's DropTiles method and handles fallen + new tiles.
@@ -201,7 +203,7 @@ public class Match3Skin : MonoBehaviour
     // If not busy, end the game or wait for game to end.
     public void GameOverNotify(bool playerWon)
     {
-        if (!IsBusy && !game.NeedsFilling)
+        if (!IsBusy)
         {
             if (playerWon) OnGameWon?.Invoke();
             else  OnGameLost?.Invoke();
@@ -213,7 +215,7 @@ public class Match3Skin : MonoBehaviour
     // Waits for the game to not be busy, then ends the game.
     private IEnumerator WaitForBusyEnd(bool playerWon)
     {
-        while (IsBusy || game.NeedsFilling) yield return null;
+        while (IsBusy) yield return null;
         if (!playerWon)
         {
             OnGameLost?.Invoke();

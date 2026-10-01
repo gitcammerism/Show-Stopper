@@ -54,16 +54,6 @@ public class Match3Game : MonoBehaviour
     { get; private set; }
 
     public static event Action<Match> OnMatchMade;
-
-    private void OnEnable()
-    {
-        ResourceManager.OnGoalReached += StopGame;
-    }
-
-    private void OnDisable()
-    {
-        ResourceManager.OnGoalReached -= StopGame;
-    }
     
     // Starts a new game by creating & filling a new grid.
     public void StartNewGame()
@@ -279,12 +269,6 @@ public class Match3Game : MonoBehaviour
         }
 
         // Clears the match list and changes bool to true to indicate grid needs to be refilled.
-        _matches.Clear();
-        NeedsFilling = true;
-    }
-
-    private void StopGame()
-    {
         _matches.Clear();
         NeedsFilling = true;
     }
