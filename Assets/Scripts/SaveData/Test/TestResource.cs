@@ -37,14 +37,14 @@ public class TestResource : MonoBehaviour, IDataPersistence
     // Also sees if the level has been completed
     public void LoadData(GameData data)
     {
-        this.testResource = data.testResource;
+        //this.testResource = data.testResource;
 
         data.levelsCompleted.TryGetValue(ID, out levelCompleted);
     }
 
     public void SaveData(ref GameData data)
     {
-        data.testResource = this.testResource;
+        //data.testResource = this.testResource;
 
         if (data.levelsCompleted.ContainsKey(ID))
         {

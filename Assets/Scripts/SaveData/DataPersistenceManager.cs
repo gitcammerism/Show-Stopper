@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class DataPersistenceManager : MonoBehaviour
 {
@@ -23,19 +24,49 @@ public class DataPersistenceManager : MonoBehaviour
     {
         if (instance != null)
         {
-            Debug.LogError("Multiple Data Persistence Managers in scene!");
+            Debug.Log("Multiple Data Persistence Managers in scene!");
+            Destroy(this.gameObject);
+            return;
         }
 
         instance = this;
+
+        // Ensures the DataManager will not be destroyed
+        DontDestroyOnLoad(this.gameObject);
+
+        this.dataHandler = new FileDataHandler(Application.persistentDataPath, fileName, useEncryption);
     }
 
-    // When started, find all files using IDataPersistence
-    private void Start()
+    // Subscribe to OnSceneLoaded and OnSceneUnloaded
+    private void OnEnable()
     {
-        this.dataHandler = new FileDataHandler(Application.persistentDataPath, fileName, useEncryption);
+        SceneManager.sceneLoaded += OnSceneLoaded;
+        SceneManager.sceneUnloaded += OnSceneUnloaded;
+    }
+
+    // Subscribe to OnSceneLoaded and OnSceneUnloaded
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+        SceneManager.sceneUnloaded -= OnSceneUnloaded;
+    }
+
+    // When Scene Loaded, find all files using IDataPersistence
+    public void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        Debug.Log("Loaded Called");
+        
         this.dataPersistenceObjects = FindAllDataPersistenceObjects();
 
         LoadGame();
+    }
+
+    // Save Game whenever player leaves a screen
+    public void OnSceneUnloaded(Scene scene)
+    {
+        Debug.Log("Unloaded Called");
+
+        SaveGame();
     }
 
     // Delete Game Data
@@ -74,8 +105,6 @@ public class DataPersistenceManager : MonoBehaviour
         {
             dataPersistenceObj.LoadData(gameData);
         }
-
-        Debug.Log("Loaded Resources = " + gameData.testResource);
     }
 
     public void SaveGame()
@@ -94,10 +123,13 @@ public class DataPersistenceManager : MonoBehaviour
             dataPersistenceObj.SaveData(ref gameData);
         }
 
-        Debug.Log("Saved Resources = " + gameData.testResource);
-
         // Save data to a file using handler
         dataHandler.Save(gameData);
+    }
+
+    private void OnApplicationQuit()
+    {
+        SaveGame();
     }
 
     // Finds all scripts utilizing IDataPersistence
@@ -111,10 +143,5 @@ public class DataPersistenceManager : MonoBehaviour
             .OfType<IDataPersistence>();
 
         return new List<IDataPersistence>(dataPersistenceObjects);
-    }
-
-    private void OnApplicationQuit()
-    {
-        SaveGame();
     }
 }
