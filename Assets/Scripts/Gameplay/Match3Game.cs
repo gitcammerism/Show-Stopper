@@ -10,7 +10,7 @@ using TMPro;
  * This script tracks the game state and handles the logic for the match-3 game.
  *
  * Chandler TO-DO:
- * - Continue cleaning up and refinind code; tutorial is complete!
+ * - Continue cleaning up and refining code; tutorial is complete!
  * - Update TDD
  */
 
@@ -54,7 +54,7 @@ public class Match3Game : MonoBehaviour
     { get; private set; }
 
     public static event Action<Match> OnMatchMade;
-
+    
     // Starts a new game by creating & filling a new grid.
     public void StartNewGame()
     {

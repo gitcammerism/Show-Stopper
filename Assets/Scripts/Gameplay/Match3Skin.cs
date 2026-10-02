@@ -1,3 +1,5 @@
+using System;
+using System.Collections;
 using TMPro;
 using Unity.Mathematics;
 using UnityEngine;
@@ -31,14 +33,17 @@ public class Match3Skin : MonoBehaviour
     private float newDropOffset = 2f;
 
     [System.NonSerialized]
-    public bool gameOver = false;
+    public bool gameOver;
+    public static event Action OnGameLost;
+    public static event Action OnGameWon;
        
-    public bool IsPlaying => (IsBusy || game.PossibleMove.IsValid) && !gameOver;
+    public bool IsPlaying => (IsBusy || game.PossibleMove.IsValid) && (!gameOver || !game.PossibleMove.IsValid);
     public bool IsBusy => _busyDuration > 0f;
 
     // Starts a new game by calling Match3Game.StartNewGame().
-    public void StartNewGame () 
+    public void StartNewGame ()
     {
+        TimeManager.OnTimerEnd += GameOverNotify;
         _busyDuration = 0f;
         totalScoreText.SetText("0");
         game.StartNewGame();
@@ -118,6 +123,8 @@ public class Match3Skin : MonoBehaviour
             // Avoids weird overlapping of floating scores.
             _floatingScoreZ = _floatingScoreZ <= -0.02f ? 0f : _floatingScoreZ - 0.001f;
         }
+        
+        if (gameOver && game.NeedsFilling) DropTiles();
     }
 
     // Invokes Match3Game's DropTiles method and handles fallen + new tiles.
@@ -191,5 +198,29 @@ public class Match3Skin : MonoBehaviour
         Ray ray = Camera.main.ScreenPointToRay(screenPosition);
         Vector3 p = ray.origin - ray.direction * (ray.origin.z / ray.direction.z);
         return float2(p.x - _tileOffset.x + 0.5f, p.y - _tileOffset.y + 0.5f);
+    }
+
+    // If not busy, end the game or wait for game to end.
+    public void GameOverNotify(bool playerWon)
+    {
+        if (!IsBusy)
+        {
+            if (playerWon) OnGameWon?.Invoke();
+            else  OnGameLost?.Invoke();
+            gameOver = true;
+        }
+        else StartCoroutine(WaitForBusyEnd(playerWon));
+    }
+
+    // Waits for the game to not be busy, then ends the game.
+    private IEnumerator WaitForBusyEnd(bool playerWon)
+    {
+        while (IsBusy) yield return null;
+        if (!playerWon)
+        {
+            OnGameLost?.Invoke();
+            gameOver = true;
+        }
+        else OnGameWon?.Invoke();
     }
 }
