@@ -24,7 +24,6 @@ public class ResourceManager : MonoBehaviour
             {
                 _goalDictionary.Add(goal.tile, goal.goal);
                 levelProgress.Add(goal.tile, 0);
-                Debug.Log("Added " + goal.goal + " goal for " + goal.tile);
             }
         }
         
@@ -46,6 +45,10 @@ public class ResourceManager : MonoBehaviour
         // Add the length of the match to the tile amount.
         levelProgress[match.tile] += match.length;
         
+        // Updates the goal slider.
+        goalList.Find(t => t.tile == match.tile).goalSlider.value = (float)
+            levelProgress[match.tile] / _goalDictionary[match.tile];
+        
         // If the progress of the given tile has been reached, check if the other tile goals have been reached.
         if (levelProgress[match.tile] >= _goalDictionary[match.tile])
         {
@@ -54,8 +57,7 @@ public class ResourceManager : MonoBehaviour
                 // If any tile is at a value less than the goal, immediately exit since it means goal is not reached.
                 if (levelProgress[tile] < _goalDictionary[tile]) return;
             }
-
-            Debug.Log("Goal complete!");
+            
             OnGoalReached?.Invoke();
         }
     }
