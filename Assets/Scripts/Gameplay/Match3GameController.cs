@@ -5,11 +5,17 @@ using UnityEngine.InputSystem;
 
 //This script controls the game start and end, taking in player input and processing it through Match3Skin.
 
-public class Match3GameController : MonoBehaviour
+public class Match3GameController : MonoBehaviour, IDataPersistence
 {
     [SerializeField] private Match3Skin match3;
     [SerializeField] private TextMeshProUGUI gameOverText;
     [SerializeField] private TextMeshProUGUI gameWinText;
+
+    // FROM COLIN - For determining when the level is finished for saving
+    public bool levelCompleted = false;
+
+    // FROM COLIN - For generating unique level ids
+    [SerializeField] private string ID;
 
     // Input-handling variables
     private Vector3 _dragStart;
@@ -66,6 +72,30 @@ public class Match3GameController : MonoBehaviour
         if (match3.IsPlaying) match3.DoWork();
     }
 
+    // FROM COLIN - For generating unique level ids
+    [ContextMenu("Generate Guid for ID")]
+    private void GenerateGuid()
+    {
+        ID = System.Guid.NewGuid().ToString();
+    }
+
+    // FROM COLIN - Taken from IDataPersistence
+    // FROM COLIN - Sees if the level has been completed
+    public void LoadData(GameData data)
+    {
+        data.levelsCompleted.TryGetValue(ID, out levelCompleted);
+    }
+
+    public void SaveData(ref GameData data)
+    {
+        if (data.levelsCompleted.ContainsKey(ID))
+        {
+            data.levelsCompleted.Remove(ID);
+        }
+
+        data.levelsCompleted.Add(ID, levelCompleted);
+    }
+
     // Subscribes to OnStartTouch, checks if player is currently dragging a tile
     private void TouchStarted(Vector3 position, float time, InputAction.CallbackContext context)
     {
@@ -110,5 +140,6 @@ public class Match3GameController : MonoBehaviour
     {
         Debug.Log("We reached the level goal!");
         gameWinText.gameObject.SetActive(true);
+        levelCompleted = true;
     }
 }

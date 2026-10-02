@@ -263,6 +263,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: LevelTemplate
       objectReference: {fileID: 0}
+    - target: {fileID: 5786533190234629108, guid: 959570488e4a7dc49a75c8bfd8b3619d, type: 3}
+      propertyPath: ID
+      value: 9a6f4f9b-a7d8-4022-9ea4-bf0db38ea0cf
+      objectReference: {fileID: 0}
     - target: {fileID: 6320582400012370683, guid: 959570488e4a7dc49a75c8bfd8b3619d, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
