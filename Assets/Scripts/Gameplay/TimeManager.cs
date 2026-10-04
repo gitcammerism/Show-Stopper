@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,31 +8,43 @@ public class TimeManager : MonoBehaviour
 {
     [SerializeField] private Match3Skin gameSkin;
     [SerializeField] private Slider timerSlider;
+    
+    [Tooltip("Please enter the time limit of the level in seconds.")]
     [SerializeField] private float gameTime;
-    private bool _stopTimer;
 
-    void Start()
+    public static event Action<bool> OnTimerEnd;
+
+    // Sets timer values & subscribes to stop timer event.
+    void OnEnable()
     {
-        _stopTimer = false;
+        Match3GameController.StopTimer += StopTimer;
         timerSlider.maxValue = gameTime;
         timerSlider.value = gameTime;
     }
 
-    // Update is called once per frame
+    // Unsubscribes to stop timer event.
+    void OnDisable()
+    {
+        Match3GameController.StopTimer -= StopTimer;
+    }
+
+    // Ticks down the timer every second until 0 is reached.
     void Update()
     {
         float time = gameTime - Time.time;
         if (time <= 0)
         {
-            _stopTimer = true;
-            if (!gameSkin.IsBusy) gameSkin.gameOver = true;
+            OnTimerEnd?.Invoke(false);
             timerSlider.gameObject.SetActive(false);
-            this.gameObject.SetActive(false);
+            gameObject.SetActive(false);
         }
+        else timerSlider.value = time;
+    }
 
-        if (_stopTimer == false)
-        {
-            timerSlider.value = time;
-        }
+    // Stops the timer before 0 is reached.
+    private void StopTimer()
+    {
+        timerSlider.gameObject.SetActive(false);
+        gameObject.SetActive(false);
     }
 }

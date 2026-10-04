@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
@@ -9,7 +10,7 @@ using TMPro;
  * This script tracks the game state and handles the logic for the match-3 game.
  *
  * Chandler TO-DO:
- * - Continue cleaning up and refinind code; tutorial is complete!
+ * - Continue cleaning up and refining code; tutorial is complete!
  * - Update TDD
  */
 
@@ -52,6 +53,8 @@ public class Match3Game : MonoBehaviour
     public bool NeedsFilling 
     { get; private set; }
 
+    public static event Action<Match> OnMatchMade;
+    
     // Starts a new game by creating & filling a new grid.
     public void StartNewGame()
     {
@@ -179,14 +182,14 @@ public class Match3Game : MonoBehaviour
                 else
                 {
                     // If no more matches found but the length is >= 3 (match found in row) add to list then restart.
-                    if (length >= 3) _matches.Add(new Match(x - length, y, length, true));
+                    if (length >= 3) _matches.Add(new Match(x - length, y, length, true, start));
                     start = t;
                     length = 1;
                 }
             }
 
             // Checks for a 3+  match at the end of the row then adds to the match list.
-            if (length >= 3) _matches.Add(new Match(gridSize.x - length, y, length, true));
+            if (length >= 3) _matches.Add(new Match(gridSize.x - length, y, length, true, start));
         }
 
         // Searches for vertical matches.
@@ -205,14 +208,14 @@ public class Match3Game : MonoBehaviour
                 else
                 {
                     // If no more matches found but the length is >= 3 (match found in column) add to list then restart.
-                    if (length >= 3) _matches.Add(new Match(x, y - length, length, false));
+                    if (length >= 3) _matches.Add(new Match(x, y - length, length, false, start));
                     start = t;
                     length = 1;
                 }
             }
 
             // Checks for a 3+  match at the end of the column then adds to the match list.
-            if (length >= 3) _matches.Add(new Match(x, gridSize.y - length, length, false));
+            if (length >= 3) _matches.Add(new Match(x, gridSize.y - length, length, false, start));
         }
 
         return HasMatches;
@@ -261,6 +264,8 @@ public class Match3Game : MonoBehaviour
             };
             Scores.Add(score);
             TotalScore += score.value;
+
+            OnMatchMade?.Invoke(match);
         }
 
         // Clears the match list and changes bool to true to indicate grid needs to be refilled.
