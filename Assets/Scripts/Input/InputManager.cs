@@ -23,6 +23,10 @@ public class InputManager : MonoBehaviour
     // Debug inputs delegates and events
     public delegate void StartRestartEvent(float isPressed, InputAction.CallbackContext context);
     public event StartRestartEvent OnStartRestart;
+    public delegate void StartMouseTouchEvent(Vector3 position, float time, InputAction.CallbackContext context);
+    public event StartMouseTouchEvent OnStartMouseTouch;
+    public delegate void EndMouseTouchEvent(Vector3 position, float time, InputAction.CallbackContext context);
+    public event EndMouseTouchEvent OnEndMouseTouch;
 
     // Input Asset script
     private TouchControls _touchControls;
@@ -64,22 +68,49 @@ public class InputManager : MonoBehaviour
         _touchControls.Touch.TouchPress.started += ctx => StartTouch(ctx);
         _touchControls.Touch.TouchPress.canceled += ctx => EndTouch(ctx);
 
+        // Debug input for mouse and restart
+        _touchControls.Debug.TouchPress.started += ctx => StartTouch(ctx);
+        _touchControls.Debug.TouchPress.canceled += ctx => EndTouch(ctx);
+
         _touchControls.Debug.RestartGame.started += ctx => RestartGame(ctx);
 
     }
 
     // using New Input System
-    // if touch is read, every method subscribed to OnStartTouch gets called
+    // if touch or mouse is read, every method subscribed to OnStartTouch or OnStartMouseTouch gets called
     private void StartTouch(InputAction.CallbackContext context)
     {
-        if (OnStartTouch != null) OnStartTouch(_touchControls.Touch.TouchPosition.ReadValue<Vector2>(), (float)context.startTime, context);
-
+        if (context.control == Mouse.current.leftButton)
+        {
+            if (OnStartMouseTouch != null) OnStartMouseTouch(_touchControls.Debug.TouchPosition.ReadValue<Vector2>(), (float)context.startTime, context);
+            Debug.Log("Mouse touch started");
+        }
+        else if (context.control == Touchscreen.current.primaryTouch.press)
+        {
+            if (OnStartTouch != null) OnStartTouch(_touchControls.Touch.TouchPosition.ReadValue<Vector2>(), (float)context.startTime, context);
+        }
+        else
+        {
+            Debug.LogWarning("Input went wrong");
+        }
     }
 
-    // if touch stops, every method subscribed to OnEndTouch gets called
+    // if touch or mouse stops, every method subscribed to OnEndTouch or OnEndMouseTouch gets called
     private void EndTouch(InputAction.CallbackContext context)
     {
-        if (OnEndTouch != null) OnEndTouch(_touchControls.Touch.TouchPosition.ReadValue<Vector2>(), (float)context.time, context);
+        if (context.control == Mouse.current.leftButton)
+        {
+            if (OnEndMouseTouch != null) OnEndMouseTouch(_touchControls.Debug.TouchPosition.ReadValue<Vector2>(), (float)context.time, context);
+            Debug.Log("Mouse touch ended");
+        }
+        else if (context.control == Touchscreen.current.primaryTouch.press)
+        {
+            if (OnEndTouch != null) OnEndTouch(_touchControls.Touch.TouchPosition.ReadValue<Vector2>(), (float)context.time, context);
+        }
+        else
+        {
+            Debug.LogWarning("Input end went wrong");
+        }
     }
 
     // DEBUG ONLY: if space bar is pressed, the game restarts

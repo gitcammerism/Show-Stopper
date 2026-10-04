@@ -36,12 +36,21 @@ public class Match3GameController : MonoBehaviour
             _inputManager.OnStartTouch += TouchStarted;
             _inputManager.OnEndTouch += TouchEnded;
             _inputManager.OnStartRestart += GameRestarted;
+
+            // Subscribes to mouse input events.
+            _inputManager.OnStartMouseTouch += TouchStarted;
+            _inputManager.OnEndMouseTouch += TouchEnded;
         }
 
         // Subscribes to win & lose condition events.
         Match3Skin.OnGameLost += GameOver;
         Match3Skin.OnGameWon += GameWin;
         ResourceManager.OnGoalReached += GameWinNotify;
+    }
+
+    private void _inputManager_OnStartMouseTouch(Vector3 position, float time, InputAction.CallbackContext context)
+    {
+        throw new NotImplementedException();
     }
 
     // Unsubscribes from events when the game object is disabled.
@@ -52,6 +61,9 @@ public class Match3GameController : MonoBehaviour
         {
             InputManager.instance.OnStartTouch -= TouchStarted;
             InputManager.instance.OnEndTouch -= TouchEnded;
+            InputManager.instance.OnStartMouseTouch -= TouchStarted;
+            InputManager.instance.OnEndMouseTouch -= TouchEnded;
+            InputManager.instance.OnStartRestart -= GameRestarted;
         }
         
         // Unsubscribes to win & lose condition events.
