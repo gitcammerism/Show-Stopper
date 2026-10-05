@@ -24,7 +24,6 @@ public class Match3GameController : MonoBehaviour
         _inputManager = InputManager.instance;
         gameOverText.gameObject.SetActive(false);
         gameWinText.gameObject.SetActive(false);
-        match3.StartNewGame();
     }
 
     // Subscribes to  events when the game object is enabled.
@@ -46,6 +45,11 @@ public class Match3GameController : MonoBehaviour
         Match3Skin.OnGameLost += GameOver;
         Match3Skin.OnGameWon += GameWin;
         ResourceManager.OnGoalReached += GameWinNotify;
+    }
+
+    private void Start()
+    {
+        match3.StartNewGame();
     }
 
     private void _inputManager_OnStartMouseTouch(Vector3 position, float time, InputAction.CallbackContext context)

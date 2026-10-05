@@ -1,13 +1,6 @@
 using Unity.Mathematics;
 
-/*
- * Last Modified: 09/16/2026 by Chandler Guzman
- * 
- * This is a struct that handles the 2D grid of the match-3 game.
- *
- * Chandler TO-DO:
- * - 
- */
+// This is a struct that handles the 2D grid of the match-3 game.
 
 [System.Serializable]
 public struct MatchGrid2D<T>
