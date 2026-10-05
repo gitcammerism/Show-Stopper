@@ -4,15 +4,8 @@ using Unity.Mathematics;
 using UnityEngine;
 using Random = UnityEngine.Random;
 using static Unity.Mathematics.math;
-using TMPro;
 
-/*
- * This script tracks the game state and handles the logic for the match-3 game.
- *
- * Chandler TO-DO:
- * - Continue cleaning up and refining code; tutorial is complete!
- * - Update TDD
- */
+// This script tracks the game state and handles the logic for the match-3 game.
 
 public class Match3Game : MonoBehaviour
 {

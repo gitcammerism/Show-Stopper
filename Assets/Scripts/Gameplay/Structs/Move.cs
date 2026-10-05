@@ -1,11 +1,7 @@
 using Unity.Mathematics;
 using static Unity.Mathematics.math;
 
-/*
- * Last Modified: 09/21/2026 by Chandler Guzman
- * 
- * This struct stores the information of the move/input made by the player.
- */
+// This struct stores the information of the move/input made by the player.
 
 [System.Serializable]
 public struct Move
