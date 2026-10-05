@@ -15,7 +15,7 @@ public class TimeManager : MonoBehaviour
     public static event Action<bool> OnTimerEnd;
 
     // Sets timer values & subscribes to stop timer event.
-    void OnEnable()
+    private void OnEnable()
     {
         Match3GameController.StopTimer += StopTimer;
         timerSlider.maxValue = gameTime;
@@ -31,7 +31,7 @@ public class TimeManager : MonoBehaviour
     // Ticks down the timer every second until 0 is reached.
     void Update()
     {
-        float time = gameTime - Time.time;
+        float time = gameTime - Time.timeSinceLevelLoad;
         if (time <= 0)
         {
             OnTimerEnd?.Invoke(false);

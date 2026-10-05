@@ -30,7 +30,6 @@ public class Match3GameController : MonoBehaviour, IDataPersistence
         _inputManager = InputManager.instance;
         gameOverText.gameObject.SetActive(false);
         gameWinText.gameObject.SetActive(false);
-        match3.StartNewGame();
     }
 
     // Subscribes to  events when the game object is enabled.
@@ -42,12 +41,26 @@ public class Match3GameController : MonoBehaviour, IDataPersistence
             _inputManager.OnStartTouch += TouchStarted;
             _inputManager.OnEndTouch += TouchEnded;
             _inputManager.OnStartRestart += GameRestarted;
+
+            // Subscribes to mouse input events.
+            _inputManager.OnStartMouseTouch += TouchStarted;
+            _inputManager.OnEndMouseTouch += TouchEnded;
         }
 
         // Subscribes to win & lose condition events.
         Match3Skin.OnGameLost += GameOver;
         Match3Skin.OnGameWon += GameWin;
         ResourceManager.OnGoalReached += GameWinNotify;
+    }
+
+    private void Start()
+    {
+        match3.StartNewGame();
+    }
+
+    private void _inputManager_OnStartMouseTouch(Vector3 position, float time, InputAction.CallbackContext context)
+    {
+        throw new NotImplementedException();
     }
 
     // Unsubscribes from events when the game object is disabled.
@@ -58,6 +71,9 @@ public class Match3GameController : MonoBehaviour, IDataPersistence
         {
             InputManager.instance.OnStartTouch -= TouchStarted;
             InputManager.instance.OnEndTouch -= TouchEnded;
+            InputManager.instance.OnStartMouseTouch -= TouchStarted;
+            InputManager.instance.OnEndMouseTouch -= TouchEnded;
+            InputManager.instance.OnStartRestart -= GameRestarted;
         }
         
         // Unsubscribes to win & lose condition events.
