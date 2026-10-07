@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class SettingsManager : MonoBehaviour
 {
     public static SettingsManager Instance;
+    private AudioManager _audioManager;
 
     public float masterVol, musicVol, sfxVol = 0f;
 
@@ -14,13 +15,6 @@ public class SettingsManager : MonoBehaviour
     private AudioMixerGroup mainAudioMixerGroup, musicAudioMixerGroup, sfxAudioMixerGroup;
 
     public Scrollbar masterVolScrollbar, musicVolScrollbar, sfxVolScrollbar;
-
-    [SerializeField]
-    private AudioResource[] sounds;
-    [SerializeField]
-    private AudioResource music;
-
-    private AudioType _audioType;
 
     private void Awake()
     {
@@ -32,6 +26,8 @@ public class SettingsManager : MonoBehaviour
         }
         Instance = this;
         DontDestroyOnLoad(gameObject);
+
+        _audioManager = AudioManager.Instance;
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
