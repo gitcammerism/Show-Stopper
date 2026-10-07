@@ -3,6 +3,10 @@ using TMPro;
 using UnityEngine.Audio;
 using UnityEngine.UI;
 
+/**
+ * This script manages the changing values of the scrollbars in Settings and sets the audio volume accordingly.
+ */
+
 
 public class SettingsManager : MonoBehaviour
 {
@@ -12,8 +16,10 @@ public class SettingsManager : MonoBehaviour
     public float masterVol, musicVol, sfxVol = 0f;
 
     [SerializeField]
-    private AudioMixerGroup mainAudioMixerGroup, musicAudioMixerGroup, sfxAudioMixerGroup;
+    private AudioMixer _mainMixer;
+    //private AudioMixerGroup mainAudioMixerGroup, musicAudioMixerGroup, sfxAudioMixerGroup;
 
+    [SerializeField]
     public Scrollbar masterVolScrollbar, musicVolScrollbar, sfxVolScrollbar;
 
     private void Awake()
@@ -38,9 +44,21 @@ public class SettingsManager : MonoBehaviour
         sfxVolScrollbar.SetValueWithoutNotify(sfxVol);
     }
 
-    public void UpdateMasterVolume(float value)
+    public void ChangeMasterVolume()
     {
-        masterVol = value;
-        mainAudioMixerGroup.audioMixer.SetFloat("MasterVolume", Mathf.Log10(masterVol) * 20);
+        float volume = masterVolScrollbar.value;
+        _mainMixer.SetFloat("master", Mathf.Log10(volume)*20);
+    }
+
+    public void SetMusicVolume()
+    {
+        float volume = musicVolScrollbar.value;
+        _mainMixer.SetFloat("music", Mathf.Log10(volume)*20);
+    }
+
+    public void SetSFXVolume()
+    {
+        float volume = sfxVolScrollbar.value;
+        _mainMixer.SetFloat("sfx", Mathf.Log10(volume) * 20);
     }
 }

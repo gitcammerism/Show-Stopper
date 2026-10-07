@@ -1,14 +1,19 @@
 using UnityEngine;
 using UnityEngine.Audio;
 
+/**
+ * This script manages setting up the audio sources and clips and playing them.
+ */
+
 public class AudioManager : MonoBehaviour
 {
     public static AudioManager Instance;
 
-    [SerializeField] private AudioClip[] sounds;
-    [SerializeField] private AudioClip music;
     [SerializeField] private AudioSource musicSource;
-    [SerializeField] private AudioSource sfxSource;
+    [SerializeField] private AudioSource SFXSource;
+
+    public AudioClip bgMusic;
+    public AudioClip testSFX;
 
     private AudioType _audioType;
 
@@ -24,15 +29,18 @@ public class AudioManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        // start bg music, have it loop
+        musicSource.clip = bgMusic;
+        musicSource.Play();
+        musicSource.loop = true;
     }
 
-    // Update is called once per frame
-    void Update()
+
+    // call from other scripts when sfx needs to play
+    public void PlaySFX(AudioClip clip)
     {
-        
+        SFXSource.PlayOneShot(clip);
     }
 }
