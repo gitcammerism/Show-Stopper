@@ -1,10 +1,6 @@
 using Unity.Mathematics;
 
-/*
- * Last Modified: 09/21/2026 by Chandler Guzman
- * 
- * This struct stores the values of a given match for move validation.
- */
+// This struct stores the values of a given match for move validation.
 
 [System.Serializable]
 public struct Match
