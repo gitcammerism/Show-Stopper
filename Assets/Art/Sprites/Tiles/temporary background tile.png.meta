@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 65abb2c3b2e46ad488358c77b214943d
+guid: 5085c22619f2300478b46e6ba30df51b
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 7791214535279931073
-    second: Asset 1_0
+      213: -3710401546388468309
+    second: temporary background tile_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -47,7 +47,7 @@ TextureImporter:
   lightmap: 0
   compressionQuality: 50
   spriteMode: 2
-  spriteExtrude: 1
+  spriteExtrude: 2
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Asset 1_0
+      name: temporary background tile_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 392
-        height: 298
+        width: 512
+        height: 512
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 1ce68381754ff1c60800000000000000
-      internalID: 7791214535279931073
+      spriteID: bad847db371028cc0800000000000000
+      internalID: -3710401546388468309
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Asset 1_0: 7791214535279931073
+      temporary background tile_0: -3710401546388468309
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
