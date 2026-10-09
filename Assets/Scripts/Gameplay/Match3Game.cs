@@ -1,18 +1,11 @@
+using System;
 using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
 using Random = UnityEngine.Random;
 using static Unity.Mathematics.math;
 
-/*
- * Last Modified: 09/23/2026 by Chandler Guzman
- * 
- * This script tracks the game state and handles the logic for the match-3 game.
- *
- * Chandler TO-DO:
- * - Continue working using tutorial (at 3.2 - Disappearing Tiles)
- *      -> https://catlikecoding.com/unity/tutorials/prototypes/match-3/#3.2
- */
+// This script tracks the game state and handles the logic for the match-3 game.
 
 public class Match3Game : MonoBehaviour
 {
@@ -28,6 +21,19 @@ public class Match3Game : MonoBehaviour
     // List that stores the matches made by the player for processing.
     private List<Match> _matches;
 
+    // Stores any possible moves in the game.
+    public Move PossibleMove 
+    { get; private set; }
+
+    // Score tracking variables.
+    public int TotalScore
+    { get; private set; }
+
+    public List<SingleScore> Scores 
+    { get; private set; }
+
+    private int _scoreMultiplier;
+
     // List that stores tiles that have been matched.
     public List<int2> ClearedTileCoordinates 
     { get; private set; }
@@ -40,18 +46,29 @@ public class Match3Game : MonoBehaviour
     public bool NeedsFilling 
     { get; private set; }
 
+    public static event Action<Match> OnMatchMade;
+    
     // Starts a new game by creating & filling a new grid.
     public void StartNewGame()
     {
+        TotalScore = 0;
+
         if (_grid.IsUndefined)
         {
             _grid = new(gridSize);
             _matches = new();
             ClearedTileCoordinates = new();
             DroppedTiles = new();
+            Scores = new();
         }
 
-        FillGrid();
+        // Continues filling the grid until it begins with at least 1 valid move.
+        do
+        {
+            FillGrid();
+            PossibleMove = Move.FindMove(this);
+        }
+        while (!PossibleMove.IsValid);
     }
 
     // Fills up the game grid with random tiles.
@@ -131,7 +148,10 @@ public class Match3Game : MonoBehaviour
         NeedsFilling = false;
 
         // Look for any new matches as a result of tiles dropping.
-        FindMatches();
+        if (!FindMatches())
+        {
+            PossibleMove = Move.FindMove(this);
+        }
     }
 
     // Returns if there are currently matches to process.
@@ -155,14 +175,14 @@ public class Match3Game : MonoBehaviour
                 else
                 {
                     // If no more matches found but the length is >= 3 (match found in row) add to list then restart.
-                    if (length >= 3) _matches.Add(new Match(x - length, y, length, true));
+                    if (length >= 3) _matches.Add(new Match(x - length, y, length, true, start));
                     start = t;
                     length = 1;
                 }
             }
 
             // Checks for a 3+  match at the end of the row then adds to the match list.
-            if (length >= 3) _matches.Add(new Match(gridSize.x - length, y, length, true));
+            if (length >= 3) _matches.Add(new Match(gridSize.x - length, y, length, true, start));
         }
 
         // Searches for vertical matches.
@@ -181,14 +201,14 @@ public class Match3Game : MonoBehaviour
                 else
                 {
                     // If no more matches found but the length is >= 3 (match found in column) add to list then restart.
-                    if (length >= 3) _matches.Add(new Match(x, y - length, length, false));
+                    if (length >= 3) _matches.Add(new Match(x, y - length, length, false, start));
                     start = t;
                     length = 1;
                 }
             }
 
             // Checks for a 3+  match at the end of the column then adds to the match list.
-            if (length >= 3) _matches.Add(new Match(x, gridSize.y - length, length, false));
+            if (length >= 3) _matches.Add(new Match(x, gridSize.y - length, length, false, start));
         }
 
         return HasMatches;
@@ -197,6 +217,8 @@ public class Match3Game : MonoBehaviour
     // Attempts to move the selected tiles and returns if it was successful.
     public bool TryMove (Move move)
     {
+        _scoreMultiplier = 1;
+
         _grid.Swap(move.From, move.To);
         if (FindMatches()) return true;
 
@@ -209,6 +231,7 @@ public class Match3Game : MonoBehaviour
     {
         // Clears the cleared tile list.
         ClearedTileCoordinates.Clear();
+        Scores.Clear();
 
         // Loops through all matches, clears their tiles, and adds their coordinates to the clear list.
         for (int m = 0; m < _matches.Count; m++)
@@ -225,6 +248,17 @@ public class Match3Game : MonoBehaviour
                     ClearedTileCoordinates.Add(c);
                 }
             }
+
+            // The more matches you get from a single move, the higher your score gets.
+            var score = new SingleScore
+            {
+                position = match.coordinates + (float2)step * (match.length - 1) * 0.5f,
+                value = match.length * _scoreMultiplier++
+            };
+            Scores.Add(score);
+            TotalScore += score.value;
+
+            OnMatchMade?.Invoke(match);
         }
 
         // Clears the match list and changes bool to true to indicate grid needs to be refilled.
