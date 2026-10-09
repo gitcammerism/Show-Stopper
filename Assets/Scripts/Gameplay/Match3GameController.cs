@@ -13,6 +13,7 @@ public class Match3GameController : MonoBehaviour, IDataPersistence
 
     // FROM COLIN - For determining when the level is finished for saving
     public bool levelCompleted = false;
+    [SerializeField] private Match3Game match3Game;
 
     // FROM COLIN - For generating unique level ids
     [SerializeField] private string ID;
@@ -89,11 +90,16 @@ public class Match3GameController : MonoBehaviour, IDataPersistence
     }
 
     // FROM COLIN - For generating unique level ids
-    [ContextMenu("Generate Guid for ID")]
-    private void GenerateGuid()
+    #if UNITY_EDITOR
+    private void OnValidate()
     {
-        ID = System.Guid.NewGuid().ToString();
+        if (string.IsNullOrEmpty(ID))
+        {
+            ID = System.Guid.NewGuid().ToString();
+            UnityEditor.EditorUtility.SetDirty(this);
+        }
     }
+    #endif
 
     // FROM COLIN - Taken from IDataPersistence
     // FROM COLIN - Sees if the level has been completed
@@ -157,5 +163,6 @@ public class Match3GameController : MonoBehaviour, IDataPersistence
         Debug.Log("We reached the level goal!");
         gameWinText.gameObject.SetActive(true);
         levelCompleted = true;
+        DataPersistenceManager.instance.RecordLevelScore(ID, match3Game.TotalScore);
     }
 }
