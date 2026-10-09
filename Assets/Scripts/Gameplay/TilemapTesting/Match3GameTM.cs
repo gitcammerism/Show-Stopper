@@ -11,14 +11,9 @@ using static Unity.Mathematics.math;
 public class Match3GameTM : MonoBehaviour
 {
     // tilemap testing
-    [SerializeField] private Tilemap boardTilemap;
-    [SerializeField] private Match3Tile[] tiles;
-    private int2 origin;
-    private int2 boardSize;
-    private MatchGrid2D<Match3Tile> tileGrid;
-    
-    // Default grid size is set to 8 x 8.
-    [SerializeField] private int2 gridSize = 8;
+    public Tilemap boardTilemap;
+    public TileBase[] tileSprites;
+    [SerializeField] private int2 gridSize;
     private MatchGrid2D<TileState> _grid;
 
     // Public getter properties for other classes so only Match3Game can modify grid state.
@@ -84,8 +79,7 @@ public class Match3GameTM : MonoBehaviour
     {
         // Stores the boundaries & values of the assigned tilemap
         BoundsInt bounds = boardTilemap.cellBounds;
-        origin = new int2(bounds.xMin, bounds.yMin);
-        boardSize = new int2(bounds.size.x, bounds.size.y);
+        gridSize = new int2(bounds.size.x, bounds.size.y);
         
         for (int y = 0; y < gridSize.y; y++)
         {
@@ -127,6 +121,7 @@ public class Match3GameTM : MonoBehaviour
                 if (potentialMatchCount == 2 && t >= b) t += 1;
 
                 _grid[x, y] = t;
+                boardTilemap.SetTile(new Vector3Int(x, y, 0), tileSprites[(int)t]);
             }
         }
     }
@@ -258,6 +253,7 @@ public class Match3GameTM : MonoBehaviour
                 if (_grid[c] != TileState.None)
                 {
                     _grid[c] = TileState.None;
+                    boardTilemap.SetTile(new Vector3Int(c.x, c.y, 0), null);
                     ClearedTileCoordinates.Add(c);
                 }
             }
