@@ -39,9 +39,19 @@ public class SettingsManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        // COLIN - Load saved volume values
+        masterVol = PlayerPrefs.GetFloat("MasterVolume", 1f);
+        musicVol = PlayerPrefs.GetFloat("MusicVolume", 1f);
+        sfxVol = PlayerPrefs.GetFloat("SFXVolume", 1f);
+
         masterVolScrollbar.SetValueWithoutNotify(masterVol);
         musicVolScrollbar.SetValueWithoutNotify(musicVol);
         sfxVolScrollbar.SetValueWithoutNotify(sfxVol);
+
+        // Apply saved volumes
+        ChangeMasterVolume();
+        SetMusicVolume();
+        SetSFXVolume();
     }
 
     public void ChangeMasterVolume()
@@ -60,5 +70,45 @@ public class SettingsManager : MonoBehaviour
     {
         float volume = sfxVolScrollbar.value;
         _mainMixer.SetFloat("sfx", Mathf.Log10(volume) * 20);
+    }
+
+    // COLIN - Saves current Audio settings
+    public void SaveAudioSettings()
+    {
+        PlayerPrefs.SetFloat("MasterVolume", masterVolScrollbar.value);
+        PlayerPrefs.SetFloat("MusicVolume", musicVolScrollbar.value);
+        PlayerPrefs.SetFloat("SFXVolume", sfxVolScrollbar.value);
+
+        PlayerPrefs.Save();
+
+        Debug.Log("Audio settings saved.");
+    }
+
+    // COLIN - Resets all Audio settings back to default
+    public void ResetAudioSettings()
+    {
+        // Default values
+        masterVol = 1f;
+        musicVol = 1f;
+        sfxVol = 1f;
+
+        // Update scrollbars
+        masterVolScrollbar.SetValueWithoutNotify(masterVol);
+        musicVolScrollbar.SetValueWithoutNotify(musicVol);
+        sfxVolScrollbar.SetValueWithoutNotify(sfxVol);
+
+        // Apply default values
+        ChangeMasterVolume();
+        SetMusicVolume();
+        SetSFXVolume();
+
+        // Delete saved PlayerPrefs
+        PlayerPrefs.DeleteKey("MasterVolume");
+        PlayerPrefs.DeleteKey("MusicVolume");
+        PlayerPrefs.DeleteKey("SFXVolume");
+
+        PlayerPrefs.Save();
+
+        Debug.Log("Audio settings reset");
     }
 }

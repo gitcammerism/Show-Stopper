@@ -2279,6 +2279,9 @@ MonoBehaviour:
   match3: {fileID: 4154156438320579185}
   gameOverText: {fileID: 2737158863189900259}
   gameWinText: {fileID: 8028337071396420169}
+  levelCompleted: 0
+  match3Game: {fileID: 0}
+  ID: 9108b857-b4c0-44f4-92ea-e08dd0bb3025
 --- !u!1 &7451560243424177890
 GameObject:
   m_ObjectHideFlags: 0
