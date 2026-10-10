@@ -12,6 +12,8 @@ public class Match3Game : MonoBehaviour
     // Default grid size is set to 8 x 8.
     [SerializeField] private int2 gridSize = 8;
     private MatchGrid2D<TileState> _grid;
+    
+    public GridShape gridShape = GridShape.Square;
 
     // Public getter properties for other classes so only Match3Game can modify grid state.
     public TileState this[int x, int y] => _grid[x, y];
@@ -63,12 +65,36 @@ public class Match3Game : MonoBehaviour
         }
 
         // Continues filling the grid until it begins with at least 1 valid move.
-        do
+        switch (gridShape)
         {
-            FillGrid();
-            PossibleMove = Move.FindMove(this);
+            case GridShape.Circle:
+                do
+                {
+                    FillCircleGrid();
+                    PossibleMove = Move.FindMove(this);
+                }
+                while (!PossibleMove.IsValid);
+                break;
+            
+            case GridShape.Heart:
+                do
+                {
+                    FillHeartGrid();
+                    PossibleMove = Move.FindMove(this);
+                }
+                while (!PossibleMove.IsValid);
+                break;
+                
+            case GridShape.Square:
+            default:
+                do
+                {
+                    FillGrid();
+                    PossibleMove = Move.FindMove(this);
+                }
+                while (!PossibleMove.IsValid);
+                break;
         }
-        while (!PossibleMove.IsValid);
     }
 
     // Fills up the game grid with random tiles.
@@ -117,6 +143,109 @@ public class Match3Game : MonoBehaviour
             }
         }
     }
+    
+    private void FillCircleGrid()
+    {
+        // Calculate circle center and radius based on grid size
+        float centerX = (gridSize.x - 1) * 0.5f;
+        float centerY = (gridSize.y - 1) * 0.5f;
+        float gridRadius = Mathf.Min(gridSize.x, gridSize.y) * 0.5f;
+
+        for (int y = 0; y < gridSize.y; y++)
+        {
+            for (int x = 0; x < gridSize.x; x++)
+            {
+                // 1. Check if this coordinate falls outside the circle boundary
+                float distanceFromCenter = Vector2.Distance(new Vector2(x, y), new Vector2(centerX, centerY));
+                if (distanceFromCenter > gridRadius)
+                {
+                    _grid[x, y] = TileState.None; // Mark out-of-bounds slots as None
+                    continue; // Skip the rest of the loop for this slot
+                }
+
+                TileState a = TileState.None, b = TileState.None;
+                int potentialMatchCount = 0;
+
+                // 2. Checks if there are any potential horizontal matches (and ensure neighbor isn't None)
+                if (x > 1)
+                {
+                    a = _grid[x - 1, y];
+                    if (a != TileState.None && a == _grid[x - 2, y])
+                    {
+                        potentialMatchCount = 1;
+                    }
+                }
+
+                // 3. Checks if there are any potential vertical matches (and ensure neighbor isn't None)
+                if (y > 1)
+                {
+                    b = _grid[x, y - 1];
+                    if (b != TileState.None && b == _grid[x, y - 2])
+                    {
+                        potentialMatchCount += 1;
+
+                        // If there's only a single match at this point, swap a and b.
+                        // If there's two, a & b are ordered lowest to highest.
+                        if (potentialMatchCount == 1) a = b;
+                        else if (b < a) (a, b) = (b, a);
+                    }
+                }
+
+                // Lowers the random range by however many tiles would cause a match to occur.
+                TileState t = (TileState)Random.Range(1, 6 - potentialMatchCount);
+
+                // Ensures a & b aren't picked if either one would result in a match.
+                if (potentialMatchCount > 0 && t >= a) t += 1;
+                if (potentialMatchCount == 2 && t >= b) t += 1;
+
+                _grid[x, y] = t;
+            }
+        }
+    }
+
+    private void FillHeartGrid()
+    {
+        for (int y = 0; y < gridSize.y; y++)
+        {
+            for (int x = 0; x < gridSize.x; x++)
+            {
+                if (!IsInsideHeart(x, y))
+                {
+                    _grid[x, y] = TileState.None;
+                    continue;
+                }
+
+                TileState a = TileState.None, b = TileState.None;
+                int potentialMatchCount = 0;
+
+                if (x > 1)
+                {
+                    a = _grid[x - 1, y];
+                    if (a != TileState.None && a == _grid[x - 2, y])
+                    {
+                        potentialMatchCount = 1;
+                    }
+                }
+
+                if (y > 1)
+                {
+                    b = _grid[x, y - 1];
+                    if (b != TileState.None && b == _grid[x, y - 2])
+                    {
+                        potentialMatchCount += 1;
+                        if (potentialMatchCount == 1) a = b;
+                        else if (b < a) (a, b) = (b, a);
+                    }
+                }
+
+                TileState t = (TileState)Random.Range(1, 6 - potentialMatchCount);
+                if (potentialMatchCount > 0 && t >= a) t += 1;
+                if (potentialMatchCount == 2 && t >= b) t += 1;
+
+                _grid[x, y] = t;
+            }
+        }
+    }
 
     // Drops all tiles that need to fill gaps in the game board.
     public void DropTiles()
@@ -153,6 +282,179 @@ public class Match3Game : MonoBehaviour
             PossibleMove = Move.FindMove(this);
         }
     }
+    
+    // Drops all tiles that need to fill gaps in the game board.
+    public void DropTilesCircle()
+    {
+        DroppedTiles.Clear();
+
+        float centerX = (gridSize.x - 1) * 0.5f;
+        float centerY = (gridSize.y - 1) * 0.5f;
+        float gridRadius = Mathf.Min(gridSize.x, gridSize.y) * 0.5f;
+
+        for (int x = 0; x < gridSize.x; x++)
+        {
+            // 1. Get all valid y-indices inside the circle for this column, sorted bottom-to-top
+            List<int> validYIndices = new List<int>();
+            for (int y = 0; y < gridSize.y; y++)
+            {
+                if (Vector2.Distance(new Vector2(x, y), new Vector2(centerX, centerY)) <= gridRadius)
+                {
+                    validYIndices.Add(y);
+                }
+            }
+
+            if (validYIndices.Count == 0) continue;
+
+            // 2. Make tiles fall down to fill holes within valid circle slots
+            for (int i = 0; i < validYIndices.Count; i++)
+            {
+                int currentY = validYIndices[i];
+
+                if (_grid[x, currentY] == TileState.None)
+                {
+                    int foundTileY = -1;
+                    for (int j = i + 1; j < validYIndices.Count; j++)
+                    {
+                        int checkY = validYIndices[j];
+                        if (_grid[x, checkY] != TileState.None)
+                        {
+                            foundTileY = checkY;
+                            break;
+                        }
+                    }
+
+                    if (foundTileY != -1)
+                    {
+                        _grid[x, currentY] = _grid[x, foundTileY];
+                        _grid[x, foundTileY] = TileState.None;
+                        
+                        int dropDistance = foundTileY - currentY;
+                        // Using your struct constructor: (x, y, distance) where y is the destination row
+                        DroppedTiles.Add(new TileDrop(x, currentY, dropDistance));
+                    }
+                }
+            }
+
+            // 3. Spawn new random tiles in the remaining empty slots at the top of the column
+            for (int i = 0; i < validYIndices.Count; i++)
+            {
+                int currentY = validYIndices[i];
+                if (_grid[x, currentY] == TileState.None)
+                {
+                    TileState t = (TileState)Random.Range(1, 6);
+                    _grid[x, currentY] = t;
+                    
+                    int topY = validYIndices[validYIndices.Count - 1];
+                    int spawnDistance = (topY + 1) - currentY;
+                    
+                    // Using your struct constructor for spawned tiles coming from above
+                    DroppedTiles.Add(new TileDrop(x, currentY, spawnDistance));
+                }
+            }
+        }
+
+        NeedsFilling = false;
+
+        if (!FindMatches())
+        {
+            PossibleMove = Move.FindMove(this);
+        }
+    }
+
+    public void DropTilesHeart()
+    {
+        DroppedTiles.Clear();
+
+        for (int x = 0; x < gridSize.x; x++)
+        {
+            List<int> validYIndices = new List<int>();
+            for (int y = 0; y < gridSize.y; y++)
+            {
+                if (IsInsideHeart(x, y))
+                {
+                    validYIndices.Add(y);
+                }
+            }
+
+            if (validYIndices.Count == 0) continue;
+
+            // Slide existing tiles down within valid heart slots
+            for (int i = 0; i < validYIndices.Count; i++)
+            {
+                int currentY = validYIndices[i];
+
+                if (_grid[x, currentY] == TileState.None)
+                {
+                    int foundTileY = -1;
+                    for (int j = i + 1; j < validYIndices.Count; j++)
+                    {
+                        int checkY = validYIndices[j];
+                        if (_grid[x, checkY] != TileState.None)
+                        {
+                            foundTileY = checkY;
+                            break;
+                        }
+                    }
+
+                    if (foundTileY != -1)
+                    {
+                        _grid[x, currentY] = _grid[x, foundTileY];
+                        _grid[x, foundTileY] = TileState.None;
+                        
+                        int dropDistance = foundTileY - currentY;
+                        DroppedTiles.Add(new TileDrop(x, currentY, dropDistance));
+                    }
+                }
+            }
+
+            // Spawn new tiles at the top of the heart columns
+            for (int i = 0; i < validYIndices.Count; i++)
+            {
+                int currentY = validYIndices[i];
+                if (_grid[x, currentY] == TileState.None)
+                {
+                    TileState t = (TileState)Random.Range(1, 6);
+                    _grid[x, currentY] = t;
+                    
+                    int topY = validYIndices[validYIndices.Count - 1];
+                    int spawnDistance = (topY + 1) - currentY;
+                    DroppedTiles.Add(new TileDrop(x, currentY, spawnDistance));
+                }
+            }
+        }
+
+        NeedsFilling = false;
+
+        if (!FindMatches())
+        {
+            PossibleMove = Move.FindMove(this);
+        }
+    }
+
+    public bool IsInsideHeart(int x, int y)
+    {
+        // Ensure coordinates stay within the 6x6 bounds
+        if (x < 0 || x > 5 || y < 0 || y > 5) return false;
+
+        // Define the valid X columns for each Y row (from bottom y=0 to top y=5)
+        switch (y)
+        {
+            case 5: // Top row (lobes)
+                return x >= 1 && x <= 4;
+            case 4: // Upper-middle (wide body)
+            case 3: 
+                return x >= 0 && x <= 5;
+            case 2: // Lower-middle (tapering in)
+                return x >= 1 && x <= 4;
+            case 1: // Lower body
+                return x >= 2 && x <= 3;
+            case 0: // Bottom point
+                return x == 2 || x == 3;
+            default:
+                return false;
+        }
+    }
 
     // Returns if there are currently matches to process.
     public bool HasMatches => _matches.Count > 0;
@@ -171,6 +473,7 @@ public class Match3Game : MonoBehaviour
             for (int x = 1; x < gridSize.x; x++)
             {
                 TileState t = _grid[x, y];
+                if (start == TileState.None || t == TileState.None) continue;
                 if (t == start) length += 1; // If there is a match, increase match length.
                 else
                 {
@@ -196,7 +499,7 @@ public class Match3Game : MonoBehaviour
             for (int y = 1; y < gridSize.y; y++)
             {
                 TileState t = _grid[x, y];
-
+                if (start == TileState.None || t == TileState.None) continue;
                 if (t == start) length += 1; // If there is a match, increase match length.
                 else
                 {

@@ -17,6 +17,8 @@ public class Match3Skin : MonoBehaviour
     private float _floatingScoreZ;
     private MatchGrid2D<Tile> _tiles;
     private float2 _tileOffset;
+    
+    public GridShape gridShape = GridShape.Square;
 
     // Drag threshold for input.
     [SerializeField, Range(0.1f, 1f)]
@@ -65,6 +67,25 @@ public class Match3Skin : MonoBehaviour
             }
         }
 
+        switch (gridShape)
+        {
+            case GridShape.Circle:
+                SpawnTilesCircle();
+                break;
+            
+            case GridShape.Heart:
+                SpawnTilesHeart();
+                break;
+            
+            case GridShape.Square:
+            default:
+                SpawnTilesSquare();
+                break;
+        }
+    }
+
+    private void SpawnTilesSquare()
+    {
         // Loops through tile grid and spawns tiles.
         for (int y = 0; y < _tiles.SizeY; y++)
         {
@@ -75,9 +96,63 @@ public class Match3Skin : MonoBehaviour
         }
     }
 
+    private void SpawnTilesCircle()
+    {
+        // World scale is 1, 1, 1 for tiles
+        float tileWidth = 1.0f;  
+        float tileHeight = 1.0f;
+
+        // Calculate center indices to determine the circular radius boundary
+        float centerX = (_tiles.SizeX - 1) * 0.5f;
+        float centerY = (_tiles.SizeY - 1) * 0.5f;
+        float gridRadius = Mathf.Min(_tiles.SizeX, _tiles.SizeY) * 0.5f;
+
+        for (int y = 0; y < _tiles.SizeY; y++)
+        {
+            for (int x = 0; x < _tiles.SizeX; x++)
+            {
+                // Check if this grid coordinate falls outside the circle boundary
+                float distanceFromCenter = Vector2.Distance(new Vector2(x, y), new Vector2(centerX, centerY));
+                if (distanceFromCenter > gridRadius)
+                {
+                    _tiles[x, y] = null; // Mark as empty slot if needed
+                    continue; 
+                }
+
+                // Pass raw grid coordinates (x, y) directly. 
+                // Your SpawnTile method will apply the _tileOffset automatically.
+                _tiles[x, y] = SpawnTile(game[x, y], x * tileWidth, y * tileHeight);
+            }
+        }
+    }
+
+    private void SpawnTilesHeart()
+    {
+        float tileWidth = 1.0f;  
+        float tileHeight = 1.0f;
+
+        for (int y = 0; y < _tiles.SizeY; y++)
+        {
+            for (int x = 0; x < _tiles.SizeX; x++)
+            {
+                // Skip coordinates that fall outside the heart shape
+                if (!game.IsInsideHeart(x, y))
+                {
+                    _tiles[x, y] = null;
+                    continue; 
+                }
+
+                _tiles[x, y] = SpawnTile(game[x, y], x * tileWidth, y * tileHeight);
+            }
+        }
+    }
+
     // Spawns a random tile at the given location.
     private Tile SpawnTile (TileState t, float x, float y) =>
         tilePrefabs[(int)t - 1].Spawn(new Vector3(x + _tileOffset.x, y + _tileOffset.y));
+    
+    private Tile SpawnTileCircle (TileState t, float x, float y) =>
+        tilePrefabs[(int)t - 1].Spawn(new Vector3(x, y));
 
     // Invoke specific actions depending on the game state.
     public void DoWork () 
@@ -130,8 +205,28 @@ public class Match3Skin : MonoBehaviour
     // Invokes Match3Game's DropTiles method and handles fallen + new tiles.
     private void DropTiles()
     {
-        game.DropTiles();
+        switch (gridShape)
+        {
+            case GridShape.Circle:
+                game.DropTilesCircle();
+                DropTilesCircle();
+                break;
+            
+            case GridShape.Heart:
+                game.DropTilesHeart();
+                DropTilesHeart();
+                break;
+            
+            case GridShape.Square:
+            default:
+                game.DropTiles();
+                DropTilesSquare();
+                break;
+        }
+    }
 
+    private void DropTilesSquare()
+    {
         for (int i = 0; i < game.DroppedTiles.Count; i++)
         {
             TileDrop drop = game.DroppedTiles[i];
@@ -149,6 +244,71 @@ public class Match3Skin : MonoBehaviour
 
             _tiles[drop.coordinates] = tile;
             _busyDuration = Mathf.Max(tile.Fall(drop.coordinates.y + _tileOffset.y, dropSpeed), _busyDuration);
+        }
+    }
+    
+    private void DropTilesCircle()
+    {
+        float centerX = (_tiles.SizeX - 1) * 0.5f;
+        float centerY = (_tiles.SizeY - 1) * 0.5f;
+        float gridRadius = Mathf.Min(_tiles.SizeX, _tiles.SizeY) * 0.5f;
+
+        for (int i = 0; i < game.DroppedTiles.Count; i++)
+        {
+            TileDrop drop = game.DroppedTiles[i];
+            int x = drop.coordinates.x;
+            int y = drop.coordinates.y;
+
+            // Skip out-of-bounds drops
+            if (Vector2.Distance(new Vector2(x, y), new Vector2(centerX, centerY)) > gridRadius) 
+                continue;
+
+            Tile tile;
+
+            bool isFromValidSlot = drop.fromY < _tiles.SizeY && 
+                                   Vector2.Distance(new Vector2(x, drop.fromY), new Vector2(centerX, centerY)) <= gridRadius;
+
+            if (isFromValidSlot)
+            {
+                tile = _tiles[x, drop.fromY];
+                _tiles[x, drop.fromY] = null;
+            }
+            else 
+            {
+                tile = SpawnTile(game[drop.coordinates], x, drop.fromY + newDropOffset);
+            }
+
+            _tiles[drop.coordinates] = tile;
+            _busyDuration = Mathf.Max(tile.Fall(y + _tileOffset.y, dropSpeed), _busyDuration);
+        }
+    }
+
+    private void DropTilesHeart()
+    {
+        for (int i = 0; i < game.DroppedTiles.Count; i++)
+        {
+            TileDrop drop = game.DroppedTiles[i];
+            int x = drop.coordinates.x;
+            int y = drop.coordinates.y;
+
+            // Hard guard: never process or render anything outside the heart
+            if (!game.IsInsideHeart(x, y)) continue;
+
+            Tile tile;
+            bool isFromValidSlot = drop.fromY < _tiles.SizeY && game.IsInsideHeart(x, drop.fromY);
+
+            if (isFromValidSlot && _tiles[x, drop.fromY] != null)
+            {
+                tile = _tiles[x, drop.fromY];
+                _tiles[x, drop.fromY] = null;
+            }
+            else 
+            {
+                tile = SpawnTile(game[drop.coordinates], x, drop.fromY + newDropOffset);
+            }
+
+            _tiles[x, y] = tile;
+            _busyDuration = Mathf.Max(tile.Fall(y + _tileOffset.y, dropSpeed), _busyDuration);
         }
     }
 
