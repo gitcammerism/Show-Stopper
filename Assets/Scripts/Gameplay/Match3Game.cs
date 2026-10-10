@@ -104,6 +104,33 @@ public class Match3Game : MonoBehaviour
         }
     }
 
+    // Local helper function to match corner-trimmed shape rules (for Circle grid type)
+    private bool IsValid(int px, int py)
+    {
+        if (px < 0 || px >= gridSize.x || py < 0 || py >= gridSize.y) return false;
+    
+        bool isOuterCol = (px == 0 || px == gridSize.x - 1);
+        bool isOuterRow = (py == 0 || py == gridSize.y - 1);
+        bool isExtendedRow = (py == 1 || py == gridSize.y - 2);
+
+        // Trim outer columns on outer and extended rows
+        if (isOuterCol && (isOuterRow || isExtendedRow))
+        {
+            return false;
+        }
+
+        // Trim the two specific inner slots on the top/bottom rows
+        bool isTargetRow = (py == 0 || py == gridSize.y - 1);
+        bool isTargetAdjacentCol = (px == 1 || px == gridSize.x - 2);
+    
+        if (isTargetRow && isTargetAdjacentCol)
+        {
+            return false;
+        }
+
+        return true;
+    }
+    
     // Fills up the game grid with random tiles.
     public void FillGrid()
     {
@@ -153,27 +180,21 @@ public class Match3Game : MonoBehaviour
     
     public void FillCircleGrid()
     {
-        // Calculate circle center and radius based on grid size
-        float centerX = (gridSize.x - 1) * 0.5f;
-        float centerY = (gridSize.y - 1) * 0.5f;
-        float gridRadius = Mathf.Min(gridSize.x, gridSize.y) * 0.5f;
-
         for (int y = 0; y < gridSize.y; y++)
         {
             for (int x = 0; x < gridSize.x; x++)
             {
-                // 1. Check if this coordinate falls outside the circle boundary
-                float distanceFromCenter = Vector2.Distance(new Vector2(x, y), new Vector2(centerX, centerY));
-                if (distanceFromCenter > gridRadius)
+                // Use the local IsValid helper to handle all trims cleanly
+                if (!IsValid(x, y))
                 {
-                    _grid[x, y] = TileState.None; // Mark out-of-bounds slots as None
+                    _grid[x, y] = TileState.None;
                     continue; // Skip the rest of the loop for this slot
                 }
 
                 TileState a = TileState.None, b = TileState.None;
                 int potentialMatchCount = 0;
 
-                // 2. Checks if there are any potential horizontal matches (and ensure neighbor isn't None)
+                // Checks if there are any potential horizontal matches (and ensure neighbor isn't None)
                 if (x > 1)
                 {
                     a = _grid[x - 1, y];
@@ -183,7 +204,7 @@ public class Match3Game : MonoBehaviour
                     }
                 }
 
-                // 3. Checks if there are any potential vertical matches (and ensure neighbor isn't None)
+                // Checks if there are any potential vertical matches (and ensure neighbor isn't None)
                 if (y > 1)
                 {
                     b = _grid[x, y - 1];
@@ -191,8 +212,6 @@ public class Match3Game : MonoBehaviour
                     {
                         potentialMatchCount += 1;
 
-                        // If there's only a single match at this point, swap a and b.
-                        // If there's two, a & b are ordered lowest to highest.
                         if (potentialMatchCount == 1) a = b;
                         else if (b < a) (a, b) = (b, a);
                     }
@@ -295,17 +314,14 @@ public class Match3Game : MonoBehaviour
     {
         DroppedTiles.Clear();
 
-        float centerX = (gridSize.x - 1) * 0.5f;
-        float centerY = (gridSize.y - 1) * 0.5f;
-        float gridRadius = Mathf.Min(gridSize.x, gridSize.y) * 0.5f;
-
         for (int x = 0; x < gridSize.x; x++)
         {
-            // 1. Get all valid y-indices inside the circle for this column, sorted bottom-to-top
+            // Gets all valid y-indices inside the shape for this column, sorted bottom-to-top
             List<int> validYIndices = new List<int>();
             for (int y = 0; y < gridSize.y; y++)
             {
-                if (Vector2.Distance(new Vector2(x, y), new Vector2(centerX, centerY)) <= gridRadius)
+                // Use the centralized IsValid helper to automatically handle all corner and slot cuts
+                if (IsValid(x, y))
                 {
                     validYIndices.Add(y);
                 }
@@ -313,7 +329,7 @@ public class Match3Game : MonoBehaviour
 
             if (validYIndices.Count == 0) continue;
 
-            // 2. Make tiles fall down to fill holes within valid circle slots
+            // Makes tiles fall down to fill holes within valid slots
             for (int i = 0; i < validYIndices.Count; i++)
             {
                 int currentY = validYIndices[i];
@@ -337,13 +353,12 @@ public class Match3Game : MonoBehaviour
                         _grid[x, foundTileY] = TileState.None;
                         
                         int dropDistance = foundTileY - currentY;
-                        // Using your struct constructor: (x, y, distance) where y is the destination row
                         DroppedTiles.Add(new TileDrop(x, currentY, dropDistance));
                     }
                 }
             }
 
-            // 3. Spawn new random tiles in the remaining empty slots at the top of the column
+            // Spawns new random tiles in the remaining empty slots at the top of the column
             for (int i = 0; i < validYIndices.Count; i++)
             {
                 int currentY = validYIndices[i];
@@ -355,7 +370,6 @@ public class Match3Game : MonoBehaviour
                     int topY = validYIndices[validYIndices.Count - 1];
                     int spawnDistance = (topY + 1) - currentY;
                     
-                    // Using your struct constructor for spawned tiles coming from above
                     DroppedTiles.Add(new TileDrop(x, currentY, spawnDistance));
                 }
             }
@@ -441,10 +455,10 @@ public class Match3Game : MonoBehaviour
 
     public bool IsInsideHeart(int x, int y)
     {
-        // Ensure coordinates stay within the 6x6 bounds
+        // Ensure coordinates stay within the 6x6 bounds.
         if (x < 0 || x > 5 || y < 0 || y > 5) return false;
 
-        // Define the valid X columns for each Y row (from bottom y=0 to top y=5)
+        // Define the valid X columns for each Y row (from bottom y=0 to top y=5).
         switch (y)
         {
             case 5: // Top row (lobes)

@@ -83,6 +83,31 @@ public class Match3Skin : MonoBehaviour
                 break;
         }
     }
+    
+    // Local helper function to match corner-trimmed shape rules (for Circle grid type)
+    private bool IsValid(int px, int py)
+    {
+        if (px < 0 || px >= _tiles.SizeX || py < 0 || py >= _tiles.SizeY) return false;
+    
+        bool isOuterCol = (px == 0 || px == _tiles.SizeX - 1);
+        bool isOuterRow = (py == 0 || py == _tiles.SizeY - 1);
+        bool isExtendedRow = (py == 1 || py == _tiles.SizeY - 2);
+        
+        if (isOuterCol && (isOuterRow || isExtendedRow))
+        {
+            return false;
+        }
+        
+        bool isTargetRow = (py == 0 || py == _tiles.SizeY - 1);
+        bool isTargetAdjacentCol = (px == 1 || px == _tiles.SizeX - 2);
+    
+        if (isTargetRow && isTargetAdjacentCol)
+        {
+            return false;
+        }
+
+        return true;
+    }
 
     private void SpawnTilesSquare()
     {
@@ -102,25 +127,18 @@ public class Match3Skin : MonoBehaviour
         float tileWidth = 1.0f;  
         float tileHeight = 1.0f;
 
-        // Calculate center indices to determine the circular radius boundary
-        float centerX = (_tiles.SizeX - 1) * 0.5f;
-        float centerY = (_tiles.SizeY - 1) * 0.5f;
-        float gridRadius = Mathf.Min(_tiles.SizeX, _tiles.SizeY) * 0.5f;
-
         for (int y = 0; y < _tiles.SizeY; y++)
         {
             for (int x = 0; x < _tiles.SizeX; x++)
             {
-                // Check if this grid coordinate falls outside the circle boundary
-                float distanceFromCenter = Vector2.Distance(new Vector2(x, y), new Vector2(centerX, centerY));
-                if (distanceFromCenter > gridRadius)
+                // Check if this grid coordinate falls outside the corner-trimmed boundary (or is null tile)
+                if (!IsValid(x, y) || game[x, y] == TileState.None)
                 {
-                    _tiles[x, y] = null; // Mark as empty slot if needed
+                    _tiles[x, y] = null; // Mark as empty slot 
                     continue; 
                 }
 
-                // Pass raw grid coordinates (x, y) directly. 
-                // Your SpawnTile method will apply the _tileOffset automatically.
+                // Pass raw grid coordinates (x, y) directly
                 _tiles[x, y] = SpawnTile(game[x, y], x * tileWidth, y * tileHeight);
             }
         }
@@ -148,11 +166,11 @@ public class Match3Skin : MonoBehaviour
     }
 
     // Spawns a random tile at the given location.
-    private Tile SpawnTile (TileState t, float x, float y) =>
-        tilePrefabs[(int)t - 1].Spawn(new Vector3(x + _tileOffset.x, y + _tileOffset.y));
-    
-    private Tile SpawnTileCircle (TileState t, float x, float y) =>
-        tilePrefabs[(int)t - 1].Spawn(new Vector3(x, y));
+    private Tile SpawnTile (TileState t, float x, float y)
+    {
+        if (t == TileState.None) return null;
+        return tilePrefabs[(int)t - 1].Spawn(new Vector3(x + _tileOffset.x, y + _tileOffset.y));
+    }
 
     // Invoke specific actions depending on the game state.
     public void DoWork () 
@@ -305,24 +323,20 @@ public class Match3Skin : MonoBehaviour
     
     private void DropTilesCircle()
     {
-        float centerX = (_tiles.SizeX - 1) * 0.5f;
-        float centerY = (_tiles.SizeY - 1) * 0.5f;
-        float gridRadius = Mathf.Min(_tiles.SizeX, _tiles.SizeY) * 0.5f;
-
         for (int i = 0; i < game.DroppedTiles.Count; i++)
         {
             TileDrop drop = game.DroppedTiles[i];
             int x = drop.coordinates.x;
             int y = drop.coordinates.y;
 
-            // Skip out-of-bounds drops
-            if (Vector2.Distance(new Vector2(x, y), new Vector2(centerX, centerY)) > gridRadius) 
+            // Skip out-of-bounds drops based on the new shape
+            if (!IsValid(x, y)) 
                 continue;
 
             Tile tile;
 
-            bool isFromValidSlot = drop.fromY < _tiles.SizeY && 
-                                   Vector2.Distance(new Vector2(x, drop.fromY), new Vector2(centerX, centerY)) <= gridRadius;
+            // Check if the source row is valid within the custom shape
+            bool isFromValidSlot = drop.fromY < _tiles.SizeY && IsValid(x, drop.fromY);
 
             if (isFromValidSlot)
             {
