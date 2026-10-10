@@ -60,16 +60,70 @@ public class SettingsManager : MonoBehaviour
         _mainMixer.SetFloat("master", Mathf.Log10(volume)*20);
     }
 
+    public void AddToMasterVolume()
+    {
+        if (masterVolScrollbar.value < 1f)
+        {
+            masterVolScrollbar.value += 0.2f;
+            ChangeMasterVolume();
+        }
+    }
+
+    public void SubtractFromMasterVolume()
+    {
+        if (masterVolScrollbar.value > 0f)
+        {
+            masterVolScrollbar.value -= 0.2f;
+            ChangeMasterVolume();
+        }
+    }
+
     public void SetMusicVolume()
     {
         float volume = musicVolScrollbar.value;
         _mainMixer.SetFloat("music", Mathf.Log10(volume)*20);
     }
 
+    public void AddToMusicVolume()
+    {
+        if (musicVolScrollbar.value < 1f)
+        {
+            musicVolScrollbar.value += 0.2f;
+            SetMusicVolume();
+        }
+    }
+
+    public void SubtractFromMusicVolume()
+    {
+        if (musicVolScrollbar.value > 0f)
+        {
+            musicVolScrollbar.value -= 0.2f;
+            SetMusicVolume();
+        }
+    }
+
     public void SetSFXVolume()
     {
         float volume = sfxVolScrollbar.value;
         _mainMixer.SetFloat("sfx", Mathf.Log10(volume) * 20);
+    }
+
+    public void AddToSFXVolume()
+    {
+        if (sfxVolScrollbar.value < 1f)
+        {
+            sfxVolScrollbar.value += 0.2f;
+            SetSFXVolume();
+        }
+    }
+
+    public void SubtractFromSFXVolume()
+    {
+        if (sfxVolScrollbar.value > 0f)
+        {
+            sfxVolScrollbar.value -= 0.2f;
+            SetSFXVolume();
+        }
     }
 
     // COLIN - Saves current Audio settings
