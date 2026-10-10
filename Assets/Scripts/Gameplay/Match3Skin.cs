@@ -16,7 +16,7 @@ public class Match3Skin : MonoBehaviour
     [SerializeField] private FloatingScore floatingScorePrefab;
     private float _floatingScoreZ;
     private MatchGrid2D<Tile> _tiles;
-    private float2 _tileOffset;
+    // private float2 _tileOffset;
 
     // Drag threshold for input.
     [SerializeField, Range(0.1f, 1f)]
@@ -49,7 +49,7 @@ public class Match3Skin : MonoBehaviour
         game.StartNewGame();
 
         // Ensures tiles will be centered on the origin.
-        _tileOffset = -0.5f * (float2)(game.GridSize - 1);
+        // _tileOffset = -0.5f * (float2)(game.GridSize - 1);
 
         // Create new tiles grid if undefined, otherwise despawn all other tiles & set to null.
         if (_tiles.IsUndefined) _tiles = new(game.GridSize);
@@ -59,8 +59,9 @@ public class Match3Skin : MonoBehaviour
             {
                 for (int x = 0; x < _tiles.SizeX; x++)
                 {
-                    _tiles[x, y].Despawn();
-                    _tiles[x, y] = null;
+                    //_tiles[x, y].Despawn();
+                    //_tiles[x, y] = null;
+                    game.boardTilemap.SetTile(new Vector3Int(x, y, 0), null);
                 }
             }
         }
@@ -70,14 +71,19 @@ public class Match3Skin : MonoBehaviour
         {
             for (int x = 0; x < _tiles.SizeX; x++)
             {
-                _tiles[x, y] = SpawnTile(game[x, y], x, y);
+                //_tiles[x, y] = SpawnTile(game[x, y], x, y);
+                game.boardTilemap.SetTile(new Vector3Int(
+                        Mathf.Clamp(game.bounds.xMin + x, game.bounds.xMin, game.bounds.xMax), 
+                        Mathf.Clamp(game.bounds.yMin + y, game.bounds.yMin, game.bounds.yMax), 
+                        0), 
+                        game.tileSprites[(int)game[x, y] - 1]);
             }
         }
     }
 
     // Spawns a random tile at the given location.
-    private Tile SpawnTile (TileState t, float x, float y) =>
-        tilePrefabs[(int)t - 1].Spawn(new Vector3(x + _tileOffset.x, y + _tileOffset.y));
+    // private Tile SpawnTile (TileState t, float x, float y) =>
+    //     tilePrefabs[(int)t - 1].Spawn(new Vector3(x + _tileOffset.x, y + _tileOffset.y));
 
     // Invoke specific actions depending on the game state.
     public void DoWork () 
@@ -113,8 +119,8 @@ public class Match3Skin : MonoBehaviour
             SingleScore score = game.Scores[i];
             floatingScorePrefab.Show(
                 new Vector3(
-                    score.position.x + _tileOffset.x, 
-                    score.position.y + _tileOffset.y,
+                    score.position.x, 
+                    score.position.y,
                     _floatingScoreZ
                 ), 
                 score.value
@@ -135,7 +141,7 @@ public class Match3Skin : MonoBehaviour
         for (int i = 0; i < game.DroppedTiles.Count; i++)
         {
             TileDrop drop = game.DroppedTiles[i];
-            Tile tile;
+            Tile tile = new();
 
             // If the given tile fell, adjust its position.
             if (drop.fromY < _tiles.SizeY)
@@ -144,11 +150,13 @@ public class Match3Skin : MonoBehaviour
             }
             else // If not, spawn a new tile.
             {
-                tile = SpawnTile(game[drop.coordinates], drop.coordinates.x, drop.fromY + newDropOffset);
+                // tile = SpawnTile(game[drop.coordinates], drop.coordinates.x, drop.fromY + newDropOffset);
+                game.boardTilemap.SetTile(new Vector3Int(drop.coordinates.x, drop.fromY, 0), 
+                    game.tileSprites[(int)game[drop.coordinates.x, drop.coordinates.y]]);
             }
 
             _tiles[drop.coordinates] = tile;
-            _busyDuration = Mathf.Max(tile.Fall(drop.coordinates.y + _tileOffset.y, dropSpeed), _busyDuration);
+            _busyDuration = Mathf.Max(tile.Fall(drop.coordinates.y, dropSpeed), _busyDuration);
         }
     }
 
@@ -156,9 +164,12 @@ public class Match3Skin : MonoBehaviour
     public bool EvaluateDrag (Vector3 start, Vector3 end)
     {
         // Determines the tile position of a & b then creates a Move struct based on the move performed.
-        float2 a = ScreenToTileSpace(start), b = ScreenToTileSpace(end);
+        Vector3Int a = ScreenToTileSpace(start), b = ScreenToTileSpace(end);
         var move = new Move(
-            (int2)floor(a), (b - a) switch
+            new int2(
+                Mathf.Clamp(game.bounds.xMin + a.x, game.bounds.xMin, game.bounds.xMax),
+                Mathf.Clamp(game.bounds.yMin + a.y, game.bounds.yMin, game.bounds.yMax)), 
+                (b - a) switch
             {
                 var d when d.x > _dragThreshold => MoveDirection.Right,
                 var d when d.x < -_dragThreshold => MoveDirection.Left,
@@ -169,7 +180,8 @@ public class Match3Skin : MonoBehaviour
         );
 
         // If the move is valid and the new coordinates are valid, the tiles can be moved.
-        if (move.IsValid && _tiles.AreValidCoordinates(move.From) && _tiles.AreValidCoordinates(move.To))
+        if (move.IsValid && _tiles.AreValidCoordinates(new int2(a.x, a.y)) && 
+            _tiles.AreValidCoordinates(new int2(b.x, b.y)))
         {
             DoMove(move);
             return false;
@@ -192,12 +204,13 @@ public class Match3Skin : MonoBehaviour
         }
     }
 
-    // Converts the given screen space coordinations to the actual tile coordinates.
-    private float2 ScreenToTileSpace (Vector3 screenPosition)
+    // Converts the given screen space coordinates to the actual tile coordinates.
+    private Vector3Int ScreenToTileSpace (Vector3 screenPosition)
     {
-        Ray ray = Camera.main.ScreenPointToRay(screenPosition);
-        Vector3 p = ray.origin - ray.direction * (ray.origin.z / ray.direction.z);
-        return float2(p.x - _tileOffset.x + 0.5f, p.y - _tileOffset.y + 0.5f);
+        return game.boardTilemap.WorldToCell(Camera.main.ScreenToWorldPoint(screenPosition));
+        // Ray ray = Camera.main.ScreenPointToRay(screenPosition);
+        // Vector3 p = ray.origin - ray.direction * (ray.origin.z / ray.direction.z);
+        // return float2(p.x - _tileOffset.x + 0.5f, p.y - _tileOffset.y + 0.5f);
     }
 
     // If not busy, end the game or wait for game to end.

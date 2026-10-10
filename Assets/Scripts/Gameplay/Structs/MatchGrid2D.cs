@@ -1,4 +1,5 @@
 using Unity.Mathematics;
+using UnityEngine;
 
 // This is a struct that handles the 2D grid of the match-3 game.
 
