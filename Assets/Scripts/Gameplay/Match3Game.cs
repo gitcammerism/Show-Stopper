@@ -24,8 +24,7 @@ public class Match3Game : MonoBehaviour
     private List<Match> _matches;
 
     // Stores any possible moves in the game.
-    public Move PossibleMove 
-    { get; private set; }
+    public Move PossibleMove;
 
     // Score tracking variables.
     public int TotalScore
@@ -49,6 +48,14 @@ public class Match3Game : MonoBehaviour
     { get; private set; }
 
     public static event Action<Match> OnMatchMade;
+
+    public void ClearGrid()
+    {
+        _grid = new(gridSize);
+        _matches.Clear();
+        ClearedTileCoordinates.Clear();
+        DroppedTiles.Clear();
+    }
     
     // Starts a new game by creating & filling a new grid.
     public void StartNewGame()
@@ -98,7 +105,7 @@ public class Match3Game : MonoBehaviour
     }
 
     // Fills up the game grid with random tiles.
-    private void FillGrid()
+    public void FillGrid()
     {
         for (int y = 0; y < gridSize.y; y++)
         {
@@ -144,7 +151,7 @@ public class Match3Game : MonoBehaviour
         }
     }
     
-    private void FillCircleGrid()
+    public void FillCircleGrid()
     {
         // Calculate circle center and radius based on grid size
         float centerX = (gridSize.x - 1) * 0.5f;
@@ -203,7 +210,7 @@ public class Match3Game : MonoBehaviour
         }
     }
 
-    private void FillHeartGrid()
+    public void FillHeartGrid()
     {
         for (int y = 0; y < gridSize.y; y++)
         {
@@ -460,7 +467,7 @@ public class Match3Game : MonoBehaviour
     public bool HasMatches => _matches.Count > 0;
 
     // Returns whether and matches were found.
-    private bool FindMatches()
+    public bool FindMatches()
     {
         // Searches for horizontal matches.
         for (int y = 0; y < gridSize.y; y++)

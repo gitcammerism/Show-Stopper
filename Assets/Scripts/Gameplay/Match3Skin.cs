@@ -166,7 +166,63 @@ public class Match3Skin : MonoBehaviour
         }
 
         if (game.HasMatches) ProcessMatches();
-        else if (game.NeedsFilling) DropTiles(); 
+        else if (game.NeedsFilling) DropTiles();
+
+        Move result = Move.FindMove(game);
+        if (result.Equals(default(Move)))
+        {
+            ResetGame();
+        }
+    }
+
+    public void ResetGame()
+    {
+        for (int y = 0; y < _tiles.SizeY; y++)
+        {
+            for (int x = 0; x < _tiles.SizeX; x++)
+            {
+                if (_tiles[x, y] == null) continue;
+                _tiles[x, y].Despawn();
+                _tiles[x, y] = null;
+            }
+        }
+            
+        _tiles = new(game.GridSize);
+        game.ClearGrid();
+            
+        switch (gridShape)
+        {
+            case GridShape.Circle:
+                do
+                {
+                    game.FillCircleGrid();
+                    game.PossibleMove = Move.FindMove(game);
+                }
+                while (!game.PossibleMove.IsValid);
+                SpawnTilesCircle();
+                break;
+            
+            case GridShape.Heart:
+                do
+                {
+                    game.FillHeartGrid();
+                    game.PossibleMove = Move.FindMove(game);
+                }
+                while (!game.PossibleMove.IsValid);
+                SpawnTilesHeart();
+                break;
+            
+            case GridShape.Square:
+            default:
+                do
+                {
+                    game.FillGrid();
+                    game.PossibleMove = Move.FindMove(game);
+                }
+                while (!game.PossibleMove.IsValid);
+                SpawnTilesSquare();
+                break;
+        }
     }
 
     // Invokes Match3Game's ProcessMatches and makes all cleared tiles disappear.
