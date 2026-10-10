@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 407db45762527d341804f3801f038cb8, type: 3}
+  m_Name: ToyTile
+  m_EditorClassIdentifier: 
+  id: Toy
+  visualTile: {fileID: 11400000, guid: cf28058143f9d6f41b9453b9bf211917, type: 2}
+  scoreValue: 10
