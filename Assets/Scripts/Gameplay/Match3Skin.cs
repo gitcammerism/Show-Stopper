@@ -409,6 +409,9 @@ public class Match3Skin : MonoBehaviour
         // If the move is valid and the new coordinates are valid, the tiles can be moved.
         if (move.IsValid && _tiles.AreValidCoordinates(move.From) && _tiles.AreValidCoordinates(move.To))
         {
+            // Aborts the move if either tile is an obstacle or none.
+            if (game[move.From] == TileState.Obstacle || game[move.To] == TileState.Obstacle || game[move.From] == TileState.None || game[move.To] == TileState.None) return true;
+
             DoMove(move);
             return false;
         }

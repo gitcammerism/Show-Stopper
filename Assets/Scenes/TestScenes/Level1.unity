@@ -447,6 +447,14 @@ PrefabInstance:
       propertyPath: gameController
       value: 
       objectReference: {fileID: 1510845274}
+    - target: {fileID: 4154156438320579185, guid: 959570488e4a7dc49a75c8bfd8b3619d, type: 3}
+      propertyPath: tilePrefabs.Array.size
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4154156438320579185, guid: 959570488e4a7dc49a75c8bfd8b3619d, type: 3}
+      propertyPath: 'tilePrefabs.Array.data[5]'
+      value: 
+      objectReference: {fileID: 5370065686984074272, guid: 6266b5d0f0cfc5e46ab7828390b39782, type: 3}
     - target: {fileID: 4589214715851784356, guid: 959570488e4a7dc49a75c8bfd8b3619d, type: 3}
       propertyPath: m_Name
       value: LevelTemplate
