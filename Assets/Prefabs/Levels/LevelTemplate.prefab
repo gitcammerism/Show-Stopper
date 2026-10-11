@@ -2436,6 +2436,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   totalScoreText: {fileID: 6369045428079966904}
+  highScoreText: {fileID: 0}
+  gameController: {fileID: 0}
   game: {fileID: 359646881613483981}
   tilePrefabs:
   - {fileID: -5982448953389110995, guid: 1e242b38b4052fe4f9b272681ee254c4, type: 3}
@@ -2554,7 +2556,8 @@ MonoBehaviour:
   gameWinText: {fileID: 8028337071396420169}
   levelCompleted: 0
   match3Game: {fileID: 359646881613483981}
-  ID: 9108b857-b4c0-44f4-92ea-e08dd0bb3025
+  resourceManager: {fileID: 382729719921628133}
+  ID: 7cc28dd2-819b-4ce0-9868-fb2471d75728
 --- !u!1 &7451560243424177890
 GameObject:
   m_ObjectHideFlags: 0

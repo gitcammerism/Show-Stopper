@@ -12,11 +12,14 @@ public class Match3GameController : MonoBehaviour, IDataPersistence
     [SerializeField] private TextMeshProUGUI gameWinText;
 
     // FROM COLIN - For determining when the level is finished for saving
+    // FROM COLIN - Also adds collected resources
     public bool levelCompleted = false;
     [SerializeField] private Match3Game match3Game;
+    [SerializeField] private ResourceManager resourceManager;
 
     // FROM COLIN - For generating unique level ids
     [SerializeField] private string ID;
+    public string LevelID => ID;
 
     // Input-handling variables
     private Vector3 _dragStart;
@@ -162,7 +165,11 @@ public class Match3GameController : MonoBehaviour, IDataPersistence
     {
         Debug.Log("We reached the level goal!");
         gameWinText.gameObject.SetActive(true);
+
+        // FROM COLIN - Save level completeion, high score, collected resources
+        // FROM COLIN - After beating level
         levelCompleted = true;
         DataPersistenceManager.instance.RecordLevelScore(ID, match3Game.TotalScore);
+        DataPersistenceManager.instance.AddCollectedResources(resourceManager.collectedResources);
     }
 }
