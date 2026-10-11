@@ -10,6 +10,9 @@ public class ResourceManager : MonoBehaviour
     private Dictionary<TileState, int> _goalDictionary;
     public Dictionary<TileState, int> levelProgress;
 
+    // COLIN - Separate dictionary for all collected resources
+    public Dictionary<TileState, int> collectedResources;
+
     public static event Action OnGoalReached;
 
     // Since dictionaries aren't serializable, a struct list has to be used instead.
@@ -17,7 +20,7 @@ public class ResourceManager : MonoBehaviour
     {
         _goalDictionary = new();
         levelProgress = new();
-        
+
         foreach (TileGoal goal in goalList)
         {
             if (!_goalDictionary.ContainsKey(goal.tile))
@@ -26,7 +29,18 @@ public class ResourceManager : MonoBehaviour
                 levelProgress.Add(goal.tile, 0);
             }
         }
-        
+
+        // COLIN - Initilize collectedResources like other dicitonaries
+        collectedResources = new Dictionary<TileState, int>();
+
+        foreach (TileState tile in Enum.GetValues(typeof(TileState)))
+        {
+            if (tile != TileState.None)
+            {
+                collectedResources[tile] = 0;
+            }
+        }
+
         // Subscribes to Match3Game's OnMatchMade event.
         Match3Game.OnMatchMade += CheckProgress;
     }
@@ -39,6 +53,13 @@ public class ResourceManager : MonoBehaviour
     // Checks after each match if progress towards the goal has been made.
     private void CheckProgress(Match match)
     {
+        // COLIN - Add every tile to collected resource
+        // COLIN -  Will not interfere with goals
+        if (collectedResources.ContainsKey(match.tile))
+        {
+            collectedResources[match.tile] += match.length;
+        }
+
         // If the tile isn't in the dictionary, it's not a goal so we can return.
         if (!_goalDictionary.ContainsKey(match.tile)) return;
         
