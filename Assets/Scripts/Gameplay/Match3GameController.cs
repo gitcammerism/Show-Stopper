@@ -96,10 +96,35 @@ public class Match3GameController : MonoBehaviour, IDataPersistence
     #if UNITY_EDITOR
     private void OnValidate()
     {
-        if (string.IsNullOrEmpty(ID))
+        if (this == null || gameObject == null)
         {
-            ID = System.Guid.NewGuid().ToString();
-            UnityEditor.EditorUtility.SetDirty(this);
+            return;
+        }
+
+        UnityEngine.SceneManagement.Scene scene = gameObject.scene;
+
+        if (!scene.IsValid() || string.IsNullOrEmpty(scene.name))
+        {
+            return;
+        }
+
+        string sceneName = scene.name;
+
+        // Names the GUID based off level nam
+        if (sceneName.StartsWith("Level"))
+        {
+            string levelNumber = sceneName.Substring(5);
+
+            if (int.TryParse(levelNumber, out int levelNum))
+            {
+                string newID = levelNum.ToString();
+
+                if (ID != newID)
+                {
+                    ID = newID;
+                    UnityEditor.EditorUtility.SetDirty(this);
+                }
+            }
         }
     }
     #endif
