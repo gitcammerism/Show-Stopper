@@ -2557,7 +2557,7 @@ MonoBehaviour:
   levelCompleted: 0
   match3Game: {fileID: 359646881613483981}
   resourceManager: {fileID: 382729719921628133}
-  ID: 7cc28dd2-819b-4ce0-9868-fb2471d75728
+  ID: 
 --- !u!1 &7451560243424177890
 GameObject:
   m_ObjectHideFlags: 0
