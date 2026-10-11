@@ -17,6 +17,7 @@ public class Match3Skin : MonoBehaviour
     [SerializeField] private Match3Game game;
     [SerializeField] private Tile[] tilePrefabs;
     [SerializeField] private FloatingScore floatingScorePrefab;
+    [SerializeField] private ParticleSystem matchParticles;
     private float _floatingScoreZ;
     private MatchGrid2D<Tile> _tiles;
     private float2 _tileOffset;
@@ -268,6 +269,9 @@ public class Match3Skin : MonoBehaviour
         for (int i = 0; i < game.Scores.Count; i++)
         {
             SingleScore score = game.Scores[i];
+            matchParticles.transform.position = new Vector3(score.position.x + _tileOffset.x, score.position.y + _tileOffset.y, 0f);
+            matchParticles.Play();
+
             floatingScorePrefab.Show(
                 new Vector3(
                     score.position.x + _tileOffset.x, 
