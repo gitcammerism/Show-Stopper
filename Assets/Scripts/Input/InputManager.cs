@@ -36,13 +36,10 @@ public class InputManager : MonoBehaviour
 
     private Camera _mainCamera;
 
-    private Vector2 _lastTouchPosition;
-    private Vector2 _lastMousePosition;
-
-    private void Awake()
-    {
+	private void Awake()
+	{
         // check if instance exists
-        if (instance != null && instance != this)
+        if(instance != null && instance != this)
         {
             Destroy(gameObject);
             return;
@@ -79,19 +76,6 @@ public class InputManager : MonoBehaviour
 
     }
 
-    private void Update()
-    {
-        // Input dragging tile issue temporary fix: save position every frame
-        if (_touchControls.Touch.TouchPress.IsPressed())
-        {
-            _lastTouchPosition = _touchControls.Touch.TouchPosition.ReadValue<Vector2>();
-        }
-        if (_touchControls.Debug.TouchPress.IsPressed())
-        {
-            _lastMousePosition = _touchControls.Debug.TouchPosition.ReadValue<Vector2>();
-        }
-    }
-
     // using New Input System
     // if touch or mouse is read, every method subscribed to OnStartTouch or OnStartMouseTouch gets called
     private void StartTouch(InputAction.CallbackContext context)
@@ -116,12 +100,12 @@ public class InputManager : MonoBehaviour
     {
         if (context.control == Mouse.current.leftButton)
         {
-            if (OnEndMouseTouch != null) OnEndMouseTouch(_lastMousePosition, (float)context.time, context);
+            if (OnEndMouseTouch != null) OnEndMouseTouch(_touchControls.Debug.TouchPosition.ReadValue<Vector2>(), (float)context.time, context);
             Debug.Log("Mouse touch ended");
         }
         else if (context.control == Touchscreen.current.primaryTouch.press)
         {
-            if (OnEndTouch != null) OnEndTouch(_lastTouchPosition, (float)context.time, context);
+            if (OnEndTouch != null) OnEndTouch(_touchControls.Touch.TouchPosition.ReadValue<Vector2>(), (float)context.time, context);
         }
         else
         {
@@ -142,7 +126,7 @@ public class InputManager : MonoBehaviour
         var rayHit = Physics2D.GetRayIntersection(_mainCamera.ScreenPointToRay(_touchControls.Touch.TouchPosition.ReadValue<Vector3>()));
         if (!rayHit.collider) return 0;
 
-        if (rayHit.collider.gameObject == target) return 1;
+        if(rayHit.collider.gameObject == target) return 1;
 
         return -1;
     }
