@@ -11,6 +11,9 @@ public class Match3Skin : MonoBehaviour
 {
     // Game setup.
     [SerializeField] private TextMeshProUGUI totalScoreText;
+    // FROM COLIN - For Highscore display text
+    [SerializeField] private TextMeshProUGUI highScoreText;
+    [SerializeField] private Match3GameController gameController;
     [SerializeField] private Match3Game game;
     [SerializeField] private Tile[] tilePrefabs;
     [SerializeField] private FloatingScore floatingScorePrefab;
@@ -48,6 +51,11 @@ public class Match3Skin : MonoBehaviour
         TimeManager.OnTimerEnd += GameOverNotify;
         _busyDuration = 0f;
         totalScoreText.SetText("0");
+
+        // FROM COLIN - Write down Level High Score
+        int highScore = DataPersistenceManager.instance.GetLevelHighScore(gameController.LevelID);
+        highScoreText.SetText("High Score: {0}", highScore);
+
         game.StartNewGame();
 
         // Ensures tiles will be centered on the origin.

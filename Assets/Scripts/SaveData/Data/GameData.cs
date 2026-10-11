@@ -11,10 +11,14 @@ public class GameData
     // For showing the highest score of each level
     public SerializableDictionary<string, int> levelHighScores;
 
+    // Each saved resource gained from levels
+    public SerializableDictionary<string, int> resources;
+
     // Defines default values for game data
     public GameData()
     {
         levelsCompleted = new SerializableDictionary<string, bool>();
         levelHighScores = new SerializableDictionary<string, int>();
+        resources = new SerializableDictionary<string, int>();
     }
 }
