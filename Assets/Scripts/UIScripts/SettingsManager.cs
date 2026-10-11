@@ -10,7 +10,6 @@ using UnityEngine.UI;
 
 public class SettingsManager : MonoBehaviour
 {
-    public static SettingsManager Instance;
     private AudioManager _audioManager;
 
     public float masterVol, musicVol, sfxVol = 0f;
@@ -24,15 +23,6 @@ public class SettingsManager : MonoBehaviour
 
     private void Awake()
     {
-        // check if instance exists
-        if(Instance != null && Instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-        Instance = this;
-        DontDestroyOnLoad(gameObject);
-
         _audioManager = AudioManager.Instance;
     }
 
@@ -57,14 +47,21 @@ public class SettingsManager : MonoBehaviour
     public void ChangeMasterVolume()
     {
         float volume = masterVolScrollbar.value;
-        _mainMixer.SetFloat("master", Mathf.Log10(volume)*20);
+        _mainMixer.SetFloat("master", Mathf.Log10(Mathf.Max(volume, 0.0001f)) * 20);
     }
 
     public void AddToMasterVolume()
     {
         if (masterVolScrollbar.value < 1f)
         {
-            masterVolScrollbar.value += 0.2f;
+            if (masterVolScrollbar.value + 0.2f > 1f)
+            {
+                masterVolScrollbar.value = 1f;
+            }
+            else
+            {
+                masterVolScrollbar.value += 0.2f;
+            }
             ChangeMasterVolume();
         }
     }
@@ -73,7 +70,14 @@ public class SettingsManager : MonoBehaviour
     {
         if (masterVolScrollbar.value > 0f)
         {
-            masterVolScrollbar.value -= 0.2f;
+            if (masterVolScrollbar.value - 0.2f < 0f)
+            {
+                masterVolScrollbar.value = 0.0001f;
+            }
+            else
+            {
+                masterVolScrollbar.value -= 0.2f;
+            }
             ChangeMasterVolume();
         }
     }
@@ -81,14 +85,21 @@ public class SettingsManager : MonoBehaviour
     public void SetMusicVolume()
     {
         float volume = musicVolScrollbar.value;
-        _mainMixer.SetFloat("music", Mathf.Log10(volume)*20);
+        _mainMixer.SetFloat("music", Mathf.Log10(Mathf.Max(volume, 0.0001f)) * 20);
     }
 
     public void AddToMusicVolume()
     {
         if (musicVolScrollbar.value < 1f)
         {
-            musicVolScrollbar.value += 0.2f;
+            if (musicVolScrollbar.value + 0.2f > 1f)
+            {
+                musicVolScrollbar.value = 1f;
+            }
+            else
+            {
+                musicVolScrollbar.value += 0.2f;
+            }
             SetMusicVolume();
         }
     }
@@ -97,7 +108,14 @@ public class SettingsManager : MonoBehaviour
     {
         if (musicVolScrollbar.value > 0f)
         {
-            musicVolScrollbar.value -= 0.2f;
+            if (musicVolScrollbar.value - 0.2f < 0f)
+            {
+                musicVolScrollbar.value = 0.0001f;
+            }
+            else
+            {
+                musicVolScrollbar.value -= 0.2f;
+            }
             SetMusicVolume();
         }
     }
@@ -105,14 +123,21 @@ public class SettingsManager : MonoBehaviour
     public void SetSFXVolume()
     {
         float volume = sfxVolScrollbar.value;
-        _mainMixer.SetFloat("sfx", Mathf.Log10(volume) * 20);
+        _mainMixer.SetFloat("sfx", Mathf.Log10(Mathf.Max(volume, 0.0001f)) * 20);
     }
 
     public void AddToSFXVolume()
     {
         if (sfxVolScrollbar.value < 1f)
         {
-            sfxVolScrollbar.value += 0.2f;
+            if (sfxVolScrollbar.value + 0.2f > 1f)
+            {
+                sfxVolScrollbar.value = 1f;
+            }
+            else
+            {
+                sfxVolScrollbar.value += 0.2f;
+            }
             SetSFXVolume();
         }
     }
@@ -121,12 +146,19 @@ public class SettingsManager : MonoBehaviour
     {
         if (sfxVolScrollbar.value > 0f)
         {
-            sfxVolScrollbar.value -= 0.2f;
+            if (sfxVolScrollbar.value - 0.2f < 0f)
+            {
+                sfxVolScrollbar.value = 0.0001f;
+            }
+            else
+            {
+                sfxVolScrollbar.value -= 0.2f;
+            }
             SetSFXVolume();
         }
     }
 
-    // COLIN - Saves current Audio settings
+    // COLIN - Saves current Audio settings 
     public void SaveAudioSettings()
     {
         PlayerPrefs.SetFloat("MasterVolume", masterVolScrollbar.value);
