@@ -41,7 +41,7 @@ public class Match3GameController : MonoBehaviour, IDataPersistence
     private void OnEnable()
     {
         // Subscribes to input events.
-        if(InputManager.instance != null)
+        if (InputManager.instance != null)
         {
             _inputManager.OnStartTouch += TouchStarted;
             _inputManager.OnEndTouch += TouchEnded;
@@ -56,11 +56,11 @@ public class Match3GameController : MonoBehaviour, IDataPersistence
         Match3Skin.OnGameLost += GameOver;
         Match3Skin.OnGameWon += GameWin;
         ResourceManager.OnGoalReached += GameWinNotify;
+        match3.StartNewGame();
     }
 
     private void Start()
     {
-        match3.StartNewGame();
     }
 
     private void _inputManager_OnStartMouseTouch(Vector3 position, float time, InputAction.CallbackContext context)
