@@ -10,6 +10,7 @@ public class Match3GameController : MonoBehaviour, IDataPersistence
     [SerializeField] private Match3Skin match3;
     [SerializeField] private TextMeshProUGUI gameOverText;
     [SerializeField] private TextMeshProUGUI gameWinText;
+    [SerializeField] private ParticleSystem gameWinParticles;
 
     // FROM COLIN - For determining when the level is finished for saving
     // FROM COLIN - Also adds collected resources
@@ -190,6 +191,7 @@ public class Match3GameController : MonoBehaviour, IDataPersistence
     {
         Debug.Log("We reached the level goal!");
         gameWinText.gameObject.SetActive(true);
+        gameWinParticles.Play();
 
         // FROM COLIN - Save level completeion, high score, collected resources
         // FROM COLIN - After beating level

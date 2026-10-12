@@ -167,7 +167,7 @@ public class Match3Game : MonoBehaviour
                 }
 
                 // Lowers the random range by however many tiles would cause a match to occur.
-                TileState t = (TileState)Random.Range(1, 6 - potentialMatchCount);
+                TileState t = (TileState)Random.Range(1, 7 - potentialMatchCount);
 
                 // Ensures a & b aren't picked if either one would result in a match.
                 if (potentialMatchCount > 0 && t >= a) t += 1;
@@ -218,7 +218,7 @@ public class Match3Game : MonoBehaviour
                 }
 
                 // Lowers the random range by however many tiles would cause a match to occur.
-                TileState t = (TileState)Random.Range(1, 6 - potentialMatchCount);
+                TileState t = (TileState)Random.Range(1, 7 - potentialMatchCount);
 
                 // Ensures a & b aren't picked if either one would result in a match.
                 if (potentialMatchCount > 0 && t >= a) t += 1;
@@ -264,7 +264,7 @@ public class Match3Game : MonoBehaviour
                     }
                 }
 
-                TileState t = (TileState)Random.Range(1, 6 - potentialMatchCount);
+                TileState t = (TileState)Random.Range(1, 7 - potentialMatchCount);
                 if (potentialMatchCount > 0 && t >= a) t += 1;
                 if (potentialMatchCount == 2 && t >= b) t += 1;
 
@@ -280,24 +280,64 @@ public class Match3Game : MonoBehaviour
 
         for (int x = 0; x < gridSize.x; x++)
         {
-            int holeCount = 0;
+            // OLD
+            //int holeCount = 0;
+
             for (int y = 0; y < gridSize.y; y++)
             {
-                // Checks for holes in the grid and adds them to DroppedTiles.
-                if (_grid[x, y] == TileState.None) holeCount += 1;
-                else if (holeCount > 0)
+                // Checks if tile is an obstacle, and ignores it.
+                if (_grid[x, y] == TileState.Obstacle) continue;
+
+                // Searches for the next filled tile above the current hole
+                int searchedY = -1;
+                for (int checkY = y + 1; checkY < gridSize.y; checkY++)
                 {
-                    _grid[x, y - holeCount] = _grid[x, y];
-                    DroppedTiles.Add(new TileDrop(x, y - holeCount, holeCount));
+                    if (_grid[x, checkY] == TileState.Obstacle) continue; // Ignores other obstacle tiles
+                    if (_grid[x, checkY] != TileState.None)
+                    {
+                        searchedY = checkY;
+                        break;
+                    }
                 }
+
+                // Once the next filled tile is found, drops it down to the current hole and adds it to DroppedTiles.
+                if (searchedY != -1)
+                {
+                    _grid[x, y] = _grid[x, searchedY];
+                    _grid[x, searchedY] = TileState.None;
+                    DroppedTiles.Add(new TileDrop(x, y, searchedY - y));
+                }
+
+                // OLD
+
+                //// Checks for holes in the grid and adds them to DroppedTiles.
+                //if (_grid[x, y] == TileState.None) holeCount += 1;
+                //else if (holeCount > 0)
+                //{
+                //    _grid[x, y - holeCount] = _grid[x, y];
+                //    DroppedTiles.Add(new TileDrop(x, y - holeCount, holeCount));
+                //}
             }
 
-            // Begins generating tiles to fill holes in the grid.
-            for (int h = 1; h <= holeCount; h++)
+            // Generates new random tiles to fill in the holes in the grid. 
+            int newTileCount = 0;
+            for (int y = 0; y < gridSize.y; y++)
             {
-                _grid[x, gridSize.y - h] = (TileState)Random.Range(1, 6);
-                DroppedTiles.Add(new TileDrop(x, gridSize.y - h, holeCount));
+                if (_grid[x, y] == TileState.None)
+                {
+                    _grid[x, y] = (TileState)Random.Range(1, 6);
+                    newTileCount += 1;
+                    int dropDistance = (gridSize.y + newTileCount - 1) - y; 
+                    DroppedTiles.Add(new TileDrop(x, y, dropDistance));
+                }
             }
+            // OLD
+            //// Begins generating tiles to fill holes in the grid.
+            //for (int h = 1; h <= holeCount; h++)
+            //{
+            //    _grid[x, gridSize.y - h] = (TileState)Random.Range(1, 6);
+            //    DroppedTiles.Add(new TileDrop(x, gridSize.y - h, holeCount));
+            //}
         }
 
         NeedsFilling = false;
@@ -334,12 +374,19 @@ public class Match3Game : MonoBehaviour
             {
                 int currentY = validYIndices[i];
 
+                // Ignores obstacle tiles.
+                if (_grid[x, currentY] == TileState.Obstacle) continue;
+
                 if (_grid[x, currentY] == TileState.None)
                 {
                     int foundTileY = -1;
                     for (int j = i + 1; j < validYIndices.Count; j++)
                     {
                         int checkY = validYIndices[j];
+
+                        // Ignores obstacle tiles.
+                        if (_grid[x, checkY] == TileState.Obstacle) continue;
+
                         if (_grid[x, checkY] != TileState.None)
                         {
                             foundTileY = checkY;
@@ -359,6 +406,7 @@ public class Match3Game : MonoBehaviour
             }
 
             // Spawns new random tiles in the remaining empty slots at the top of the column
+            int newTileCount = 0;
             for (int i = 0; i < validYIndices.Count; i++)
             {
                 int currentY = validYIndices[i];
@@ -366,9 +414,10 @@ public class Match3Game : MonoBehaviour
                 {
                     TileState t = (TileState)Random.Range(1, 6);
                     _grid[x, currentY] = t;
+                    newTileCount++;
                     
                     int topY = validYIndices[validYIndices.Count - 1];
-                    int spawnDistance = (topY + 1) - currentY;
+                    int spawnDistance = (topY + newTileCount) - currentY;
                     
                     DroppedTiles.Add(new TileDrop(x, currentY, spawnDistance));
                 }
@@ -405,12 +454,19 @@ public class Match3Game : MonoBehaviour
             {
                 int currentY = validYIndices[i];
 
+                // Ignores obstacle tiles.
+                if (_grid[x, currentY] == TileState.Obstacle) continue;
+
                 if (_grid[x, currentY] == TileState.None)
                 {
                     int foundTileY = -1;
                     for (int j = i + 1; j < validYIndices.Count; j++)
                     {
                         int checkY = validYIndices[j];
+
+                        // Ignores obstacle tiles.
+                        if (_grid[x, checkY] == TileState.Obstacle) continue;
+
                         if (_grid[x, checkY] != TileState.None)
                         {
                             foundTileY = checkY;
@@ -430,6 +486,7 @@ public class Match3Game : MonoBehaviour
             }
 
             // Spawn new tiles at the top of the heart columns
+            int newTileCount = 0;
             for (int i = 0; i < validYIndices.Count; i++)
             {
                 int currentY = validYIndices[i];
@@ -437,9 +494,10 @@ public class Match3Game : MonoBehaviour
                 {
                     TileState t = (TileState)Random.Range(1, 6);
                     _grid[x, currentY] = t;
-                    
+                    newTileCount++;
+
                     int topY = validYIndices[validYIndices.Count - 1];
-                    int spawnDistance = (topY + 1) - currentY;
+                    int spawnDistance = (topY + newTileCount) - currentY;
                     DroppedTiles.Add(new TileDrop(x, currentY, spawnDistance));
                 }
             }
@@ -494,19 +552,18 @@ public class Match3Game : MonoBehaviour
             for (int x = 1; x < gridSize.x; x++)
             {
                 TileState t = _grid[x, y];
-                if (start == TileState.None || t == TileState.None) continue;
-                if (t == start) length += 1; // If there is a match, increase match length.
+                if (t == start && start != TileState.None && start != TileState.Obstacle) length += 1; // If there is a match, increase match length.
                 else
                 {
                     // If no more matches found but the length is >= 3 (match found in row) add to list then restart.
-                    if (length >= 3) _matches.Add(new Match(x - length, y, length, true, start));
+                    if (length >= 3 && start != TileState.None && start != TileState.Obstacle) _matches.Add(new Match(x - length, y, length, true, start));
                     start = t;
                     length = 1;
                 }
             }
 
             // Checks for a 3+  match at the end of the row then adds to the match list.
-            if (length >= 3) _matches.Add(new Match(gridSize.x - length, y, length, true, start));
+            if (length >= 3 && start != TileState.None && start != TileState.Obstacle) _matches.Add(new Match(gridSize.x - length, y, length, true, start));
         }
 
         // Searches for vertical matches.
@@ -520,19 +577,18 @@ public class Match3Game : MonoBehaviour
             for (int y = 1; y < gridSize.y; y++)
             {
                 TileState t = _grid[x, y];
-                if (start == TileState.None || t == TileState.None) continue;
-                if (t == start) length += 1; // If there is a match, increase match length.
+                if (t == start && start != TileState.None && start != TileState.Obstacle) length += 1; // If there is a match, increase match length.
                 else
                 {
                     // If no more matches found but the length is >= 3 (match found in column) add to list then restart.
-                    if (length >= 3) _matches.Add(new Match(x, y - length, length, false, start));
+                    if (length >= 3 && start != TileState.None && start != TileState.Obstacle) _matches.Add(new Match(x, y - length, length, false, start));
                     start = t;
                     length = 1;
                 }
             }
 
             // Checks for a 3+  match at the end of the column then adds to the match list.
-            if (length >= 3) _matches.Add(new Match(x, gridSize.y - length, length, false, start));
+            if (length >= 3 && start != TileState.None && start != TileState.Obstacle) _matches.Add(new Match(x, gridSize.y - length, length, false, start));
         }
 
         return HasMatches;
@@ -541,6 +597,9 @@ public class Match3Game : MonoBehaviour
     // Attempts to move the selected tiles and returns if it was successful.
     public bool TryMove (Move move)
     {
+        // Returns false if either tile is an obstacle tile.
+        if (_grid[move.From] == TileState.Obstacle || _grid[move.To] == TileState.Obstacle) return false;
+        
         _scoreMultiplier = 1;
 
         _grid.Swap(move.From, move.To);
