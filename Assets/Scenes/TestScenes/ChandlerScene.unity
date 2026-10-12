@@ -196,8 +196,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   grid: {fileID: 569692413}
   tilemap: {fileID: 1372640830}
-  ruleTile: {fileID: 11400000, guid: 858cdbbeff5dedf4b8e0820b742f23ae, type: 2}
-  tiles: []
+  tiles:
+  - {fileID: 11400000, guid: 23a8cccb31532a24199b721d1461fde9, type: 2}
+  - {fileID: 11400000, guid: 858cdbbeff5dedf4b8e0820b742f23ae, type: 2}
+  - {fileID: 11400000, guid: 6dc9b930a02e4f24f9e8ac5fa46dd528, type: 2}
+  - {fileID: 11400000, guid: 1adf45dda28c3404c9623115de1b9a95, type: 2}
+  - {fileID: 11400000, guid: 08b7d805ada7ae742a68f682c72d932f, type: 2}
 --- !u!4 &1333992644
 Transform:
   m_ObjectHideFlags: 0
@@ -294,7 +298,7 @@ TilemapRenderer:
   m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
   m_MaxChunkCount: 16
   m_MaxFrameAge: 16
-  m_SortOrder: 2
+  m_SortOrder: 0
   m_Mode: 0
   m_DetectChunkCullingBounds: 0
   m_MaskInteraction: 0
@@ -801,7 +805,7 @@ TilemapRenderer:
   m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
   m_MaxChunkCount: 16
   m_MaxFrameAge: 16
-  m_SortOrder: 0
+  m_SortOrder: 2
   m_Mode: 0
   m_DetectChunkCullingBounds: 0
   m_MaskInteraction: 0
