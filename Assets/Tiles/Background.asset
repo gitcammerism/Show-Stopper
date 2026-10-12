@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 13312, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: temporary background tile_0
+  m_Name: Background
   m_EditorClassIdentifier: 
   m_Sprite: {fileID: -3710401546388468309, guid: 5085c22619f2300478b46e6ba30df51b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

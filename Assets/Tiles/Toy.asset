@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 13312, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: bucket_0
+  m_Name: Toy
   m_EditorClassIdentifier: 
-  m_Sprite: {fileID: -4696760917660491729, guid: 35cfd03e28226fa4e9603aa88971bc85, type: 3}
+  m_Sprite: {fileID: -3603556060819865620, guid: a5a5261b282962844a1346ca28991c64, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Transform:
     e00: 1
