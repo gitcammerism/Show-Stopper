@@ -93,14 +93,14 @@ public class Match3Game : MonoBehaviour
     //        for (int y = 0; y < gridSize.y; y++)
     //        {
     //            // Checks if tile is an obstacle, and ignores it.
-    //            if (_grid[x, y] == TileState.Obstacle) continue;
+    //            if (_grid[x, y] == TileType.Obstacle) continue;
 
     //            // Searches for the next filled tile above the current hole
     //            int searchedY = -1;
     //            for (int checkY = y + 1; checkY < gridSize.y; checkY++)
     //            {
-    //                if (_grid[x, checkY] == TileState.Obstacle) continue; // Ignores other obstacle tiles
-    //                if (_grid[x, checkY] != TileState.None)
+    //                if (_grid[x, checkY] == TileType.Obstacle) continue; // Ignores other obstacle tiles
+    //                if (_grid[x, checkY] != TileType.None)
     //                {
     //                    searchedY = checkY;
     //                    break;
@@ -111,14 +111,14 @@ public class Match3Game : MonoBehaviour
     //            if (searchedY != -1)
     //            {
     //                _grid[x, y] = _grid[x, searchedY];
-    //                _grid[x, searchedY] = TileState.None;
+    //                _grid[x, searchedY] = TileType.None;
     //                DroppedTiles.Add(new TileDrop(x, y, searchedY - y));
     //            }
 
     //            // OLD
 
     //            //// Checks for holes in the grid and adds them to DroppedTiles.
-    //            //if (_grid[x, y] == TileState.None) holeCount += 1;
+    //            //if (_grid[x, y] == TileType.None) holeCount += 1;
     //            //else if (holeCount > 0)
     //            //{
     //            //    _grid[x, y - holeCount] = _grid[x, y];
@@ -130,9 +130,9 @@ public class Match3Game : MonoBehaviour
     //        int newTileCount = 0;
     //        for (int y = 0; y < gridSize.y; y++)
     //        {
-    //            if (_grid[x, y] == TileState.None)
+    //            if (_grid[x, y] == TileType.None)
     //            {
-    //                _grid[x, y] = (TileState)Random.Range(1, 6);
+    //                _grid[x, y] = (TileType)Random.Range(1, 6);
     //                newTileCount += 1;
     //                int dropDistance = (gridSize.y + newTileCount - 1) - y; 
     //                DroppedTiles.Add(new TileDrop(x, y, dropDistance));
@@ -142,7 +142,7 @@ public class Match3Game : MonoBehaviour
     //        //// Begins generating tiles to fill holes in the grid.
     //        //for (int h = 1; h <= holeCount; h++)
     //        //{
-    //        //    _grid[x, gridSize.y - h] = (TileState)Random.Range(1, 6);
+    //        //    _grid[x, gridSize.y - h] = (TileType)Random.Range(1, 6);
     //        //    DroppedTiles.Add(new TileDrop(x, gridSize.y - h, holeCount));
     //        //}
     //    }
@@ -166,50 +166,50 @@ public class Match3Game : MonoBehaviour
     //    for (int y = 0; y < gridSize.y; y++)
     //    {
     //        // Start at the first horizontal tile on the grid.
-    //        TileState start = _grid[0, y];
+    //        TileType start = _grid[0, y];
     //        int length = 1;
 
     //        // Loops through the rest of the row to search for matches.
     //        for (int x = 1; x < gridSize.x; x++)
     //        {
-    //            TileState t = _grid[x, y];
-    //            if (t == start && start != TileState.None && start != TileState.Obstacle) length += 1; // If there is a match, increase match length.
+    //            TileType t = _grid[x, y];
+    //            if (t == start && start != TileType.None && start != TileType.Obstacle) length += 1; // If there is a match, increase match length.
     //            else
     //            {
     //                // If no more matches found but the length is >= 3 (match found in row) add to list then restart.
-    //                if (length >= 3 && start != TileState.None && start != TileState.Obstacle) _matches.Add(new Match(x - length, y, length, true, start));
+    //                if (length >= 3 && start != TileType.None && start != TileType.Obstacle) _matches.Add(new Match(x - length, y, length, true, start));
     //                start = t;
     //                length = 1;
     //            }
     //        }
 
     //        // Checks for a 3+  match at the end of the row then adds to the match list.
-    //        if (length >= 3 && start != TileState.None && start != TileState.Obstacle) _matches.Add(new Match(gridSize.x - length, y, length, true, start));
+    //        if (length >= 3 && start != TileType.None && start != TileType.Obstacle) _matches.Add(new Match(gridSize.x - length, y, length, true, start));
     //    }
 
     //    // Searches for vertical matches.
     //    for (int x = 0; x < gridSize.x; x++)
     //    {
     //        // Starts at the first vertical tile on the grid.
-    //        TileState start = _grid[x, 0];
+    //        TileType start = _grid[x, 0];
     //        int length = 1;
 
     //        // Loops through the rest of the column to search for matches.
     //        for (int y = 1; y < gridSize.y; y++)
     //        {
-    //            TileState t = _grid[x, y];
-    //            if (t == start && start != TileState.None && start != TileState.Obstacle) length += 1; // If there is a match, increase match length.
+    //            TileType t = _grid[x, y];
+    //            if (t == start && start != TileType.None && start != TileType.Obstacle) length += 1; // If there is a match, increase match length.
     //            else
     //            {
     //                // If no more matches found but the length is >= 3 (match found in column) add to list then restart.
-    //                if (length >= 3 && start != TileState.None && start != TileState.Obstacle) _matches.Add(new Match(x, y - length, length, false, start));
+    //                if (length >= 3 && start != TileType.None && start != TileType.Obstacle) _matches.Add(new Match(x, y - length, length, false, start));
     //                start = t;
     //                length = 1;
     //            }
     //        }
 
     //        // Checks for a 3+  match at the end of the column then adds to the match list.
-    //        if (length >= 3 && start != TileState.None && start != TileState.Obstacle) _matches.Add(new Match(x, gridSize.y - length, length, false, start));
+    //        if (length >= 3 && start != TileType.None && start != TileType.Obstacle) _matches.Add(new Match(x, gridSize.y - length, length, false, start));
     //    }
 
     //    return HasMatches;
@@ -219,7 +219,7 @@ public class Match3Game : MonoBehaviour
     //public bool TryMove (Move move)
     //{
     //    // Returns false if either tile is an obstacle tile.
-    //    if (_grid[move.From] == TileState.Obstacle || _grid[move.To] == TileState.Obstacle) return false;
+    //    if (_grid[move.From] == TileType.Obstacle || _grid[move.To] == TileType.Obstacle) return false;
         
     //    _scoreMultiplier = 1;
 
@@ -246,9 +246,9 @@ public class Match3Game : MonoBehaviour
 
     //        for (int i = 0; i < match.length; c += step, i++)
     //        {
-    //            if (_grid[c] != TileState.None)
+    //            if (_grid[c] != TileType.None)
     //            {
-    //                _grid[c] = TileState.None;
+    //                _grid[c] = TileType.None;
     //                ClearedTileCoordinates.Add(c);
     //            }
     //        }

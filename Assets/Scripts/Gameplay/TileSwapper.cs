@@ -11,16 +11,16 @@ public class TileSwapper
     [SerializeField, Range(0f, 1f)]
     private float maxDepthOffset = 0.5f;
 
-    private Tile _tileA, _tileB;
+    private OldTile _oldTileA, _oldTileB;
     private Vector3 _positionA, _positionB;
     private float _progress = -1f;
     private bool _pingPong;
 
     // Initiates tile swap by storing tile values for Update().
-    public float Swap (Tile a, Tile b, bool pingPong)
+    public float Swap (OldTile a, OldTile b, bool pingPong)
     {
-        _tileA = a;
-        _tileB = b;
+        _oldTileA = a;
+        _oldTileB = b;
         _positionA = a.transform.localPosition;
         _positionB = b.transform.localPosition;
 
@@ -44,14 +44,14 @@ public class TileSwapper
                 // If ping-ponging, swap tiles and continue.
                 _progress -= duration;
                 _pingPong = false;
-                (_tileA, _tileB) = (_tileB, _tileA);
+                (_oldTileA, _oldTileB) = (_oldTileB, _oldTileA);
             }
             else
             {
                 // If not ping-ponging, exit.
                 _progress = -1f;
-                _tileA.transform.localPosition = _positionB;
-                _tileB.transform.localPosition = _positionA;
+                _oldTileA.transform.localPosition = _positionB;
+                _oldTileB.transform.localPosition = _positionA;
                 return;
             }
         }
@@ -62,10 +62,10 @@ public class TileSwapper
 
         Vector3 p = Vector3.Lerp(_positionA, _positionB, t);
         p.z = -z;
-        _tileA.transform.localPosition = p;
+        _oldTileA.transform.localPosition = p;
 
         p = Vector3.Lerp(_positionA, _positionB, 1f - t);
         p.z = z;
-        _tileB.transform.localPosition = p;
+        _oldTileB.transform.localPosition = p;
     }
 }

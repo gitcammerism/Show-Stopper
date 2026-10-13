@@ -5,7 +5,7 @@ using UnityEngine.UI;
 [System.Serializable]
 public class TileGoal
 {
-    public TileState tile;
+    public TileType tile;
     public int goal;
     public Slider goalSlider;
 }

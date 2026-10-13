@@ -41,7 +41,7 @@ public struct Move
     //    {
     //        for (c.x = 0; c.x < s.x; c.x++)
     //        {
-    //            TileState t = game[c];
+    //            TileType t = game[c];
 
     //            // Checks for left matches.
     //            if (c.x >= 3 && game[c.x - 2, c.y] == t && game[c.x - 3, c.y] == t)

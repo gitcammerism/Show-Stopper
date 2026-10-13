@@ -8,9 +8,9 @@ public struct Match
     public int2 coordinates;
     public int length;
     public bool isHorizontal;
-    public TileState tile;
+    public TileType tile;
 
-    public Match (int x, int y, int length, bool isHorizontal, TileState tile)
+    public Match (int x, int y, int length, bool isHorizontal, TileType tile)
     {
         coordinates.x = x;
         coordinates.y = y;

@@ -14,11 +14,11 @@
 //     public Tilemap boardTilemap;
 //     public TileBase[] tileSprites;
 //     [SerializeField] private int2 gridSize;
-//     private MatchGrid2D<TileState> _grid;
+//     private MatchGrid2D<TileType> _grid;
 //
 //     // Public getter properties for other classes so only Match3Game can modify grid state.
-//     public TileState this[int x, int y] => _grid[x, y];
-//     public TileState this[int2 c] => _grid[c];
+//     public TileType this[int x, int y] => _grid[x, y];
+//     public TileType this[int2 c] => _grid[c];
 //     public int2 GridSize => gridSize;
 //
 //     // List that stores the matches made by the player for processing.
@@ -85,7 +85,7 @@
 //         {
 //             for (int x = 0; x < gridSize.x; x++)
 //             {
-//                 TileState a = TileState.None, b = TileState.None;
+//                 TileType a = TileType.None, b = TileType.None;
 //                 int potentialMatchCount = 0;
 //
 //                 // Checks if there are any potential horizontal matches
@@ -114,7 +114,7 @@
 //                 }
 //
 //                 // Lowers the random range by however many tiles would cause a match to occur.
-//                 TileState t = (TileState)Random.Range(1, 6 - potentialMatchCount);
+//                 TileType t = (TileType)Random.Range(1, 6 - potentialMatchCount);
 //
 //                 // Ensures a & b aren't picked if either one would result in a match.
 //                 if (potentialMatchCount > 0 && t >= a) t += 1;
@@ -137,7 +137,7 @@
 //             for (int y = 0; y < gridSize.y; y++)
 //             {
 //                 // Checks for holes in the grid and adds them to DroppedTiles.
-//                 if (_grid[x, y] == TileState.None) holeCount += 1;
+//                 if (_grid[x, y] == TileType.None) holeCount += 1;
 //                 else if (holeCount > 0)
 //                 {
 //                     _grid[x, y - holeCount] = _grid[x, y];
@@ -148,7 +148,7 @@
 //             // Begins generating tiles to fill holes in the grid.
 //             for (int h = 1; h <= holeCount; h++)
 //             {
-//                 _grid[x, gridSize.y - h] = (TileState)Random.Range(1, 6);
+//                 _grid[x, gridSize.y - h] = (TileType)Random.Range(1, 6);
 //                 DroppedTiles.Add(new TileDrop(x, gridSize.y - h, holeCount));
 //             }
 //         }
@@ -172,13 +172,13 @@
 //         for (int y = 0; y < gridSize.y; y++)
 //         {
 //             // Start at the first horizontal tile on the grid.
-//             TileState start = _grid[0, y];
+//             TileType start = _grid[0, y];
 //             int length = 1;
 //
 //             // Loops through the rest of the row to search for matches.
 //             for (int x = 1; x < gridSize.x; x++)
 //             {
-//                 TileState t = _grid[x, y];
+//                 TileType t = _grid[x, y];
 //                 if (t == start) length += 1; // If there is a match, increase match length.
 //                 else
 //                 {
@@ -197,13 +197,13 @@
 //         for (int x = 0; x < gridSize.x; x++)
 //         {
 //             // Starts at the first vertical tile on the grid.
-//             TileState start = _grid[x, 0];
+//             TileType start = _grid[x, 0];
 //             int length = 1;
 //
 //             // Loops through the rest of the column to search for matches.
 //             for (int y = 1; y < gridSize.y; y++)
 //             {
-//                 TileState t = _grid[x, y];
+//                 TileType t = _grid[x, y];
 //
 //                 if (t == start) length += 1; // If there is a match, increase match length.
 //                 else
@@ -250,9 +250,9 @@
 //
 //             for (int i = 0; i < match.length; c += step, i++)
 //             {
-//                 if (_grid[c] != TileState.None)
+//                 if (_grid[c] != TileType.None)
 //                 {
-//                     _grid[c] = TileState.None;
+//                     _grid[c] = TileType.None;
 //                     boardTilemap.SetTile(new Vector3Int(c.x, c.y, 0), null);
 //                     ClearedTileCoordinates.Add(c);
 //                 }

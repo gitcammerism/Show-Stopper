@@ -16,11 +16,11 @@ public class Match3Skin : MonoBehaviour
     [SerializeField] private TextMeshProUGUI highScoreText;
     [SerializeField] private Match3GameController gameController;
     [SerializeField] private Match3Game game;
-    [SerializeField] private Tile[] tilePrefabs;
+    [SerializeField] private OldTile[] tilePrefabs;
     [SerializeField] private FloatingScore floatingScorePrefab;
     [SerializeField] private ParticleSystem matchParticles;
     private float _floatingScoreZ;
-    private MatchGrid2D<Tile> _tiles;
+    private MatchGrid2D<OldTile> _tiles;
     private float2 _tileOffset;
     
     public GridShape gridShape = GridShape.Square;
@@ -62,9 +62,9 @@ public class Match3Skin : MonoBehaviour
     }
 
     // Spawns a random tile at the given location.
-    private Tile SpawnTile (TileState t, float x, float y)
+    private OldTile SpawnTile (TileType t, float x, float y)
     {
-        if (t == TileState.None) return null;
+        if (t == TileType.None) return null;
         return tilePrefabs[(int)t - 1].Spawn(new Vector3(x + _tileOffset.x, y + _tileOffset.y));
     }
 
@@ -183,7 +183,7 @@ public class Match3Skin : MonoBehaviour
     //    if (move.IsValid && _tiles.AreValidCoordinates(move.From) && _tiles.AreValidCoordinates(move.To))
     //    {
     //        // Aborts the move if either tile is an obstacle or none.
-    //        if (game[move.From] == TileState.Obstacle || game[move.To] == TileState.Obstacle || game[move.From] == TileState.None || game[move.To] == TileState.None) return true;
+    //        if (game[move.From] == TileType.Obstacle || game[move.To] == TileType.Obstacle || game[move.From] == TileType.None || game[move.To] == TileType.None) return true;
 
     //        DoMove(move);
     //        return false;

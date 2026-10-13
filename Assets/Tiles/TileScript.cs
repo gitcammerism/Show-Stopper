@@ -7,7 +7,7 @@ using UnityEngine.Tilemaps;
 public class TileScript : TileBase
 {
     public Sprite tileSprite;
-    public TileState tileType;
+    public TileType tileType;
     public Color tileColor = Color.white;
     public UnityEngine.Tilemaps.Tile.ColliderType collider = UnityEngine.Tilemaps.Tile.ColliderType.Sprite;
 
