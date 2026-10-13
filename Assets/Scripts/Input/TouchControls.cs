@@ -144,7 +144,7 @@ public partial class @TouchControls: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""e449ad0f-7e39-41dc-8e2b-0702721c90cd"",
-                    ""path"": ""<Touchscreen>/primaryTouch/press"",
+                    ""path"": ""<Pointer>/press"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -166,7 +166,7 @@ public partial class @TouchControls: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""55904c9a-a69c-4b9c-b32e-be7e13e82b97"",
-                    ""path"": ""<Touchscreen>/primaryTouch/position"",
+                    ""path"": ""<Pointer>/position"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
