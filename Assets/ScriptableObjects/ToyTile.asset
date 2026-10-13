@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 407db45762527d341804f3801f038cb8, type: 3}
   m_Name: ToyTile
   m_EditorClassIdentifier: 
-  id: Toy
+  tile: 3
   visualTile: {fileID: 11400000, guid: cf28058143f9d6f41b9453b9bf211917, type: 2}
   scoreValue: 10

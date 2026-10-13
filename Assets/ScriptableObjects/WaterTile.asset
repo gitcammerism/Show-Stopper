@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 407db45762527d341804f3801f038cb8, type: 3}
   m_Name: WaterTile
   m_EditorClassIdentifier: 
-  id: Water
+  tile: 5
   visualTile: {fileID: 11400000, guid: 4150915fb4dd1374bb472db4a41e5384, type: 2}
   scoreValue: 10
