@@ -1,3 +1,4 @@
+using UnityEngine;
 using Unity.Mathematics;
 
 // This struct stores the values of a given match for move validation.
@@ -5,15 +6,14 @@ using Unity.Mathematics;
 [System.Serializable]
 public struct Match
 {
-    public int2 coordinates;
+    public Vector3 location;
     public int length;
     public bool isHorizontal;
     public TileType tile;
 
-    public Match (int x, int y, int length, bool isHorizontal, TileType tile)
+    public Match (Vector3 position, int length, bool isHorizontal, TileType tile)
     {
-        coordinates.x = x;
-        coordinates.y = y;
+        this.location = position;
         this.length = length;
         this.isHorizontal = isHorizontal;
         this.tile = tile;

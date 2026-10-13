@@ -90,7 +90,7 @@ public class Match3GameController : MonoBehaviour, IDataPersistence
     // Calls on Match3Skin's DoWork() every frame.
     void Update ()
     {
-        // if (match3.IsPlaying) match3.DoWork();
+        if (match3.IsPlaying) match3.DoWork();
     }
 
     // FROM COLIN - For generating unique level ids
@@ -162,7 +162,7 @@ public class Match3GameController : MonoBehaviour, IDataPersistence
     {
         if (_isDragging && !match3.IsBusy)
         {
-            // match3.EvaluateDrag(_dragStart, position);
+            match3.EvaluateDrag(_dragStart, position);
             _isDragging = false;
         }
     }

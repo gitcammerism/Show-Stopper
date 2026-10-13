@@ -23,8 +23,10 @@ public class TilePlacer : TileBase
             return false;
         #endif
         
+        Match3Board board = FindFirstObjectByType<Match3Board>();
+        
         // Lets the Match3Board know this is a spot where a tile will spawn.
-        Match3Board.SpawnTile(position, tile);
+        board.SpawnTile(position, tile);
         return base.StartUp(position, tilemap, go);
     }
 }

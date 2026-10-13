@@ -9,10 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0a1b8d5db65ac664186ce8eb0b0ab0e0, type: 3}
-  m_Name: Comfort
+  m_Script: {fileID: 11500000, guid: afdaf0046aeb2d449b3328adb46f68c0, type: 3}
+  m_Name: ObstaclePlacer
   m_EditorClassIdentifier: 
-  tileSprite: {fileID: 7791214535279931073, guid: 65abb2c3b2e46ad488358c77b214943d, type: 3}
-  tileType: 1
-  tileColor: {r: 1, g: 1, b: 1, a: 1}
-  collider: 1
+  previewSprite: {fileID: -4721547959098692984, guid: 6c1f25c8e56cd754c91b151ac47de943, type: 3}
+  obstacle: {fileID: 7572622473991741082, guid: 6266b5d0f0cfc5e46ab7828390b39782, type: 3}

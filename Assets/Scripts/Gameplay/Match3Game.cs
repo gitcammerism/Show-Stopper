@@ -2,22 +2,14 @@ using System;
 using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
-using UnityEngine.Tilemaps;
-using static Unity.Mathematics.math;
-using Random = UnityEngine.Random;
 
 // This script tracks the game state and handles the logic for the match-3 game.
 
 public class Match3Game : MonoBehaviour
 {
-    [SerializeField] private Grid grid;
-    [SerializeField] private Tilemap tilemap;
-    [SerializeField] private TileBase[] tiles;
-    private Vector3Int gridSize;
-
-    // List that stores the matches made by the player for processing.
-    private List<Match> _matches;
-
+    public Grid grid;
+    private Match3Board _board;
+    
     // Stores any possible moves in the game.
     public Move PossibleMove;
 
@@ -46,38 +38,34 @@ public class Match3Game : MonoBehaviour
 
     public void ClearGrid()
     {
-        _matches.Clear();
         ClearedTileCoordinates.Clear();
         DroppedTiles.Clear();
+    }
+
+    private void Awake()
+    {
+        _board = grid.GetComponent<Match3Board>();
     }
     
     // Starts a new game by creating & filling a new grid.
     public void StartNewGame()
     {
         TotalScore = 0;
-        _matches = new();
         ClearedTileCoordinates = new();
         DroppedTiles = new();
         Scores = new();
-
-        tilemap.CompressBounds();
-        gridSize = tilemap.size;
-        FillGrid();
     }
     
-    // Fills up the game grid with random tiles.
-    public void FillGrid()
+    // Attempts to move the selected tiles and returns if it was successful.
+    public bool TryMove (Move move)
     {
-        for (int x = 0; x < gridSize.x; x++)
-        {
-            for (int y = 0; y < gridSize.y; y++)
-            {
-                Vector3Int tilePos = new Vector3Int(tilemap.origin.x + x, tilemap.origin.y + y, 0);
-                TileBase tile = tilemap.GetTile(tilePos);
-                if (tile)
-                tilemap.SetTile(tilePos, tiles[Random.Range(0, tiles.Length)]);
-            }
-        }
+        _scoreMultiplier = 1;
+
+        _board.Swap(move.From, move.To);
+        if (_board.FindMatches()) return true;
+
+        _board.Swap(move.From, move.To);
+        return false;
     }
 
     // Drops all tiles that need to fill gaps in the game board.
@@ -154,80 +142,6 @@ public class Match3Game : MonoBehaviour
     //    {
     //        PossibleMove = Move.FindMove(this);
     //    }
-    //}
-
-    // Returns if there are currently matches to process.
-    public bool HasMatches => _matches.Count > 0;
-
-    // Returns whether and matches were found.
-    //public bool FindMatches()
-    //{
-    //    // Searches for horizontal matches.
-    //    for (int y = 0; y < gridSize.y; y++)
-    //    {
-    //        // Start at the first horizontal tile on the grid.
-    //        TileType start = _grid[0, y];
-    //        int length = 1;
-
-    //        // Loops through the rest of the row to search for matches.
-    //        for (int x = 1; x < gridSize.x; x++)
-    //        {
-    //            TileType t = _grid[x, y];
-    //            if (t == start && start != TileType.None && start != TileType.Obstacle) length += 1; // If there is a match, increase match length.
-    //            else
-    //            {
-    //                // If no more matches found but the length is >= 3 (match found in row) add to list then restart.
-    //                if (length >= 3 && start != TileType.None && start != TileType.Obstacle) _matches.Add(new Match(x - length, y, length, true, start));
-    //                start = t;
-    //                length = 1;
-    //            }
-    //        }
-
-    //        // Checks for a 3+  match at the end of the row then adds to the match list.
-    //        if (length >= 3 && start != TileType.None && start != TileType.Obstacle) _matches.Add(new Match(gridSize.x - length, y, length, true, start));
-    //    }
-
-    //    // Searches for vertical matches.
-    //    for (int x = 0; x < gridSize.x; x++)
-    //    {
-    //        // Starts at the first vertical tile on the grid.
-    //        TileType start = _grid[x, 0];
-    //        int length = 1;
-
-    //        // Loops through the rest of the column to search for matches.
-    //        for (int y = 1; y < gridSize.y; y++)
-    //        {
-    //            TileType t = _grid[x, y];
-    //            if (t == start && start != TileType.None && start != TileType.Obstacle) length += 1; // If there is a match, increase match length.
-    //            else
-    //            {
-    //                // If no more matches found but the length is >= 3 (match found in column) add to list then restart.
-    //                if (length >= 3 && start != TileType.None && start != TileType.Obstacle) _matches.Add(new Match(x, y - length, length, false, start));
-    //                start = t;
-    //                length = 1;
-    //            }
-    //        }
-
-    //        // Checks for a 3+  match at the end of the column then adds to the match list.
-    //        if (length >= 3 && start != TileType.None && start != TileType.Obstacle) _matches.Add(new Match(x, gridSize.y - length, length, false, start));
-    //    }
-
-    //    return HasMatches;
-    //}    
-
-    // Attempts to move the selected tiles and returns if it was successful.
-    //public bool TryMove (Move move)
-    //{
-    //    // Returns false if either tile is an obstacle tile.
-    //    if (_grid[move.From] == TileType.Obstacle || _grid[move.To] == TileType.Obstacle) return false;
-        
-    //    _scoreMultiplier = 1;
-
-    //    _grid.Swap(move.From, move.To);
-    //    if (FindMatches()) return true;
-
-    //    _grid.Swap(move.From, move.To);
-    //    return false;
     //}
 
     //// Processes matches.

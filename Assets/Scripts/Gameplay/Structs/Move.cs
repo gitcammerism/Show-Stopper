@@ -1,4 +1,4 @@
-using Unity.Mathematics;
+using UnityEngine;
 using static Unity.Mathematics.math;
 
 // This struct stores the information of the move/input made by the player.
@@ -9,26 +9,20 @@ public struct Move
     public MoveDirection Direction
     { get; private set; }
 
-    public int2 From 
+    public Vector3 From 
     { get; private set; }
 
-    public int2 To
+    public Vector3 To
     { get; private set; }
 
     public bool IsValid => Direction != MoveDirection.None;
 
     // Constructor; determines which direction is being moved and from where
-    public Move (int2 coordinates, MoveDirection direction)
+    public Move (Vector3 from, Vector3 to, MoveDirection direction)
     {
         Direction = direction;
-        From = coordinates;
-        To = coordinates + direction switch
-        {
-            MoveDirection.Up => int2(0, 1),
-            MoveDirection.Down => int2(0, -1),
-            MoveDirection.Right => int2(1, 0),
-            _ => int2(-1, 0)
-        };
+        From = from;
+        To = from + to;
     }
 
     // Returns a move given the current game. (Checks if there are any valid moves).
