@@ -65,7 +65,8 @@ public class Match3Skin : MonoBehaviour
     {
         // Determines the tile position of a & b then creates a Move struct based on the move performed.
         Vector3 a = _board.ScreenToTileSpace(start), b = _board.ScreenToTileSpace(end);
-        Vector3 swipe = b - a;
+        Vector3 swipe = _board.ScreenToTileSpace(b - a);
+        //Debug.Log(a + ", " + b + ", " + swipe);
 
         if (swipe == Vector3.zero) return true;
         MoveDirection direction;
@@ -87,6 +88,7 @@ public class Match3Skin : MonoBehaviour
         Move move = new Move(a, swipe, direction);
 
         // If the move is valid and the new coordinates are valid, the tiles can be moved.
+        //Debug.Log(move.From + " -> " + move.To);
         if (move.IsValid && _board.IsValidTile(move.From) && _board.IsValidTile(move.To))
         {
             DoMove(move);
@@ -100,14 +102,14 @@ public class Match3Skin : MonoBehaviour
     {
         // Calls tileSwapper to handle tile swapping + animation.
         bool success = game.TryMove(move);
-        Tile a = _board._boardTiles[_board.grid.WorldToCell(move.From)];
-        Tile b = _board._boardTiles[_board.grid.WorldToCell(move.To)];
+        Tile a = _board._boardTiles[_board.ScreenToTileSpace(move.From)];
+        Tile b = _board._boardTiles[_board.ScreenToTileSpace(move.To)];
         _busyDuration = tileSwapper.Swap(a, b, !success);
 
         if (success)
         {
-            _board._boardTiles[_board.grid.WorldToCell(move.From)] = b;
-            _board._boardTiles[_board.grid.WorldToCell(move.To)] = a;
+            _board._boardTiles[_board.ScreenToTileSpace(move.From)] = b;
+            _board._boardTiles[_board.ScreenToTileSpace(move.To)] = a;
         }
     }
 
