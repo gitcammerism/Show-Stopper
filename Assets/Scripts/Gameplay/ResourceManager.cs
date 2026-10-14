@@ -41,13 +41,13 @@ public class ResourceManager : MonoBehaviour
             }
         }
 
-        // Subscribes to Match3Game's OnMatchMade event.
-        Match3Game.OnMatchMade += CheckProgress;
+        // Subscribes to Match3Board's OnMatchMade event.
+        Match3Board.OnMatchMade += CheckProgress;
     }
 
     void OnDisable()
     {
-        Match3Game.OnMatchMade -= CheckProgress;
+        Match3Board.OnMatchMade -= CheckProgress;
     }
 
     // Checks after each match if progress towards the goal has been made.

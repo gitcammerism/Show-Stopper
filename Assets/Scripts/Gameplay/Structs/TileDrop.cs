@@ -1,3 +1,4 @@
+using UnityEngine;
 using Unity.Mathematics;
 
 // This struct stores the information for the tile falling down to fill a board gap.
@@ -5,13 +6,12 @@ using Unity.Mathematics;
 [System.Serializable]
 public struct TileDrop
 {
-    public int2 coordinates;
+    public Vector3 coordinates;
     public int fromY;
 
-    public TileDrop (int x, int y, int distance)
+    public TileDrop (Vector3 coordinates, int distance)
     {
-        coordinates.x = x;
-        coordinates.y = y;
-        fromY = y + distance;
+        this.coordinates = coordinates;
+        fromY = (int)coordinates.y + distance;
     }
 }

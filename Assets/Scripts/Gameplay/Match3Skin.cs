@@ -11,16 +11,14 @@ public class Match3Skin : MonoBehaviour
 {
     // Game setup.
     public Grid gameGrid;
-    private Match3Board _board;
     [SerializeField] private TextMeshProUGUI totalScoreText;
     // FROM COLIN - For Highscore display text
     [SerializeField] private TextMeshProUGUI highScoreText;
     [SerializeField] private Match3GameController gameController;
-    [SerializeField] private Match3Game game;
+    [SerializeField] private Match3Board _board;
     [SerializeField] private FloatingScore floatingScorePrefab;
     [SerializeField] private ParticleSystem matchParticles;
     private float _floatingScoreZ;
-    private MatchGrid2D<OldTile> _tiles;
     private float2 _tileOffset;
 
     // Drag threshold for input.
@@ -42,7 +40,7 @@ public class Match3Skin : MonoBehaviour
     public static event Action OnGameLost;
     public static event Action OnGameWon;
        
-    public bool IsPlaying => (IsBusy || game.PossibleMove.IsValid) && (!gameOver || !game.PossibleMove.IsValid);
+    public bool IsPlaying => (IsBusy || _board.PossibleMove.IsValid) && (!gameOver || !_board.PossibleMove.IsValid);
     public bool IsBusy => _busyDuration > 0f;
 
     // Starts a new game by calling Match3Game.StartNewGame().
@@ -82,7 +80,7 @@ public class Match3Skin : MonoBehaviour
             direction = swipe.y > 0 ? MoveDirection.Up : MoveDirection.Down;
         }
         
-        Move move = new Move(a, swipe, direction);
+        Move move = new Move(a, direction);
         if (move.To == move.From) return true;
 
         // If the move is valid and the new coordinates are valid, the tiles can be moved.
@@ -102,12 +100,6 @@ public class Match3Skin : MonoBehaviour
         Tile a = _board._boardTiles[_board.ScreenToTileSpace(move.From)];
         Tile b = _board._boardTiles[_board.ScreenToTileSpace(move.To)];
         _busyDuration = tileSwapper.Swap(a, b, !success);
-
-        if (success)
-        {
-            _board._boardTiles[_board.ScreenToTileSpace(move.From)] = b;
-            _board._boardTiles[_board.ScreenToTileSpace(move.To)] = a;
-        }
     }
 
     // Invoke specific actions depending on the game state.
@@ -122,29 +114,31 @@ public class Match3Skin : MonoBehaviour
         }
 
         if (_board.HasMatches()) ProcessMatches();
-        //else if (game.NeedsFilling) DropTiles();
+        else if (_board.NeedsFilling) DropTiles();
 
-        // Move result = Move.FindMove(game);
-        // if (result.Equals(default(Move)))
-        // {
-        //     ResetGame();
-        // }
+        //Move result = Move.FindMove(_board);
+        //if (result.Equals(default(Move)))
+        //{
+        //    ResetGame();
+        //}
     }
 
-    //public void ResetGame()
-    //{
-    //    for (int y = 0; y < _tiles.SizeY; y++)
-    //    {
-    //        for (int x = 0; x < _tiles.SizeX; x++)
-    //        {
-    //            if (_tiles[x, y] == null) continue;
-    //            _tiles[x, y].Despawn();
-    //            _tiles[x, y] = null;
-    //        }
-    //    }
-            
-    //    game.ClearGrid();
-    //}
+    public void ResetGame()
+    {
+        BoundsInt bounds = _board.boardTilemap.cellBounds;
+
+        for (int x = bounds.xMin; x < bounds.xMax; x++)
+        {
+            for (int y = bounds.yMin; y < bounds.yMax; y++)
+            {
+                Vector3 currentPos = gameGrid.GetCellCenterWorld(new Vector3Int(x, y, 0));
+                if (_board._boardTiles[currentPos] == null) continue;
+                _board._boardTiles[currentPos].Despawn();
+            }
+        }
+
+        _board.ClearGrid();
+    }
 
     // Invokes Match3Board's ProcessMatches and makes all cleared tiles disappear.
     private void ProcessMatches ()
@@ -158,7 +152,7 @@ public class Match3Skin : MonoBehaviour
             _board._boardTiles[c] = null;
         }
 
-        totalScoreText.SetText("{0}", game.TotalScore);
+        totalScoreText.SetText("{0}", _board.TotalScore);
 
         for (int i = 0; i < _board.Scores.Count; i++)
         {
@@ -188,22 +182,26 @@ public class Match3Skin : MonoBehaviour
     // Invokes Match3Board's DropTiles method and handles fallen + new tiles.
     private void DropTiles()
     {
+        BoundsInt bounds = _board.boardTilemap.cellBounds;
         for (int i = 0; i < _board.DroppedTiles.Count; i++)
         {
             TileDrop drop = _board.DroppedTiles[i];
             Tile tile;
 
             // If the given tile fell, adjust its position.
-            if (drop.fromY < _tiles.SizeY)
+            if (drop.fromY < bounds.yMax)
             {
-                tile = _board._boardTiles[drop.coordinates.x, drop.fromY];
+                tile = _board._boardTiles[new Vector3(drop.coordinates.x, drop.fromY, 0)];
             }
-            else // If not, spawn a new tile.
+            else // If not, spawn a new tile. 
             {
-                tile = SpawnTile(game[drop.coordinates], drop.coordinates.x, drop.fromY + newDropOffset);
+                Vector3Int tilePos = gameGrid.WorldToCell(new Vector3(drop.coordinates.x, drop.fromY + (int)newDropOffset, 0));
+                Debug.Log(drop.coordinates);
+                _board.SpawnTile(tilePos);
+                tile = _board._boardTiles[drop.coordinates];
             }
 
-            _tiles[drop.coordinates] = tile;
+            _board._boardTiles[drop.coordinates] = tile;
             _busyDuration = Mathf.Max(tile.Fall(drop.coordinates.y + _tileOffset.y, dropSpeed), _busyDuration);
         }
     }

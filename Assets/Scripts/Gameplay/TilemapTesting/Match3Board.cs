@@ -62,11 +62,25 @@ public class Match3Board : MonoBehaviour
         Scores = new();
     }
 
+    // Clears the game grid.
+    public void ClearGrid()
+    {
+        _boardTiles.Clear();
+        ClearedTiles.Clear();
+        DroppedTiles.Clear();
+
+        BoundsInt bounds = boardTilemap.cellBounds;
+        foreach (Vector3Int pos in bounds.allPositionsWithin)
+        {
+            SpawnTile(pos);
+        }
+    }
+
     // Spawns a tile at the given position (called from TilePlacer).
     public void SpawnTile(Vector3Int position, Tile tile = null)
     {
-        Tile newTile = tile;
         Vector3 worldPosition = grid.GetCellCenterWorld(position);
+        Tile newTile = tile;
         
         // Adds to dictionary
         if (!_boardTiles.ContainsKey(worldPosition)) 
@@ -79,15 +93,16 @@ public class Match3Board : MonoBehaviour
             // Checks if there is already a tile there (previous failure) and destroy 
             if (_boardTiles[worldPosition] != null)
             {
-                Destroy(_boardTiles[worldPosition].gameObject);
+                _boardTiles[worldPosition].Despawn();
             }
-            
+
             // Creates new prefab tile
-            newTile = Instantiate(
-                tilePrefabs[UnityEngine.Random.Range(0, tilePrefabs.Length)],
-                worldPosition,
-                Quaternion.identity
-            );
+            newTile = tilePrefabs[UnityEngine.Random.Range(0, tilePrefabs.Length)].Spawn(worldPosition);
+            //newTile = Instantiate(
+            //    tilePrefabs[UnityEngine.Random.Range(0, tilePrefabs.Length)],
+            //    worldPosition,
+            //    Quaternion.identity
+            //);
 
             // Stores prefab in dictionary
             _boardTiles[worldPosition] = newTile;
@@ -105,6 +120,7 @@ public class Match3Board : MonoBehaviour
         if (_boardTiles.ContainsKey(left1) && _boardTiles[left1].tileType == tileType &&
             _boardTiles.ContainsKey(left2) && _boardTiles[left2].tileType == tileType)
         {
+            Debug.Log("Match found.");
             return true;
         }
         
@@ -177,20 +193,21 @@ public class Match3Board : MonoBehaviour
             {
                 Vector3 currentPos = grid.GetCellCenterWorld(new Vector3Int(x, y, 0));
                 TileType t = _boardTiles[currentPos].tileType;
-                if (t == start && start != TileType.None) length += 1; // If there is a match, increase match length.
+                if (t == start && start != TileType.None)
+                {                 
+                    length += 1; // If there is a match, increase match length.
+                }
                 else
                 {
                     // If no more matches found but the length is >= 3 (match found in row) add to list then restart.
                     if (length >= 3 && start != TileType.None)
                     {
                         _matches.Add(new Match(
-                            grid.GetCellCenterWorld(new Vector3Int(x - length, y, 0)), 
+                            grid.GetCellCenterWorld(new Vector3Int(x - length, y, 0)),
                             length, true, start)
                         );
-                        
-                        //Debug.Log(grid.GetCellCenterWorld(new Vector3Int(x - length, y, 0)));
                     }
-                    
+
                     start = t;
                     length = 1;
                 }
@@ -297,17 +314,18 @@ public class Match3Board : MonoBehaviour
     // Drops all tiles that need to fill gaps in the game board.
     public void DropTiles()
     {
+        Debug.Log("Board DropTiles()");
         DroppedTiles.Clear();
         BoundsInt bounds = boardTilemap.cellBounds;
 
         for (int x = bounds.xMin; x < bounds.xMax; x++)
         {
             for (int y = bounds.yMin; y < bounds.yMax; y++)
-            {
-                // Checks if tile is an obstacle, and ignores it.
+            {              
                 Vector3 currentPos = grid.GetCellCenterWorld(new Vector3Int(x, y, 0));
+                // Checks if tile is an obstacle, and ignores it.
                 // if (_boardTiles[currentPos].tileType == TileType.Obstacle) continue;
-                
+
                 // Searches for the next filled tile above the current hole
                 int searchedY = -1;
                 for (int checkY = y + 1; checkY < bounds.yMax; checkY++)
@@ -327,7 +345,7 @@ public class Match3Board : MonoBehaviour
                     Vector3 searchPos = grid.GetCellCenterWorld(new Vector3Int(x, searchedY, 0));
                     _boardTiles[currentPos] = _boardTiles[searchPos];
                     _boardTiles[searchPos].tileType = TileType.None;
-                    DroppedTiles.Add(new TileDrop(x, y, searchedY - y));
+                    DroppedTiles.Add(new TileDrop(currentPos, searchedY - y));
                 }
             }
             
@@ -338,10 +356,11 @@ public class Match3Board : MonoBehaviour
                 Vector3 tilePos = grid.GetCellCenterWorld(new Vector3Int(x, y, 0));
                 if (_boardTiles[tilePos].tileType == TileType.None)
                 {
-                    _boardTiles[tilePos].tileType = (TileType)UnityEngine.Random.Range(1, 6);
+                    //Tile newTile = tilePrefabs[UnityEngine.Random.Range(0, tilePrefabs.Length)].Spawn(tilePos);
+                    //_boardTiles[tilePos].tileType = (TileType)UnityEngine.Random.Range(1, 6);
                     newTileCount += 1;
                     int dropDistance = (bounds.yMax + newTileCount - 1) - y; 
-                    DroppedTiles.Add(new TileDrop(x, y, dropDistance));
+                    DroppedTiles.Add(new TileDrop(tilePos, dropDistance));
                 }
             }
         }
@@ -351,7 +370,7 @@ public class Match3Board : MonoBehaviour
         // Look for any new matches as a result of tiles dropping.
         if (!FindMatches())
         {
-            PossibleMove = Move.FindMove(this);
+            //PossibleMove = Move.FindMove(this);
         }
     }
 }

@@ -7,9 +7,5 @@ using UnityEngine;
 
 public class Match3Game : MonoBehaviour
 {
-    public void ClearGrid()
-    {
-        ClearedTiles.Clear();
-        DroppedTiles.Clear();
-    }
+   
 }

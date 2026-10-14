@@ -18,7 +18,7 @@ public struct Move
     public bool IsValid => Direction != MoveDirection.None;
 
     // Constructor; determines which direction is being moved and from where
-    public Move (Vector3 from, Vector3 to, MoveDirection direction)
+    public Move (Vector3 from, MoveDirection direction)
     {
         Direction = direction;
         From = from;
@@ -48,121 +48,129 @@ public struct Move
     }
 
     // Returns a move given the current game. (Checks if there are any valid moves).
-    public static Move FindMove (Match3Board board)
-    {
-        BoundsInt bounds = board.boardTilemap.cellBounds;
+    //public static Move FindMove (Match3Board board)
+    //{
+    //    BoundsInt bounds = board.boardTilemap.cellBounds;
 
-        // Loops through all tiles to find a vald move for any given tile.
-        for (int y = bounds.yMin; y < bounds.yMax; y++)
-        {
-            for (int x = bounds.xMin; x < bounds.xMax; x++)
-            {
-                Vector3 pos = board.ScreenToTileSpace(new Vector3(x, y, 0));
-                TileType t = board._boardTiles[pos].tileType;
+    //    // Loops through all tiles to find a vald move for any given tile.
+    //    for (int y = bounds.yMin; y < bounds.yMax; y++)
+    //    {
+    //        for (int x = bounds.xMin; x < bounds.xMax; x++)
+    //        {
+    //            Vector3 pos = board.ScreenToTileSpace(new Vector3(x, y, 0));
+    //            Debug.Log(pos);
+    //            if (board._boardTiles[pos] == null || board._boardTiles[pos].tileType == TileType.None) continue;
+    //            TileType t = board._boardTiles[pos].tileType;
 
-                // Checks for left matches.
-                if (x >= 3 && game[x - 2, y] == t && game[x - 3, y] == t)
-                {
-                    return new Move(c, MoveDirection.Left);
-                }
+    //            // Checks for left matches.
+    //            if (x >= 3 && board._boardTiles[new Vector3(pos.x - 2, pos.y, 0)].tileType == t &&
+    //                board._boardTiles[new Vector3(pos.x - 3, pos.y, 0)].tileType == t)
+    //            {
+    //                return new Move(pos, MoveDirection.Left);
+    //            }
 
-                // Checks for valid right matches.
-                if (x + 3 < x && game[x + 2, y] == t && game[x + 3, y] == t)
-                {
-                    return new Move(c, MoveDirection.Right);
-                }
+    //            // Checks for valid right matches.
+    //            if (x >= 3 && board._boardTiles[new Vector3(pos.x + 2, pos.y, 0)].tileType == t &&
+    //                board._boardTiles[new Vector3(pos.x + 3, pos.y, 0)].tileType == t)
+    //            {
+    //                return new Move(pos, MoveDirection.Right);
+    //            }
 
-                // Checks for valid down matches.
-                if (y >= 3 && game[x, y - 2] == t && game[x, y - 3] == t)
-                {
-                    return new Move(c, MoveDirection.Down);
-                }
+    //            // Checks for valid down matches.
+    //            if (x >= 3 && board._boardTiles[new Vector3(pos.x, pos.y - 2, 0)].tileType == t &&
+    //                board._boardTiles[new Vector3(pos.x, pos.y - 3, 0)].tileType == t)
+    //            {
+    //                return new Move(pos, MoveDirection.Down);
+    //            }
 
-                // Checks for valid up matches.
-                if (y +3 < y && game[x, y + 2] == t && game[x, y + 3] == t)
-                {
-                    return new Move(c, MoveDirection.Up);
-                }
+    //            // Checks for valid up matches.
+    //            if (x >= 3 && board._boardTiles[new Vector3(pos.x, pos.y + 2, 0)].tileType == t &&
+    //                board._boardTiles[new Vector3(pos.x, pos.y + 3, 0)].tileType == t)
+    //            {
+    //                return new Move(pos, MoveDirection.Up);
+    //            }
 
-                // Checks for diagonal down matches.
-                if (y > 1)
-                {
-                    // Checks for down-left matches.
-                    if (x > 1 && game[x - 1, y - 1] == t)
-                    {
-                        if (
-                            x >= 2 && game[x - 2, y - 1] == t ||
-                            x + 1 < x && game[x + 1, y - 1] == t
-                        )
-                        {
-                            return new Move(c, MoveDirection.Down);
-                        }
+    //            // Checks for diagonal down matches.
+    //            if (y > 1)
+    //            {
+    //                // Checks for down-left matches.
+    //                if (x > 1 && board._boardTiles[new Vector3(pos.x - 1, pos.y - 1, 0)].tileType == t)
+    //                {
+    //                    if (
+    //                        x >= 2 && board._boardTiles[new Vector3(pos.x - 2, pos.y - 1, 0)].tileType == t ||
+    //                        x + 1 < x && board._boardTiles[new Vector3(pos.x + 1, pos.y - 1, 0)].tileType == t
+    //                    )
+    //                    {
+    //                        return new Move(pos, MoveDirection.Down);
+    //                    }
 
-                        if (
-                            y >= 2 && game[x - 1, y - 2] == t ||
-                            y + 1 < y && game[x - 1, y + 1] == t
-                        )
-                        {
-                            return new Move(c, MoveDirection.Left);
-                        }
-                    }
+    //                    if (
+    //                        y >= 2 && board._boardTiles[new Vector3(pos.x - 1, pos.y - 2, 0)].tileType == t ||
+    //                        y + 1 < y && board._boardTiles[new Vector3(pos.x - 1, pos.y + 1, 0)].tileType == t
+    //                    )
+    //                    {
+    //                        return new Move(pos, MoveDirection.Left);
+    //                    }
+    //                }
 
-                    // Checks for down-right matches.
-                    if (x + 1 < x && game[x + 1, y - 1] == t)
-                    {
-                        if (x + 2 < x && game[x + 2, y - 1] == t)
-                        {
-                            return new Move(c, MoveDirection.Down);
-                        }
+    //                // Checks for down-right matches.                   
+    //                if (x + 1 < x && board._boardTiles[new Vector3(pos.x + 1, pos.y - 1, 0)].tileType == t)
+    //                {                        
+    //                    if (x + 2 < x && board._boardTiles[new Vector3(pos.x + 2, pos.y - 1, 0)].tileType == t)
+    //                    {
+    //                        return new Move(pos, MoveDirection.Down);
+    //                    }
+                        
+    //                    if (
+    //                        y >= 2 && board._boardTiles[new Vector3(pos.x + 1, pos.y - 2, 0)].tileType == t ||
+    //                        y + 1 < y && board._boardTiles[new Vector3(pos.x + 1, pos.y + 1, 0)].tileType == t
+    //                    )
+    //                    {
+    //                        return new Move(pos, MoveDirection.Right);
+    //                    }
+    //                }
+    //            }
 
-                        if (
-                            y >= 2 && game[x + 1, y - 2] == t ||
-                            y + 1 < y && game[x + 1, y + 1] == t
-                        )
-                        {
-                            return new Move(c, MoveDirection.Right);
-                        }
-                    }
-                }
+    //            // Checks for diagonal up matches.
+    //            if (y + 1 < y)
+    //            {                    
+    //                // Checks for up-left matches.
+    //                if (x > 1 && board._boardTiles[new Vector3(pos.x - 1, pos.y + 1, 0)].tileType == t)
+    //                {
+                        
+    //                    if (
+    //                        x >= 2 && board._boardTiles[new Vector3(pos.x - 2, pos.y + 1, 0)].tileType == t ||
+    //                        x + 1 < x && board._boardTiles[new Vector3(pos.x + 1, pos.y + 1, 0)].tileType == t
+    //                    )
+    //                    {
+    //                        return new Move(pos, MoveDirection.Up);
+    //                    }
+                        
+    //                    if (y + 2 < y && board._boardTiles[new Vector3(pos.x - 1, pos.y + 2, 0)].tileType == t)
+    //                    {
+    //                        return new Move(pos, MoveDirection.Left);
+    //                    }
+    //                }
 
-                // Checks for diagonal up matches.
-                if (y + 1 < y)
-                {
-                    // Checks for up-left matches.
-                    if (x > 1 && game[x - 1, y + 1] == t)
-                    {
-                        if (
-                            x >= 2 && game[x - 2, y + 1] == t ||
-                            x + 1 < x && game[x + 1, y + 1] == t
-                        )
-                        {
-                            return new Move(c, MoveDirection.Up);
-                        }
+    //                // Checks for up-right matches.
 
-                        if (y + 2 < y && game[x - 1, y + 2] == t)
-                        {
-                            return new Move(c, MoveDirection.Left);
-                        }
-                    }
+    //                if (x + 1 < x && board._boardTiles[new Vector3(pos.x + 1, pos.y + 1, 0)].tileType == t)
+    //                {                        
+    //                    if (x + 2 < x && board._boardTiles[new Vector3(pos.x + 2, pos.y + 1, 0)].tileType == t)
+    //                    {
+    //                        return new Move(pos, MoveDirection.Up);
+    //                    }
+                      
+    //                    if (y + 2 < y && board._boardTiles[new Vector3(pos.x + 1, pos.y + 2, 0)].tileType == t)
+    //                    {
+    //                        return new Move(pos, MoveDirection.Right);
+    //                    }
+    //                }
+    //            }
+    //        }
+    //    }
 
-                    // Checks for up-right matches.
-                    if (x + 1 < x && game[x + 1, y + 1] == t)
-                    {
-                        if (x + 2 < x && game[x + 2, y + 1] == t)
-                        {
-                            return new Move(c, MoveDirection.Up);
-                        }
-
-                        if (y + 2 < y && game[x + 1, y + 2] == t)
-                        {
-                            return new Move(c, MoveDirection.Right);
-                        }
-                    }
-                }
-            }
-        }
-
-        // If no move is found, return default/invalid.
-        return default;
-    }
+    //    // If no move is found, return default/invalid.
+    //    return default;
+    //}
 }
