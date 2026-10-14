@@ -11,12 +11,18 @@ public class Match3Skin : MonoBehaviour
 {
     // Game setup.
     [SerializeField] private TextMeshProUGUI totalScoreText;
+    // FROM COLIN - For Highscore display text
+    [SerializeField] private TextMeshProUGUI highScoreText;
+    [SerializeField] private Match3GameController gameController;
     [SerializeField] private Match3Game game;
     [SerializeField] private Tile[] tilePrefabs;
     [SerializeField] private FloatingScore floatingScorePrefab;
+    [SerializeField] private ParticleSystem matchParticles;
     private float _floatingScoreZ;
     private MatchGrid2D<Tile> _tiles;
     private float2 _tileOffset;
+    
+    public GridShape gridShape = GridShape.Square;
 
     // Drag threshold for input.
     [SerializeField, Range(0.1f, 1f)]
@@ -46,6 +52,11 @@ public class Match3Skin : MonoBehaviour
         TimeManager.OnTimerEnd += GameOverNotify;
         _busyDuration = 0f;
         totalScoreText.SetText("0");
+
+        // FROM COLIN - Write down Level High Score
+        int highScore = DataPersistenceManager.instance.GetLevelHighScore(gameController.LevelID);
+        highScoreText.SetText("High Score: {0}", highScore);
+
         game.StartNewGame();
 
         // Ensures tiles will be centered on the origin.
@@ -65,6 +76,50 @@ public class Match3Skin : MonoBehaviour
             }
         }
 
+        switch (gridShape)
+        {
+            case GridShape.Circle:
+                SpawnTilesCircle();
+                break;
+            
+            case GridShape.Heart:
+                SpawnTilesHeart();
+                break;
+            
+            case GridShape.Square:
+            default:
+                SpawnTilesSquare();
+                break;
+        }
+    }
+    
+    // Local helper function to match corner-trimmed shape rules (for Circle grid type)
+    private bool IsValid(int px, int py)
+    {
+        if (px < 0 || px >= _tiles.SizeX || py < 0 || py >= _tiles.SizeY) return false;
+    
+        bool isOuterCol = (px == 0 || px == _tiles.SizeX - 1);
+        bool isOuterRow = (py == 0 || py == _tiles.SizeY - 1);
+        bool isExtendedRow = (py == 1 || py == _tiles.SizeY - 2);
+        
+        if (isOuterCol && (isOuterRow || isExtendedRow))
+        {
+            return false;
+        }
+        
+        bool isTargetRow = (py == 0 || py == _tiles.SizeY - 1);
+        bool isTargetAdjacentCol = (px == 1 || px == _tiles.SizeX - 2);
+    
+        if (isTargetRow && isTargetAdjacentCol)
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+    private void SpawnTilesSquare()
+    {
         // Loops through tile grid and spawns tiles.
         for (int y = 0; y < _tiles.SizeY; y++)
         {
@@ -75,9 +130,56 @@ public class Match3Skin : MonoBehaviour
         }
     }
 
+    private void SpawnTilesCircle()
+    {
+        // World scale is 1, 1, 1 for tiles
+        float tileWidth = 1.0f;  
+        float tileHeight = 1.0f;
+
+        for (int y = 0; y < _tiles.SizeY; y++)
+        {
+            for (int x = 0; x < _tiles.SizeX; x++)
+            {
+                // Check if this grid coordinate falls outside the corner-trimmed boundary (or is null tile)
+                if (!IsValid(x, y) || game[x, y] == TileState.None)
+                {
+                    _tiles[x, y] = null; // Mark as empty slot 
+                    continue; 
+                }
+
+                // Pass raw grid coordinates (x, y) directly
+                _tiles[x, y] = SpawnTile(game[x, y], x * tileWidth, y * tileHeight);
+            }
+        }
+    }
+
+    private void SpawnTilesHeart()
+    {
+        float tileWidth = 1.0f;  
+        float tileHeight = 1.0f;
+
+        for (int y = 0; y < _tiles.SizeY; y++)
+        {
+            for (int x = 0; x < _tiles.SizeX; x++)
+            {
+                // Skip coordinates that fall outside the heart shape
+                if (!game.IsInsideHeart(x, y))
+                {
+                    _tiles[x, y] = null;
+                    continue; 
+                }
+
+                _tiles[x, y] = SpawnTile(game[x, y], x * tileWidth, y * tileHeight);
+            }
+        }
+    }
+
     // Spawns a random tile at the given location.
-    private Tile SpawnTile (TileState t, float x, float y) =>
-        tilePrefabs[(int)t - 1].Spawn(new Vector3(x + _tileOffset.x, y + _tileOffset.y));
+    private Tile SpawnTile (TileState t, float x, float y)
+    {
+        if (t == TileState.None) return null;
+        return tilePrefabs[(int)t - 1].Spawn(new Vector3(x + _tileOffset.x, y + _tileOffset.y));
+    }
 
     // Invoke specific actions depending on the game state.
     public void DoWork () 
@@ -91,7 +193,63 @@ public class Match3Skin : MonoBehaviour
         }
 
         if (game.HasMatches) ProcessMatches();
-        else if (game.NeedsFilling) DropTiles(); 
+        else if (game.NeedsFilling) DropTiles();
+
+        Move result = Move.FindMove(game);
+        if (result.Equals(default(Move)))
+        {
+            ResetGame();
+        }
+    }
+
+    public void ResetGame()
+    {
+        for (int y = 0; y < _tiles.SizeY; y++)
+        {
+            for (int x = 0; x < _tiles.SizeX; x++)
+            {
+                if (_tiles[x, y] == null) continue;
+                _tiles[x, y].Despawn();
+                _tiles[x, y] = null;
+            }
+        }
+            
+        _tiles = new(game.GridSize);
+        game.ClearGrid();
+            
+        switch (gridShape)
+        {
+            case GridShape.Circle:
+                do
+                {
+                    game.FillCircleGrid();
+                    game.PossibleMove = Move.FindMove(game);
+                }
+                while (!game.PossibleMove.IsValid);
+                SpawnTilesCircle();
+                break;
+            
+            case GridShape.Heart:
+                do
+                {
+                    game.FillHeartGrid();
+                    game.PossibleMove = Move.FindMove(game);
+                }
+                while (!game.PossibleMove.IsValid);
+                SpawnTilesHeart();
+                break;
+            
+            case GridShape.Square:
+            default:
+                do
+                {
+                    game.FillGrid();
+                    game.PossibleMove = Move.FindMove(game);
+                }
+                while (!game.PossibleMove.IsValid);
+                SpawnTilesSquare();
+                break;
+        }
     }
 
     // Invokes Match3Game's ProcessMatches and makes all cleared tiles disappear.
@@ -111,6 +269,9 @@ public class Match3Skin : MonoBehaviour
         for (int i = 0; i < game.Scores.Count; i++)
         {
             SingleScore score = game.Scores[i];
+            matchParticles.transform.position = new Vector3(score.position.x + _tileOffset.x, score.position.y + _tileOffset.y, 0f);
+            matchParticles.Play();
+
             floatingScorePrefab.Show(
                 new Vector3(
                     score.position.x + _tileOffset.x, 
@@ -130,8 +291,28 @@ public class Match3Skin : MonoBehaviour
     // Invokes Match3Game's DropTiles method and handles fallen + new tiles.
     private void DropTiles()
     {
-        game.DropTiles();
+        switch (gridShape)
+        {
+            case GridShape.Circle:
+                game.DropTilesCircle();
+                DropTilesCircle();
+                break;
+            
+            case GridShape.Heart:
+                game.DropTilesHeart();
+                DropTilesHeart();
+                break;
+            
+            case GridShape.Square:
+            default:
+                game.DropTiles();
+                DropTilesSquare();
+                break;
+        }
+    }
 
+    private void DropTilesSquare()
+    {
         for (int i = 0; i < game.DroppedTiles.Count; i++)
         {
             TileDrop drop = game.DroppedTiles[i];
@@ -149,6 +330,67 @@ public class Match3Skin : MonoBehaviour
 
             _tiles[drop.coordinates] = tile;
             _busyDuration = Mathf.Max(tile.Fall(drop.coordinates.y + _tileOffset.y, dropSpeed), _busyDuration);
+        }
+    }
+    
+    private void DropTilesCircle()
+    {
+        for (int i = 0; i < game.DroppedTiles.Count; i++)
+        {
+            TileDrop drop = game.DroppedTiles[i];
+            int x = drop.coordinates.x;
+            int y = drop.coordinates.y;
+
+            // Skip out-of-bounds drops based on the new shape
+            if (!IsValid(x, y)) 
+                continue;
+
+            Tile tile;
+
+            // Check if the source row is valid within the custom shape
+            bool isFromValidSlot = drop.fromY < _tiles.SizeY && IsValid(x, drop.fromY);
+
+            if (isFromValidSlot)
+            {
+                tile = _tiles[x, drop.fromY];
+                _tiles[x, drop.fromY] = null;
+            }
+            else 
+            {
+                tile = SpawnTile(game[drop.coordinates], x, drop.fromY + newDropOffset);
+            }
+
+            _tiles[drop.coordinates] = tile;
+            _busyDuration = Mathf.Max(tile.Fall(y + _tileOffset.y, dropSpeed), _busyDuration);
+        }
+    }
+
+    private void DropTilesHeart()
+    {
+        for (int i = 0; i < game.DroppedTiles.Count; i++)
+        {
+            TileDrop drop = game.DroppedTiles[i];
+            int x = drop.coordinates.x;
+            int y = drop.coordinates.y;
+
+            // Hard guard: never process or render anything outside the heart
+            if (!game.IsInsideHeart(x, y)) continue;
+
+            Tile tile;
+            bool isFromValidSlot = drop.fromY < _tiles.SizeY && game.IsInsideHeart(x, drop.fromY);
+
+            if (isFromValidSlot && _tiles[x, drop.fromY] != null)
+            {
+                tile = _tiles[x, drop.fromY];
+                _tiles[x, drop.fromY] = null;
+            }
+            else 
+            {
+                tile = SpawnTile(game[drop.coordinates], x, drop.fromY + newDropOffset);
+            }
+
+            _tiles[x, y] = tile;
+            _busyDuration = Mathf.Max(tile.Fall(y + _tileOffset.y, dropSpeed), _busyDuration);
         }
     }
 
@@ -171,6 +413,9 @@ public class Match3Skin : MonoBehaviour
         // If the move is valid and the new coordinates are valid, the tiles can be moved.
         if (move.IsValid && _tiles.AreValidCoordinates(move.From) && _tiles.AreValidCoordinates(move.To))
         {
+            // Aborts the move if either tile is an obstacle or none.
+            if (game[move.From] == TileState.Obstacle || game[move.To] == TileState.Obstacle || game[move.From] == TileState.None || game[move.To] == TileState.None) return true;
+
             DoMove(move);
             return false;
         }

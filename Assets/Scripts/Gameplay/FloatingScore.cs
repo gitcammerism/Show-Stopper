@@ -21,7 +21,7 @@ public class FloatingScore : MonoBehaviour
     {
         FloatingScore instance = _pool.GetInstance(this);
         instance._pool = _pool;
-        instance.displayText.SetText("{0}", value);
+        instance.displayText.SetText("{0}!", value);
         instance.transform.localPosition = position;
         instance._age = 0f;
     }

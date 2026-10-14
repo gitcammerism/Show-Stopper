@@ -13,7 +13,7 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioSource SFXSource;
 
     public AudioClip bgMusic;
-    public AudioClip testSFX;
+    public AudioClip[] sfxArray;
 
     private AudioType _audioType;
 
