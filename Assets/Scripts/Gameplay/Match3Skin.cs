@@ -57,7 +57,7 @@ public class Match3Skin : MonoBehaviour
         int highScore = DataPersistenceManager.instance.GetLevelHighScore(gameController.LevelID);
         highScoreText.SetText("High Score: {0}", highScore);
 
-        game.StartNewGame();
+        _board.StartNewGame();
     }
     
     // Handles dragging input using touch.
@@ -66,7 +66,6 @@ public class Match3Skin : MonoBehaviour
         // Determines the tile position of a & b then creates a Move struct based on the move performed.
         Vector3 a = _board.ScreenToTileSpace(start), b = _board.ScreenToTileSpace(end);
         Vector3 swipe = _board.ScreenToTileSpace(b - a);
-        //Debug.Log(a + ", " + b + ", " + swipe);
 
         if (swipe == Vector3.zero) return true;
         MoveDirection direction;
@@ -76,19 +75,17 @@ public class Match3Skin : MonoBehaviour
         {
             // Horizontal swipe
             direction = swipe.x > 0 ? MoveDirection.Right : MoveDirection.Left;
-            swipe = swipe.x > 0 ? Vector3.right : Vector3.left;
         }
         else
         {
             // Vertical swipe
             direction = swipe.y > 0 ? MoveDirection.Up : MoveDirection.Down;
-            swipe = swipe.y > 0 ? Vector3.up : Vector3.down;
         }
         
         Move move = new Move(a, swipe, direction);
+        if (move.To == move.From) return true;
 
         // If the move is valid and the new coordinates are valid, the tiles can be moved.
-        //Debug.Log(move.From + " -> " + move.To);
         if (move.IsValid && _board.IsValidTile(move.From) && _board.IsValidTile(move.To))
         {
             DoMove(move);
@@ -101,7 +98,7 @@ public class Match3Skin : MonoBehaviour
     private void DoMove (Move move)
     {
         // Calls tileSwapper to handle tile swapping + animation.
-        bool success = game.TryMove(move);
+        bool success = _board.TryMove(move);
         Tile a = _board._boardTiles[_board.ScreenToTileSpace(move.From)];
         Tile b = _board._boardTiles[_board.ScreenToTileSpace(move.To)];
         _busyDuration = tileSwapper.Swap(a, b, !success);
@@ -124,7 +121,7 @@ public class Match3Skin : MonoBehaviour
             if (_busyDuration > 0f) return;
         }
 
-        //if (game.HasMatches) ProcessMatches();
+        if (_board.HasMatches()) ProcessMatches();
         //else if (game.NeedsFilling) DropTiles();
 
         // Move result = Move.FindMove(game);
@@ -149,64 +146,67 @@ public class Match3Skin : MonoBehaviour
     //    game.ClearGrid();
     //}
 
-    // Invokes Match3Game's ProcessMatches and makes all cleared tiles disappear.
-    //private void ProcessMatches ()
-    //{
-    //    game.ProcessMatches();
+    // Invokes Match3Board's ProcessMatches and makes all cleared tiles disappear.
+    private void ProcessMatches ()
+    {
+        _board.ProcessMatches();
 
-    //    for (int i = 0; i < game.ClearedTileCoordinates.Count; i++)
-    //    {
-    //        int2 c = game.ClearedTileCoordinates[i];
-    //        _busyDuration = Mathf.Max(_tiles[c].Disappear(), _busyDuration);
-    //        _tiles[c] = null;
-    //    }
+        for (int i = 0; i < _board.ClearedTiles.Count; i++)
+        {
+            Vector3 c = _board.ClearedTiles[i];
+            _busyDuration = Mathf.Max(_board._boardTiles[c].Disappear(), _busyDuration);
+            _board._boardTiles[c] = null;
+        }
 
-    //    totalScoreText.SetText("{0}", game.TotalScore);
+        totalScoreText.SetText("{0}", game.TotalScore);
 
-    //    for (int i = 0; i < game.Scores.Count; i++)
-    //    {
-    //        SingleScore score = game.Scores[i];
-    //        matchParticles.transform.position = new Vector3(score.position.x + _tileOffset.x, score.position.y + _tileOffset.y, 0f);
-    //        matchParticles.Play();
+        for (int i = 0; i < _board.Scores.Count; i++)
+        {
+            SingleScore score = _board.Scores[i];
+            matchParticles.transform.position = new Vector3(
+                score.position.x + _tileOffset.x, 
+                score.position.y + _tileOffset.y, 
+                0f);
+            matchParticles.Play();
 
-    //        floatingScorePrefab.Show(
-    //            new Vector3(
-    //                score.position.x + _tileOffset.x, 
-    //                score.position.y + _tileOffset.y,
-    //                _floatingScoreZ
-    //            ), 
-    //            score.value
-    //        );
+            floatingScorePrefab.Show(
+                new Vector3(
+                    score.position.x + _tileOffset.x, 
+                    score.position.y + _tileOffset.y,
+                    _floatingScoreZ
+                ), 
+                score.value
+            );
 
-    //        // Avoids weird overlapping of floating scores.
-    //        _floatingScoreZ = _floatingScoreZ <= -0.02f ? 0f : _floatingScoreZ - 0.001f;
-    //    }
+            // Avoids weird overlapping of floating scores.
+            _floatingScoreZ = _floatingScoreZ <= -0.02f ? 0f : _floatingScoreZ - 0.001f;
+        }
 
-    //    if (gameOver && game.NeedsFilling) DropTiles();
-    //}
+        if (gameOver && _board.NeedsFilling) DropTiles();
+    }
 
-    // Invokes Match3Game's DropTiles method and handles fallen + new tiles.
-    //private void DropTilesSquare()
-    //{
-    //    for (int i = 0; i < game.DroppedTiles.Count; i++)
-    //    {
-    //        TileDrop drop = game.DroppedTiles[i];
-    //        Tile tile;
+    // Invokes Match3Board's DropTiles method and handles fallen + new tiles.
+    private void DropTiles()
+    {
+        for (int i = 0; i < _board.DroppedTiles.Count; i++)
+        {
+            TileDrop drop = _board.DroppedTiles[i];
+            Tile tile;
 
-    //        // If the given tile fell, adjust its position.
-    //        if (drop.fromY < _tiles.SizeY)
-    //        {
-    //            tile = _tiles[drop.coordinates.x, drop.fromY];
-    //        }
-    //        else // If not, spawn a new tile.
-    //        {
-    //            tile = SpawnTile(game[drop.coordinates], drop.coordinates.x, drop.fromY + newDropOffset);
-    //        }
+            // If the given tile fell, adjust its position.
+            if (drop.fromY < _tiles.SizeY)
+            {
+                tile = _board._boardTiles[drop.coordinates.x, drop.fromY];
+            }
+            else // If not, spawn a new tile.
+            {
+                tile = SpawnTile(game[drop.coordinates], drop.coordinates.x, drop.fromY + newDropOffset);
+            }
 
-    //        _tiles[drop.coordinates] = tile;
-    //        _busyDuration = Mathf.Max(tile.Fall(drop.coordinates.y + _tileOffset.y, dropSpeed), _busyDuration);
-    //    }
-    //}
+            _tiles[drop.coordinates] = tile;
+            _busyDuration = Mathf.Max(tile.Fall(drop.coordinates.y + _tileOffset.y, dropSpeed), _busyDuration);
+        }
+    }
 
     // If not busy, end the game or wait for game to end.
     public void GameOverNotify(bool playerWon)

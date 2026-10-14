@@ -1,10 +1,6 @@
 using Unity.Mathematics;
 
-/*
- * Last Modified: 09/23/2026 by Chandler Guzman
- * 
- * This struct stores the information for the tile falling down to fill a board gap.
- */
+// This struct stores the information for the tile falling down to fill a board gap.
 
 [System.Serializable]
 public struct TileDrop

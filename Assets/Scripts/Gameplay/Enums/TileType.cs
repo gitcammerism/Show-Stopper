@@ -1,4 +1,4 @@
-// This enum is used to denote/identify the 5 different types of tiles.
+// This enum is used to denote/identify the 5 (or 6) different types of tiles.
 
 public enum TileType
 {
@@ -8,4 +8,5 @@ public enum TileType
     Toy, 
     Treat, 
     Water, 
+    // Obstacle,
 }

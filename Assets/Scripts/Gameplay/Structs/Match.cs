@@ -13,7 +13,7 @@ public struct Match
 
     public Match (Vector3 position, int length, bool isHorizontal, TileType tile)
     {
-        this.location = position;
+        location = position;
         this.length = length;
         this.isHorizontal = isHorizontal;
         this.tile = tile;
