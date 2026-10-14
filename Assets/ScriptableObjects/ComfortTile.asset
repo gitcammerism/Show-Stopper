@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 407db45762527d341804f3801f038cb8, type: 3}
   m_Name: ComfortTile
   m_EditorClassIdentifier: 
-  id: Comfort
+  tile: 1
   visualTile: {fileID: 11400000, guid: 8e6fa805afc5b8045b31ff7228e323fc, type: 2}
   scoreValue: 10

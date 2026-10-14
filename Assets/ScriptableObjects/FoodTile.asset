@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 407db45762527d341804f3801f038cb8, type: 3}
   m_Name: FoodTile
   m_EditorClassIdentifier: 
-  id: Food
+  tile: 2
   visualTile: {fileID: 11400000, guid: ef61b1fe46547ef41bf2b4a88dce1a09, type: 2}
   scoreValue: 10

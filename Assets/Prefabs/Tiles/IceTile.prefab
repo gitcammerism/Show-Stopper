@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7162692254340548971}
   - component: {fileID: 922562815397533939}
-  - component: {fileID: 5370065686984074272}
+  - component: {fileID: 7688351429178229153}
   m_Layer: 0
   m_Name: IceTile
   m_TagString: Untagged
@@ -88,7 +88,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &5370065686984074272
+--- !u!114 &7688351429178229153
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -97,7 +97,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 7572622473991741082}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7592757c8abb61a468f4368094bea9ce, type: 3}
+  m_Script: {fileID: 11500000, guid: cea41c970fdb87b40a2f230ce8bcd740, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  disappearDuration: 0.25
