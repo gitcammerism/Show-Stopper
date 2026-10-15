@@ -1,9 +1,9 @@
 using UnityEngine;
 
-public class Cell : MonoBehaviour
+public class Cell 
 {
     public int x, y;
-    public bool active;
+    public bool active = true;
     public Vector3 worldPos;
     public Tile tile;
     public Obstacle obstacle;

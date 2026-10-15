@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1136108274370554979}
   - component: {fileID: 7518815034866480620}
-  - component: {fileID: 961049866543364491}
+  - component: {fileID: 4324004165254252231}
   m_Layer: 0
   m_Name: ComfortTile
   m_TagString: Untagged
@@ -88,7 +88,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &961049866543364491
+--- !u!114 &4324004165254252231
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -97,7 +97,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 2294568990504206909}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 566115ccd4b032c4eb95b7cd0571819e, type: 3}
+  m_Script: {fileID: 11500000, guid: 5f4c02c0fd9b0f74e9fc4822df054a6e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tileType: 1
+  type: 0
+  moveSpeed: 5
