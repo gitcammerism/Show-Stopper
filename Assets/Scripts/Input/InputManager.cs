@@ -134,7 +134,7 @@ public class InputManager : MonoBehaviour
     // Convert screen coordinates to world coordinates
     public static Vector3 ScreenToWorld(Camera camera, Vector3 position)
     {
-        position.z = 0;
+        position.z = Mathf.Abs(camera.transform.position.z);
         return camera.ScreenToWorldPoint(position);
     }
 
