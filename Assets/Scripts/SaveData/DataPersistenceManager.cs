@@ -127,6 +127,141 @@ public class DataPersistenceManager : MonoBehaviour
         dataHandler.Save(gameData);
     }
 
+    // Grabs the high score for each level
+    public int GetLevelHighScore(string levelID)
+    {
+        
+        // Load game data
+        if (gameData == null)
+        {
+            gameData = dataHandler.Load();
+
+            if (gameData == null)
+            {
+                gameData = new GameData();
+            }
+        }
+
+        // Ammends any save files with high score dictionary in case of error
+        if (gameData.levelHighScores == null)
+        {
+            gameData.levelHighScores = new SerializableDictionary<string, int>();
+        }
+
+        // Return high score from previous playthrough
+        if (gameData.levelHighScores.TryGetValue(levelID, out int highScore))
+        {
+            return highScore;
+        }
+
+        // Return a 0 if the level has no previously saved score
+        return 0;
+    }
+
+    // Save high score to corresponding level
+    public void RecordLevelScore(string levelID, int newScore)
+    {
+        // Load game data
+        if (gameData == null)
+        {
+            gameData = dataHandler.Load();
+
+            if (gameData == null)
+            {
+                gameData = new GameData();
+            }
+        }
+
+        // Ammends any save files with high score dictionary in case of error
+        if (gameData.levelHighScores == null)
+        {
+            gameData.levelHighScores = new SerializableDictionary<string, int>();
+        }
+
+        int previousHighScore = GetLevelHighScore(levelID);
+
+        // Update high score if higher than previous
+        if (newScore > previousHighScore)
+        {
+            gameData.levelHighScores[levelID] = newScore;
+
+            dataHandler.Save(gameData);
+
+            Debug.Log($"New high score for {levelID}: {newScore}");
+        }
+    }
+
+    // Save collected resources from a level
+    public void AddCollectedResources(Dictionary<TileType, int> collectedResources)
+    {
+        // Load game data
+        if (gameData == null)
+        {
+            gameData = dataHandler.Load();
+
+            if (gameData == null)
+            {
+                gameData = new GameData();
+            }
+        }
+
+        // Ammends any save files with high score dictionary in case of error
+        if (gameData.resources == null)
+        {
+            gameData.resources = new SerializableDictionary<string, int>();
+        }
+
+        // Add resources to players collected resources
+        foreach (KeyValuePair<TileType, int> resource in collectedResources)
+        {
+            string resourceID = resource.Key.ToString();
+
+            // If none of this resource to be collected
+            // Continue to next resource
+            if (resource.Value <= 0)
+            {
+                continue;
+            }
+
+            // If player has resource already, add more
+            // If not, create new entry then add
+            if (gameData.resources.ContainsKey(resourceID))
+            {
+                gameData.resources[resourceID] += resource.Value;
+            }
+            else
+            {
+                gameData.resources.Add(resourceID, resource.Value);
+            }
+        }
+
+        // Save collected resources
+        dataHandler.Save(gameData);
+    }
+
+    // Load saved resource
+    // Return a 0 unless the resource is real and actually has a value tied to it
+    public int GetResourceCount(string resourceID)
+    {
+        if (gameData == null)
+        {
+            return 0;
+        }
+
+        if (gameData.resources == null)
+        {
+            return 0;
+        }
+
+        if (gameData.resources.TryGetValue(resourceID, out int amount))
+        {
+            return amount;
+        }
+
+        return 0;
+    }
+
+    // Save the game when quitting the game
     private void OnApplicationQuit()
     {
         SaveGame();

@@ -5,11 +5,22 @@ using UnityEngine.InputSystem;
 
 //This script controls the game start and end, taking in player input and processing it through Match3Skin.
 
-public class Match3GameController : MonoBehaviour
+public class Match3GameController : MonoBehaviour, IDataPersistence
 {
     [SerializeField] private Match3Skin match3;
     [SerializeField] private TextMeshProUGUI gameOverText;
     [SerializeField] private TextMeshProUGUI gameWinText;
+    [SerializeField] private ParticleSystem gameWinParticles;
+
+    // FROM COLIN - For determining when the level is finished for saving
+    // FROM COLIN - Also adds collected resources
+    public bool levelCompleted = false;
+    [SerializeField] private Match3Game match3Game;
+    [SerializeField] private ResourceManager resourceManager;
+
+    // FROM COLIN - For generating unique level ids
+    [SerializeField] private string ID;
+    public string LevelID => ID;
 
     // Input-handling variables
     private Vector3 _dragStart;
@@ -82,11 +93,66 @@ public class Match3GameController : MonoBehaviour
         if (match3.IsPlaying) match3.DoWork();
     }
 
+    // FROM COLIN - For generating unique level ids
+    #if UNITY_EDITOR
+    private void OnValidate()
+    {
+        if (this == null || gameObject == null)
+        {
+            return;
+        }
+
+        UnityEngine.SceneManagement.Scene scene = gameObject.scene;
+
+        if (!scene.IsValid() || string.IsNullOrEmpty(scene.name))
+        {
+            return;
+        }
+
+        string sceneName = scene.name;
+
+        // Names the GUID based off level nam
+        if (sceneName.StartsWith("Level"))
+        {
+            string levelNumber = sceneName.Substring(5);
+
+            if (int.TryParse(levelNumber, out int levelNum))
+            {
+                string newID = levelNum.ToString();
+
+                if (ID != newID)
+                {
+                    ID = newID;
+                    UnityEditor.EditorUtility.SetDirty(this);
+                }
+            }
+        }
+    }
+    #endif
+
+    // FROM COLIN - Taken from IDataPersistence
+    // FROM COLIN - Sees if the level has been completed
+    public void LoadData(GameData data)
+    {
+        data.levelsCompleted.TryGetValue(ID, out levelCompleted);
+    }
+
+    public void SaveData(ref GameData data)
+    {
+        if (data.levelsCompleted.ContainsKey(ID))
+        {
+            data.levelsCompleted.Remove(ID);
+        }
+
+        data.levelsCompleted.Add(ID, levelCompleted);
+    }
+
     // Subscribes to OnStartTouch, checks if player is currently dragging a tile
     private void TouchStarted(Vector3 position, float time, InputAction.CallbackContext context)
     {
         if (!_isDragging && !match3.IsBusy)
         {
+            Debug.Log("Touch started at " + position);
             _dragStart = position;
             _isDragging = true;
         }
@@ -97,6 +163,7 @@ public class Match3GameController : MonoBehaviour
     {
         if (_isDragging && !match3.IsBusy)
         {
+            Debug.Log("Touch ended at " + position);
             match3.EvaluateDrag(_dragStart, position);
             _isDragging = false;
         }
@@ -126,5 +193,12 @@ public class Match3GameController : MonoBehaviour
     {
         Debug.Log("We reached the level goal!");
         gameWinText.gameObject.SetActive(true);
+        gameWinParticles.Play();
+
+        // FROM COLIN - Save level completeion, high score, collected resources
+        // FROM COLIN - After beating level
+        levelCompleted = true;
+        DataPersistenceManager.instance.RecordLevelScore(ID, match3Game.TotalScore);
+        DataPersistenceManager.instance.AddCollectedResources(resourceManager.collectedResources);
     }
 }

@@ -5,11 +5,13 @@ public class MainMenuManager : MonoBehaviour
     [SerializeField] private GameObject mainMenu;
     [SerializeField] private GameObject settings;
     [SerializeField] private GameObject howToPlay;
+    [SerializeField] private GameObject credits;
     void OnEnable()
     {
         mainMenu.SetActive(true);
         settings.SetActive(false);
         howToPlay.SetActive(false);
+        credits.SetActive(false);
     }
 
     public void ToggleMainMenu()
@@ -17,6 +19,7 @@ public class MainMenuManager : MonoBehaviour
         mainMenu.SetActive(true);
         settings.SetActive(false);
         howToPlay.SetActive(false);
+        credits.SetActive(false);
     }
 
     public void ToggleSettings()
@@ -24,6 +27,7 @@ public class MainMenuManager : MonoBehaviour
         settings.SetActive(true);
         mainMenu.SetActive(false);
         howToPlay.SetActive(false);
+        credits.SetActive(false);
     }
 
     public void ToggleHowToPlay()
@@ -31,5 +35,14 @@ public class MainMenuManager : MonoBehaviour
         settings.SetActive(false);
         mainMenu.SetActive(false);
         howToPlay.SetActive(true);
+        credits.SetActive(false);
+    }
+
+    public void ToggleCredits()
+    {
+        settings.SetActive(false);
+        mainMenu.SetActive(false);
+        howToPlay.SetActive(false);
+        credits.SetActive(true);
     }
 }
