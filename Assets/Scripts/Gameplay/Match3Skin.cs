@@ -61,9 +61,11 @@ public class Match3Skin : MonoBehaviour
     // Handles dragging input using touch.
     public bool EvaluateDrag (Vector3 start, Vector3 end)
     {
+        Debug.Log("Start: " + start);
+        Debug.Log("End: " + end);
         // Determines the tile position of a & b then creates a Move struct based on the move performed.
-        Vector3 a = _board.ScreenToTileSpace(start), b = _board.ScreenToTileSpace(end);
-        Vector3 swipe = _board.ScreenToTileSpace(b - a);
+        Vector3 a = _board.WorldToLocalCell(start), b = _board.WorldToLocalCell(end);
+        Vector3 swipe = _board.WorldToLocalCell(b - a);
 
         if (swipe == Vector3.zero) return true;
         MoveDirection direction;
@@ -182,6 +184,10 @@ public class Match3Skin : MonoBehaviour
     // Invokes Match3Board's DropTiles method and handles fallen + new tiles.
     private void DropTiles()
     {
+        _board.DropTiles();
+        
+        Debug.Log("Skin DropTiles");
+        
         BoundsInt bounds = _board.boardTilemap.cellBounds;
         for (int i = 0; i < _board.DroppedTiles.Count; i++)
         {

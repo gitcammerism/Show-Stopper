@@ -86,7 +86,6 @@ public class Match3Board : MonoBehaviour
         if (!_boardTiles.ContainsKey(worldPosition)) 
             _boardTiles.Add(worldPosition, tile);
         
-        
         // Spawns new tile prefab as long as a match isn't made in doing so
         do
         {
@@ -98,11 +97,6 @@ public class Match3Board : MonoBehaviour
 
             // Creates new prefab tile
             newTile = tilePrefabs[UnityEngine.Random.Range(0, tilePrefabs.Length)].Spawn(worldPosition);
-            //newTile = Instantiate(
-            //    tilePrefabs[UnityEngine.Random.Range(0, tilePrefabs.Length)],
-            //    worldPosition,
-            //    Quaternion.identity
-            //);
 
             // Stores prefab in dictionary
             _boardTiles[worldPosition] = newTile;
@@ -120,7 +114,6 @@ public class Match3Board : MonoBehaviour
         if (_boardTiles.ContainsKey(left1) && _boardTiles[left1].tileType == tileType &&
             _boardTiles.ContainsKey(left2) && _boardTiles[left2].tileType == tileType)
         {
-            Debug.Log("Match found.");
             return true;
         }
         
@@ -141,7 +134,15 @@ public class Match3Board : MonoBehaviour
     public Vector3 ScreenToTileSpace(Vector3 screenPosition)
     {
         Vector3Int newPos = grid.WorldToCell(screenPosition);
+        Debug.Log("Position: " + grid.GetCellCenterWorld(newPos));
         return grid.GetCellCenterWorld(newPos);
+    }
+
+    public Vector3 WorldToLocalCell(Vector3 worldPosition)
+    {
+        Vector3Int newPos = boardTilemap.WorldToCell(worldPosition);
+        Debug.Log("Tapped: " + boardTilemap.GetCellCenterLocal(newPos));
+        return boardTilemap.GetCellCenterLocal(newPos);
     }
 
     // Checks if the given tile is valid.
@@ -195,6 +196,8 @@ public class Match3Board : MonoBehaviour
                 TileType t = _boardTiles[currentPos].tileType;
                 if (t == start && start != TileType.None)
                 {                 
+                    Debug.Log(start + " and " + t + " match");
+                    Debug.Log("(" + startPos + ") & (" + currentPos + ")");
                     length += 1; // If there is a match, increase match length.
                 }
                 else
@@ -284,6 +287,7 @@ public class Match3Board : MonoBehaviour
             Match match = _matches[m];
             Vector3 step = match.isHorizontal ? new Vector3(1, 0, 0) : new Vector3(0, 1, 0);
             Vector3 c = match.location;
+            Debug.Log(c);
             
             for (int i = 0; i < match.length; c += step, i++)
             {
