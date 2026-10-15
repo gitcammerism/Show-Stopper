@@ -7,11 +7,11 @@ using UnityEngine;
 public class ResourceManager : MonoBehaviour
 {
     [SerializeField] private List<TileGoal> goalList;
-    private Dictionary<TileState, int> _goalDictionary;
-    public Dictionary<TileState, int> levelProgress;
+    private Dictionary<TileType, int> _goalDictionary;
+    public Dictionary<TileType, int> levelProgress;
 
     // COLIN - Separate dictionary for all collected resources
-    public Dictionary<TileState, int> collectedResources;
+    public Dictionary<TileType, int> collectedResources;
 
     public static event Action OnGoalReached;
 
@@ -31,11 +31,11 @@ public class ResourceManager : MonoBehaviour
         }
 
         // COLIN - Initilize collectedResources like other dicitonaries
-        collectedResources = new Dictionary<TileState, int>();
+        collectedResources = new Dictionary<TileType, int>();
 
-        foreach (TileState tile in Enum.GetValues(typeof(TileState)))
+        foreach (TileType tile in Enum.GetValues(typeof(TileType)))
         {
-            if (tile != TileState.None)
+            if (tile != TileType.None)
             {
                 collectedResources[tile] = 0;
             }
@@ -73,7 +73,7 @@ public class ResourceManager : MonoBehaviour
         // If the progress of the given tile has been reached, check if the other tile goals have been reached.
         if (levelProgress[match.tile] >= _goalDictionary[match.tile])
         {
-            foreach (TileState tile in _goalDictionary.Keys)
+            foreach (TileType tile in _goalDictionary.Keys)
             {
                 // If any tile is at a value less than the goal, immediately exit since it means goal is not reached.
                 if (levelProgress[tile] < _goalDictionary[tile]) return;

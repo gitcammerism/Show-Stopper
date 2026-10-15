@@ -152,6 +152,7 @@ public class Match3GameController : MonoBehaviour, IDataPersistence
     {
         if (!_isDragging && !match3.IsBusy)
         {
+            Debug.Log("Touch started at " + position);
             _dragStart = position;
             _isDragging = true;
         }
@@ -162,6 +163,7 @@ public class Match3GameController : MonoBehaviour, IDataPersistence
     {
         if (_isDragging && !match3.IsBusy)
         {
+            Debug.Log("Touch ended at " + position);
             match3.EvaluateDrag(_dragStart, position);
             _isDragging = false;
         }

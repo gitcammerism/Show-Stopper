@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: afdaf0046aeb2d449b3328adb46f68c0, type: 3}
+  m_Name: ObstaclePlacer
+  m_EditorClassIdentifier: 
+  previewSprite: {fileID: -4721547959098692984, guid: 6c1f25c8e56cd754c91b151ac47de943, type: 3}
+  obstacle: {fileID: 7572622473991741082, guid: 6266b5d0f0cfc5e46ab7828390b39782, type: 3}

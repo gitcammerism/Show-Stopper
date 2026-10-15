@@ -78,7 +78,7 @@
 //     }
 //
 //     // Spawns a random tile at the given location.
-//     // private Tile SpawnTile (TileState t, float x, float y) =>
+//     // private Tile SpawnTile (TileType t, float x, float y) =>
 //     //     tilePrefabs[(int)t - 1].Spawn(new Vector3(x + _tileOffset.x, y + _tileOffset.y));
 //
 //     // Invoke specific actions depending on the game state.

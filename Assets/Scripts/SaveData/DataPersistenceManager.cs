@@ -192,7 +192,7 @@ public class DataPersistenceManager : MonoBehaviour
     }
 
     // Save collected resources from a level
-    public void AddCollectedResources(Dictionary<TileState, int> collectedResources)
+    public void AddCollectedResources(Dictionary<TileType, int> collectedResources)
     {
         // Load game data
         if (gameData == null)
@@ -212,7 +212,7 @@ public class DataPersistenceManager : MonoBehaviour
         }
 
         // Add resources to players collected resources
-        foreach (KeyValuePair<TileState, int> resource in collectedResources)
+        foreach (KeyValuePair<TileType, int> resource in collectedResources)
         {
             string resourceID = resource.Key.ToString();
 

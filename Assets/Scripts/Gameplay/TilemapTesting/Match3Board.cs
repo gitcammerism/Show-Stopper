@@ -5,132 +5,191 @@ using System.Collections.Generic;
 public class Match3Board : MonoBehaviour
 {
     [Header("Components")] 
+    public Grid grid;
     [SerializeField] private Tilemap boardTilemap;
-    [SerializeField] private Match3Tile[] tiles;
 
-    [Header("Board Settings")] 
-    [SerializeField] private int width = 6;
-    [SerializeField] private int height = 6;
+    [Header("Prefabs")] 
+    public Tile[] tilePrefabs;
     
-    // 2D array grid holding the tiles
-    private Match3Tile[,] tileGrid;
+    public Dictionary<Vector3, Tile> _boardTiles = new();
+    
+    // List that stores the matches made by the player for processing.
+    private List<Match> _matches = new();
     
     void Start()
     {
-        InitializeBoard();
-    }
-
-    private void InitializeBoard()
-    {
-        tileGrid = new Match3Tile[width, height];
-
-        for (int x = 0; x < width; x++)
+        // Refreshes all tiles, ensuring that the preview sprites won't be seen in-game.
+        #if !UNITY_EDITOR
+        var tilemaps = grid.GetComponentsInChildren<Tilemap>();
+        foreach (var tilemap in tilemaps)
         {
-            for (int y = 0; y < height; y++)
-            {
-                Match3Tile tile;
-                
-                // Do-while to avoid instant matches spawned at game start
-                do
-                {
-                    tile = tiles[Random.Range(0, tiles.Length)];
-                }
-                while (CreatesMatchAtPositions(x, y, tile));
-                
-                tileGrid[x, y] = tile;
-                
-                // Renders tile onto Unity Tilemap
-                boardTilemap.SetTile(new Vector3Int(x, y, 0), tile.visualTile);
-            }
+            tilemap.RefreshAllTiles();
         }
+        #endif
     }
-    
-    // Checks if there are any matches made at the given position with the given tile
-    private bool CreatesMatchAtPositions(int x, int y, Match3Tile tile)
-    {
-        // Checks for horizontal matches to the left 
-        if (x >= 2 && tileGrid[x - 1, y] == tile && tileGrid[x - 2, y] == tile) return true;
 
-        // Checks for vertical matches above
-        if (y >= 2 && tileGrid[x, y - 1] == tile && tileGrid[x, y - 2] == tile) return true;
+    // Spawns a tile at the given position (called from TilePlacer).
+    public void SpawnTile(Vector3Int position, Tile tile = null)
+    {
+        Tile newTile = tile;
+        Vector3 worldPosition = grid.GetCellCenterWorld(position);
+        
+        // Adds to dictionary
+        if (!_boardTiles.ContainsKey(worldPosition)) 
+            _boardTiles.Add(worldPosition, tile);
+        
+        
+        // Spawns new tile prefab as long as a match isn't made in doing so
+        do
+        {
+            // Checks if there is already a tile there (previous failure) and destroy 
+            if (_boardTiles[worldPosition] != null)
+            {
+                Destroy(_boardTiles[worldPosition].gameObject);
+            }
+            
+            // Creates new prefab tile
+            newTile = Instantiate(
+                tilePrefabs[Random.Range(0, tilePrefabs.Length)],
+                worldPosition,
+                Quaternion.identity
+            );
+
+            // Stores prefab in dictionary
+            _boardTiles[worldPosition] = newTile;
+        } 
+        while (CreatesMatch(worldPosition, newTile.tileType));
+    }
+
+    // Checks if, when placed at this position, the given tile creates a match
+    private bool CreatesMatch(Vector3 position, TileType tileType)
+    {
+        // Checks for horizontal matches
+        Vector3 left1 = new Vector3(position.x - 1, position.y, 0);
+        Vector3 left2 = new Vector3(position.x - 2, position.y, 0);
+
+        if (_boardTiles.ContainsKey(left1) && _boardTiles[left1].tileType == tileType &&
+            _boardTiles.ContainsKey(left2) && _boardTiles[left2].tileType == tileType)
+        {
+            return true;
+        }
+        
+        // Checks for vertical matches 
+        Vector3 up1 = new Vector3(position.x, position.y - 1, 0);
+        Vector3 up2 = new Vector3(position.x, position.y - 2, 0);
+        
+        if (_boardTiles.ContainsKey(up1) && _boardTiles[up1].tileType == tileType &&
+            _boardTiles.ContainsKey(up2) && _boardTiles[up2].tileType == tileType)
+        {
+            return true;
+        }
 
         return false;
     }
 
-    public void ProcessMatches()
+    public Vector3 ScreenToTileSpace(Vector3 screenPosition)
     {
-        HashSet<Vector2Int> tilesToClear = new();
-        
-        // Checks for horizontal matches 
-        for (int y = 0; y < height; y++)
-        {
-            for (int x = 0; x < width - 2; x++)
-            {
-                Match3Tile current = tileGrid[x, y];
-                if (current != null && tileGrid[x, y + 1] == current && tileGrid[x, y + 2] == current)
-                {
-                    tilesToClear.Add(new Vector2Int(x, y));
-                    tilesToClear.Add(new Vector2Int(x, y + 1));
-                    tilesToClear.Add(new Vector2Int(x, y + 2));
-                }
-            }
-        }
-
-        if (tilesToClear.Count > 0)
-        {
-            foreach (Vector2Int tile in tilesToClear)
-            {
-                tileGrid[tile.x, tile.y] = null;
-                boardTilemap.SetTile(new Vector3Int(tile.x, tile.y, 0), null);
-            }
-
-            ApplyGravity();
-        }
+        Vector3Int newPos = grid.WorldToCell(screenPosition);
+        return grid.GetCellCenterWorld(newPos);
     }
 
-    private void ApplyGravity()
+    public bool IsValidTile(Vector3 position)
     {
-        for (int x = 0; x < width; x++)
+        Vector3 worldPos = ScreenToTileSpace(position);
+        Debug.Log(worldPos);
+        if (_boardTiles.ContainsKey(worldPos))
         {
-            for (int y = 0; y < height; y++)
-            {
-                if (tileGrid[x, y] == null)
-                {
-                    for (int nextY = y + 1; nextY < height; nextY++)
-                    {
-                        if (tileGrid[x, nextY] != null)
-                        {
-                            tileGrid[x, y] = tileGrid[x, nextY];
-                            tileGrid[x, nextY] = null;
-                            
-                            boardTilemap.SetTile(new Vector3Int(x, y, 0), tileGrid[x, y].visualTile);
-                            boardTilemap.SetTile(new Vector3Int(x, nextY, 0), null);
-                            break;
-                        }
-                    }
-                }
-            }
-        }
-
-        RefillTopRow();
-    }
-
-    private void RefillTopRow()
-    {
-        for (int x = 0; x < width; x++)
-        {
-            for (int y = 0; y < height; y++)
-            {
-                if (tileGrid[x, y] == null)
-                {
-                    Match3Tile newTile = tiles[Random.Range(0, tiles.Length)];
-                    tileGrid[x, y] = newTile;
-                    boardTilemap.SetTile(new Vector3Int(x, y, 0), newTile.visualTile);
-                }
-            }
+            Debug.Log("Valid tile");
+            return true;
         }
         
-        // Checks for new matches from filling
-        ProcessMatches();
+        Debug.Log("Invalid tile");
+        return false;
+    }
+
+    public void Swap(Vector3 a, Vector3 b)
+    {
+        Vector3 worldA = ScreenToTileSpace(a);
+        Vector3 worldB = ScreenToTileSpace(b);
+        Debug.Log("Swapping " + worldA + " and " + worldB);
+        (_boardTiles[worldA], _boardTiles[worldB]) = (_boardTiles[worldB], _boardTiles[worldA]);
+    }
+
+    public bool FindMatches()
+    {
+        BoundsInt bounds = boardTilemap.cellBounds;
+        
+        // Searches for horizontal matches.
+        for (int y = bounds.yMin; y < bounds.yMax; y++)
+        {
+            // Start at the first horizontal tile on the grid.
+            Vector3 startPos = grid.GetCellCenterWorld(new Vector3Int(0, y, 0));
+            TileType start = _boardTiles[startPos].tileType;
+            int length = 1;
+
+            // Loops through the rest of the row to search for matches.
+            for (int x = bounds.xMin; x < bounds.xMax; x++)
+            {
+                Vector3 currentPos = grid.GetCellCenterWorld(new Vector3Int(x, y, 0));
+                TileType t = _boardTiles[currentPos].tileType;
+                if (t == start && start != TileType.None) length += 1; // If there is a match, increase match length.
+                else
+                {
+                    // If no more matches found but the length is >= 3 (match found in row) add to list then restart.
+                    if (length >= 3 && start != TileType.None)
+                        _matches.Add(new Match(
+                            grid.GetCellCenterWorld(new Vector3Int(x - length, y, 0)), 
+                            length, true, start)
+                        );
+                    
+                    start = t;
+                    length = 1;
+                }
+            }
+
+            // Checks for a 3+  match at the end of the row then adds to the match list.
+            if (length >= 3 && start != TileType.None) 
+                _matches.Add(new Match(
+                    grid.GetCellCenterWorld(new Vector3Int(bounds.xMax - length, y, 0)), 
+                    length, true, start)
+                );
+        }
+
+        // Searches for vertical matches.
+        for (int x = bounds.xMin; x < bounds.xMax; x++)
+        {
+            // Starts at the first vertical tile on the grid.
+            Vector3 startPos = grid.GetCellCenterWorld(new Vector3Int(x, 0, 0));
+            TileType start = _boardTiles[startPos].tileType;
+            int length = 1;
+
+            // Loops through the rest of the column to search for matches.
+            for (int y = bounds.yMin; y < bounds.yMax; y++)
+            {
+                Vector3 currentPos = grid.GetCellCenterWorld(new Vector3Int(x, y, 0));
+                TileType t = _boardTiles[currentPos].tileType;
+                if (t == start && start != TileType.None) length += 1; // If there is a match, increase match length.
+                else
+                {
+                    // If no more matches found but the length is >= 3 (match found in column) add to list then restart.
+                    if (length >= 3 && start != TileType.None) 
+                        _matches.Add(new Match(
+                            grid.GetCellCenterWorld(new Vector3Int(x, y - length, 0)),
+                            length, false, start)
+                        );
+                    start = t;
+                    length = 1;
+                }
+            }
+
+            // Checks for a 3+  match at the end of the column then adds to the match list.
+            if (length >= 3 && start != TileType.None) 
+                _matches.Add(new Match(
+                        grid.GetCellCenterWorld(new Vector3Int(x, bounds.yMax - length, 0)),
+                        length, false, start)
+                );
+        }
+
+        return _matches.Count > 0;
     }
 }
