@@ -7,14 +7,47 @@ using System.Collections;
 
 public class GameManager : MonoBehaviour
 {
+    [Header("Level")]
+    [SerializeField] private string levelID;
+
     [SerializeField] private LevelTimer timer;
     [SerializeField] private ScoreManager scoreManager;
     [SerializeField] private BoardInput boardInput;
     [SerializeField] private TextMeshProUGUI gameOverText;
     [SerializeField] private TextMeshProUGUI gameWinText;
     [SerializeField] private Button restartButton;
+    [SerializeField] private GoalTracker goalTracker;
 
     public bool LevelEnded { get; private set; }
+
+    // FROM COLIN - Give each level a unique GUID
+    #if UNITY_EDITOR
+    private void OnValidate()
+    {
+        if (gameObject == null)
+        {
+            return;
+        }
+
+        if (!gameObject.scene.IsValid())
+        {
+            return;
+        }
+
+        string sceneName = gameObject.scene.name;
+
+        if (sceneName.StartsWith("Level"))
+        {
+            string levelNumber = sceneName.Substring(5);
+
+            if (int.TryParse(levelNumber, out int levelNum))
+            {
+                levelID = levelNum.ToString();
+                UnityEditor.EditorUtility.SetDirty(this);
+            }
+        }
+    }
+    #endif
 
     void OnEnable() => timer.TimeUp += OnTimeUp;
     void OnDisable() => timer.TimeUp -= OnTimeUp;
@@ -59,6 +92,11 @@ public class GameManager : MonoBehaviour
             scoreManager.AddPoints(Mathf.RoundToInt(step * scoreManager.pointsPerSecond));
             yield return null;
         }
+
+        // FROM COLIN - Save all necessary data
+        DataPersistenceManager.instance.RecordLevelScore(levelID, scoreManager.Score);
+        DataPersistenceManager.instance.RecordLevelCompletion(levelID);
+        DataPersistenceManager.instance.AddCollectedResources(goalTracker.GetCollectedResources());
 
         // logic that goes after drain completes
         gameWinText.gameObject.SetActive(true);
