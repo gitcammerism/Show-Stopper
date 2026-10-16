@@ -22,7 +22,7 @@ public class BoardBuilder : MonoBehaviour
     [SerializeField] private TilePrefab[] tilePrefabs;
 
     [Header("Customization")]
-    [SerializeField] private float dropStagger = 0.08f; // stagger for ice block tile spawns
+    [SerializeField] private float dropStagger = 0.08f; // stagger for any wall obstacle spawns
 
     private List<TileType> spawnableTypes;
     private Dictionary<TileBase, ObstacleDefinition> obstacleLookup;
@@ -95,6 +95,16 @@ public class BoardBuilder : MonoBehaviour
         var t = Cells[x, y].tile;
         return t != null ? t.type : TileType.None;
     }
+
+    // helper that checks if an obstacle is a "wall" that blocks tiles
+    private bool IsWall(Cell c) =>
+        c == null || !c.active ||
+        (c.obstacle != null && !c.obstacle.definition.tilesFallPast);
+
+    // helper that checks if an obstacle can have tiles fall past it
+    private bool IsPassThrough(Cell c) =>
+        c != null && c.active && c.obstacle != null
+        && c.obstacle.definition.tilesFallPast;
 
     // length of a "run" (match) along one axis
     private int RunLength(Cell c, int dx, int dy)
@@ -364,16 +374,21 @@ public class BoardBuilder : MonoBehaviour
     // applies gravity to tiles that can fall
     private IEnumerator ApplyGravity()
     {
+        // list that will store all tiles' MoveTo coroutine
         var moves = new List<Coroutine>();
         int w = Cells.GetLength(0), h = Cells.GetLength(1);
 
+        // iterates through grid to find holes and adjust tiles that need to fall
         for (int x = 0; x < w; x++)
         {
             int writeY = -1;
             for (int y = 0; y < h; y++)
             {
                 var c = Cells[x, y];
-                if (c == null || !c.CanHoldTile) { writeY = -1; continue; }
+
+                // if tile is a "wall", tiles will spawn UNDERNEATH it
+                if (IsWall(c)) { writeY = -1; continue; }
+                if (!c.CanHoldTile) continue;
 
                 if (c.tile == null)
                 {
@@ -390,42 +405,54 @@ public class BoardBuilder : MonoBehaviour
 
                     moves.Add(StartCoroutine(tile.MoveTo(target.worldPos)));
                     writeY++;
+
+                    // ensures tiles don't land on the ice tile or similar pass-through tiles, leaving that tile as an obstacle
+                    while (writeY < h && IsPassThrough(Cells[x, writeY])) writeY++;
                 }
             }
         }
 
+        // loops through each tile's MoveTo coroutine
         foreach (var co in moves) yield return co;
     }
 
     // refills the grid after matches 
     private IEnumerator Refill()
     {
+        // list that stores DropIn coroutine for each tile
         var moves = new List<Coroutine>();
         int w = Cells.GetLength(0), h = Cells.GetLength(1);
         float cellH = boardMap.layoutGrid.cellSize.y;
 
+        // loops through grid and finds holes to refill
         for (int x = 0; x < w; x++)
         {
             int y = 0;
             while (y < h)
             {
-                var c = Cells[x, y];
-                if (c == null || !c.CanHoldTile) { y++; continue; }
+                // ignores walls for refills
+                if (IsWall(Cells[x, y])) { y++; continue; }
 
-                // if start of segment is found
-                int start = y;
-                while (y < h && Cells[x, y] != null && Cells[x, y].CanHoldTile) y++;
-                int end = y - 1;
+                // list of each "segment" of tiles that is not a wall or obstacle
+                var seg = new List<Cell>();
+                while (y < h && !IsWall(Cells[x, y]))
+                {
+                    if (Cells[x, y].CanHoldTile) seg.Add(Cells[x, y]);
+                    y++;
+                }
+                if (seg.Count == 0) continue; // means there's only walls or obstacles
 
                 // where new tiles will appear 
-                Vector3 origin = Cells[x, end].worldPos + Vector3.up * cellH;
+                Vector3 origin = seg[seg.Count - 1].worldPos + Vector3.up * cellH;
 
+                // spawns in tiles to fill holes
                 int order = 0;
-                for (int i = start; i <= end; i++)
+                foreach (var cell in seg)
                 {
-                    var cell = Cells[x, i];
+                    // means there's already a tile here
                     if (cell.tile != null) continue;
 
+                    // spawns in tile for refil and adds DropIn coroutine to loop through later
                     var type = spawnableTypes[Random.Range(0, spawnableTypes.Count)];
                     var tile = CreateTile(cell, type, origin);
                     moves.Add(StartCoroutine(DropIn(tile, origin, cell.worldPos, order * dropStagger)));
@@ -434,21 +461,24 @@ public class BoardBuilder : MonoBehaviour
             }
         }
 
+        // loops through the DropIn coroutine for each tile
         foreach (var co in moves) yield return co;
     }
 
     // animates tiles dropping in
-    IEnumerator DropIn(Tile tile, Vector3 origin, Vector3 target, float delay)
+    private IEnumerator DropIn(Tile tile, Vector3 origin, Vector3 target, float delay)
     {
         float cellH = boardMap.layoutGrid.cellSize.y;
         var renderers = tile.GetComponentsInChildren<SpriteRenderer>();
 
+        // ensures that tiles dropping in start invisible
         SetAlpha(renderers, 0f);
         if (delay > 0f) yield return new WaitForSeconds(delay);
 
+        // movement animation coroutine for tile
         StartCoroutine(tile.MoveTo(target));
 
-        // fade in over the first cell of travel
+        // fade in slowly as it moves onto the grid
         while (tile != null && (tile.transform.position - target).sqrMagnitude > 0.0001f)
         {
             float a = Mathf.Clamp01((origin.y - tile.transform.position.y) / cellH);
@@ -456,10 +486,12 @@ public class BoardBuilder : MonoBehaviour
             yield return null;
         }
 
+        // ensures tile is fully visible at the end
         if (tile != null) SetAlpha(renderers, 1f);
     }
 
-    static void SetAlpha(SpriteRenderer[] renderers, float a)
+    // helper method that sets the alpha/transparency of the given sprite renderers
+    private static void SetAlpha(SpriteRenderer[] renderers, float a)
     {
         foreach (var sr in renderers)
         {
@@ -469,7 +501,7 @@ public class BoardBuilder : MonoBehaviour
         }
     }
 
-    // swaps tile references (temporary for checking matches)
+    // quickly swaps tile references temporarily (for checking matches & hint system later)
     private void SwapTileRefs(Cell a, Cell b) => (a.tile, b.tile) = (b.tile, a.tile);
 
     // checks for valid moves on the board
@@ -477,6 +509,7 @@ public class BoardBuilder : MonoBehaviour
     {
         int w = Cells.GetLength(0), h = Cells.GetLength(1);
 
+        // iterates through board to find valid 3+ matches that can be made
         for (int y = 0; y < h; y++)
         {
             for (int x = 0; x < w; x++)
@@ -484,39 +517,46 @@ public class BoardBuilder : MonoBehaviour
                 var c = Cells[x, y];
                 if (c == null || c.tile == null) continue;
 
+                // first checks for horizontal then vertical matches
                 for (int k = 0; k < 2; k++)
                 {
                     var n = k == 0 ? GetCell(x + 1, y) : GetCell(x, y + 1);
                     if (n == null || n.tile == null) continue;
                     if (n.tile.type == c.tile.type) continue;
 
+                    // temporarily swaps tiles to see if the swap would result in a match
                     SwapTileRefs(c, n);
                     bool ok = HasMatchAt(c) || HasMatchAt(n);
                     SwapTileRefs(c, n);
 
+                    // if valid move is found return true
                     if (ok) { moveA = c; moveB = n; return true; }
                 }
             }
         }
 
+        // no valid moves were found
         moveA = moveB = null;
         return false;
     }
 
-    // checks if there is a valid move on the current board
+    // checks if there is a valid move on the current board (no output needed other than bool, so discard outputs)
     private bool HasValidMove() => FindValidMove(out _, out _);
 
     // shuffles the board using the fisher-yates shuffle algorithm :D
     private bool TryShuffle(int maxAttempts)
     {
+        // lists storing tile types and cells respectively
         var cells = new List<Cell>();
         var tiles = new List<Tile>();
 
+        // loop through cells to find valid tiles (obstacles don't move)
         foreach (var c in Cells)
         {
             if (c != null && c.tile != null) { cells.Add(c); tiles.Add(c.tile); }
         }
 
+        // will keep trying to shuffle current tiles until max attempts are reached
         for (int attempt = 0; attempt < maxAttempts; attempt++)
         {
             // fisher-yates shuffle algorithm start here
@@ -532,17 +572,21 @@ public class BoardBuilder : MonoBehaviour
                 tiles[i].cell = cells[i];
             }
 
+            // again check to ensure no immediate matches are made but that there are valid moves
             if (FindRuns().Count == 0 && HasValidMove()) return true;
         }
 
+        // shuffle failed
         return false;
     }
 
     // in case shuffling doesn't work (unlikely) this is a fallback method that re-generates the board
     private void RegenerateTiles()
     {
+        // attempts 50 times to re-generate the board
         for (int attempt = 0; attempt < 50; attempt++)
         {
+            // destroys each tile and resets each cell (obstacles excluded)
             foreach (var c in Cells)
             {
                 if (c != null && c.tile != null)
@@ -552,7 +596,7 @@ public class BoardBuilder : MonoBehaviour
                 }
             }
 
-            // bottom-to-top, left-to-right so SpawnTile's exclusion logic works
+            // spawns tiles bottom-to-top, left-to-right so SpawnTile's exclusion logic works
             for (int y = 0; y < Cells.GetLength(1); y++)
             {
                 for (int x = 0; x < Cells.GetLength(0); x++)
@@ -562,16 +606,21 @@ public class BoardBuilder : MonoBehaviour
                 }
             }
 
+            // successful board generated with valid moves
             if (HasValidMove()) return;
         }
 
+        // in case generation fails
         Debug.LogWarning("Couldn't generate a board with valid moves after 50 attempts; check layout & tile count.");
     }
 
     // animates tiles as they shuffle!
     private IEnumerator AnimateTilesToCells()
     {
+        // stores tiles' MoveTo coroutine for animated movement
         var moves = new List<Coroutine>();
+
+        // loops through each cell (excluding obstacles) and notes which ones need to move
         foreach (var c in Cells)
         {
             if (c == null || c.tile == null) continue;
@@ -579,19 +628,21 @@ public class BoardBuilder : MonoBehaviour
             moves.Add(StartCoroutine(c.tile.MoveTo(c.worldPos)));
         }
 
+        // loops through each tiles' MoveTo coroutine
         foreach (var co in moves) yield return co;
     }
 
-    // snaps tiles to the grid
+    // snaps tiles to the grid (used in RegenerateTiles)
     private void SnapTilesToCells()
     {
+        // basically helps ensure that the tile's world position and current position align
         foreach (var c in Cells)
         {
             if (c != null && c.tile != null) c.tile.transform.position = c.worldPos;
         }
     }
 
-    // initiates game board shuffling
+    // initiates game board shuffling if no moves are available
     private IEnumerator EnsureMovesAvailable()
     {
         if (HasValidMove()) yield break;
