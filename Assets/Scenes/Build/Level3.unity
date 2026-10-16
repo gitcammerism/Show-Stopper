@@ -1529,6 +1529,14 @@ PrefabInstance:
       propertyPath: m_Tiles.Array.data[34].second.m_TileSpriteIndex
       value: 8
       objectReference: {fileID: 0}
+    - target: {fileID: 8773909360544223418, guid: 959570488e4a7dc49a75c8bfd8b3619d, type: 3}
+      propertyPath: gameManager
+      value: 
+      objectReference: {fileID: 1510845274}
+    - target: {fileID: 8773909360544223418, guid: 959570488e4a7dc49a75c8bfd8b3619d, type: 3}
+      propertyPath: highScoreText
+      value: 
+      objectReference: {fileID: 1510845273}
     - target: {fileID: 9096094315830682621, guid: 959570488e4a7dc49a75c8bfd8b3619d, type: 3}
       propertyPath: m_Color.b
       value: 0.8584906
@@ -1558,6 +1566,28 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 959570488e4a7dc49a75c8bfd8b3619d, type: 3}
+--- !u!114 &1510845273 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3176697884898718976, guid: 959570488e4a7dc49a75c8bfd8b3619d, type: 3}
+  m_PrefabInstance: {fileID: 1510845272}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1510845274 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 905527180909648499, guid: 959570488e4a7dc49a75c8bfd8b3619d, type: 3}
+  m_PrefabInstance: {fileID: 1510845272}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 639244b521278e54c986766fdc12bb5e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
