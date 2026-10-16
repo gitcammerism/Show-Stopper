@@ -11753,7 +11753,7 @@ Tilemap:
     second:
       serializedVersion: 2
       m_TileIndex: 2
-      m_TileSpriteIndex: 2
+      m_TileSpriteIndex: 5
       m_TileMatrixIndex: 0
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
@@ -11842,14 +11842,14 @@ Tilemap:
     m_Data: {fileID: 167733221, guid: 34e0f0c6258e47947b040afbc9818cd7, type: 3}
   - m_RefCount: 4
     m_Data: {fileID: 208851697, guid: 34e0f0c6258e47947b040afbc9818cd7, type: 3}
+  - m_RefCount: 0
+    m_Data: {fileID: 0}
+  - m_RefCount: 0
+    m_Data: {fileID: 0}
+  - m_RefCount: 0
+    m_Data: {fileID: 0}
   - m_RefCount: 1
     m_Data: {fileID: -5641712530122005352, guid: 34e0f0c6258e47947b040afbc9818cd7, type: 3}
-  - m_RefCount: 0
-    m_Data: {fileID: 0}
-  - m_RefCount: 0
-    m_Data: {fileID: 0}
-  - m_RefCount: 0
-    m_Data: {fileID: 0}
   - m_RefCount: 4
     m_Data: {fileID: -1661075218, guid: 34e0f0c6258e47947b040afbc9818cd7, type: 3}
   - m_RefCount: 1
@@ -17777,6 +17777,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 639244b521278e54c986766fdc12bb5e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  levelID: 
   timer: {fileID: 4019764975868781640}
   scoreManager: {fileID: 1092914217789948498}
   scoreDisplay: {fileID: 8773909360544223418}
@@ -17784,6 +17785,7 @@ MonoBehaviour:
   gameOverText: {fileID: 2783352346426873954}
   gameWinText: {fileID: 8560218611540480125}
   restartButton: {fileID: 4414863603675829074}
+  goalTracker: {fileID: 4059326191150186030}
 --- !u!114 &5480566328773434174
 MonoBehaviour:
   m_ObjectHideFlags: 0

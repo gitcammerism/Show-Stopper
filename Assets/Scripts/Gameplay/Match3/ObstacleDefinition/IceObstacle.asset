@@ -17,4 +17,5 @@ MonoBehaviour:
   hitPoints: 0
   blocksSwap: 0
   fallsWithGravity: 0
+  tilesFallPast: 1
   indestructible: 1
