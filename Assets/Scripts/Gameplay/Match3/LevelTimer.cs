@@ -28,11 +28,7 @@ public class LevelTimer : MonoBehaviour
         if (TimeRemaining > 0f) IsRunning = true;
     }
 
-    public void StopTimer()
-    {
-        IsRunning = false;
-        gameObject.SetActive(false);
-    }
+    public void StopTimer() => IsRunning = false;
 
     void Update()
     {
@@ -44,7 +40,6 @@ public class LevelTimer : MonoBehaviour
             TimeRemaining = 0f;
             IsRunning = false;
             TimeUp?.Invoke();
-            gameObject.SetActive(false);
         }
     }
 }
