@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5773223387720423660}
   - component: {fileID: 9022554901379828070}
-  - component: {fileID: 6576295028108964183}
+  - component: {fileID: 395168047644157070}
   m_Layer: 0
   m_Name: WaterTile
   m_TagString: Untagged
@@ -88,7 +88,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &6576295028108964183
+--- !u!114 &395168047644157070
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -97,7 +97,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 6813439669782754178}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 566115ccd4b032c4eb95b7cd0571819e, type: 3}
+  m_Script: {fileID: 11500000, guid: 5f4c02c0fd9b0f74e9fc4822df054a6e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tileType: 5
+  type: 4
+  moveSpeed: 5

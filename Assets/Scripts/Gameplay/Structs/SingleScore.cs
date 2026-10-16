@@ -1,3 +1,4 @@
+using UnityEngine;
 using Unity.Mathematics;
 
 // Serializable struct that stores the info for the floating score above a match that has been made.
@@ -5,6 +6,6 @@ using Unity.Mathematics;
 [System.Serializable]
 public struct SingleScore
 {
-    public float2 position;
+    public Vector3 position;
     public int value;
 }
