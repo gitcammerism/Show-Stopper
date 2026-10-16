@@ -10,15 +10,6 @@ public class Tile : MonoBehaviour
 
     [SerializeField] private float moveSpeed = 8f;
 
-    // for the purpose of tiles not spawning in above the grid awkwardly
-    void Awake()
-    {
-        // foreach (var sr in GetComponentsInChildren<SpriteRenderer>())
-        // {
-        //     sr.maskInteraction = SpriteMaskInteraction.VisibleOutsideMask;
-        // }
-    }
-
     // initializes tile; basically a constructor
     public void Init(TileType type, Cell cell)
     {
@@ -26,7 +17,7 @@ public class Tile : MonoBehaviour
         this.cell = cell;
     }
 
-    // moves tile to a world position and yields until it arrives
+    // moves tile to a world position with lerp and yields until it arrives
     public IEnumerator MoveTo(Vector3 target, float duration = 0.25f)
     {
         Vector3 start = transform.position;
