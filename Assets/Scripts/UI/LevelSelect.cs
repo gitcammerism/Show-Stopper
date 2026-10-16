@@ -4,7 +4,16 @@ using UnityEngine.UIElements;
 
 public class LevelSelect : MonoBehaviour
 {
-    [SerializeField] private ScrollView _scrollView;
-    [SerializeField] private Level[] levels;
+    [SerializeField] private GameObject comingSoonPanel;
 
+
+    private void OnEnable()
+    {
+        comingSoonPanel.SetActive(false);
+    }
+
+    public void ToggleComingSoonPanel()
+    {
+        comingSoonPanel.SetActive(!comingSoonPanel.activeSelf);
+    }
 }
