@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2199679966967287239}
   - component: {fileID: 3545326662716014708}
-  - component: {fileID: 6685221693824756879}
+  - component: {fileID: 3862413535154991507}
   m_Layer: 0
   m_Name: ToyTile
   m_TagString: Untagged
@@ -88,7 +88,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &6685221693824756879
+--- !u!114 &3862413535154991507
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -97,7 +97,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 1167966880579624046}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7592757c8abb61a468f4368094bea9ce, type: 3}
+  m_Script: {fileID: 11500000, guid: 5f4c02c0fd9b0f74e9fc4822df054a6e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  disappearDuration: 0.25
+  type: 2
+  moveSpeed: 5

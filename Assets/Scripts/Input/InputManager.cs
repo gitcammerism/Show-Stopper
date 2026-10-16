@@ -80,14 +80,15 @@ public class InputManager : MonoBehaviour
     // if touch or mouse is read, every method subscribed to OnStartTouch or OnStartMouseTouch gets called
     private void StartTouch(InputAction.CallbackContext context)
     {
-        if (context.control == Mouse.current.leftButton)
+        //if (context.control == Mouse.current.leftButton)
+        //{
+        //    if (OnStartMouseTouch != null) OnStartMouseTouch(_touchControls.Debug.TouchPosition.ReadValue<Vector2>(), (float)context.startTime, context);
+        //    Debug.Log("Mouse touch started");
+        //}
+        if (context.control == Pointer.current.press)
         {
-            if (OnStartMouseTouch != null) OnStartMouseTouch(_touchControls.Debug.TouchPosition.ReadValue<Vector2>(), (float)context.startTime, context);
-            Debug.Log("Mouse touch started");
-        }
-        else if (context.control == Touchscreen.current.primaryTouch.press)
-        {
-            if (OnStartTouch != null) OnStartTouch(_touchControls.Touch.TouchPosition.ReadValue<Vector2>(), (float)context.startTime, context);
+            Vector2 screenPos = Pointer.current.position.ReadValue();
+            if (OnStartTouch != null) OnStartTouch(ScreenToWorld(_mainCamera, screenPos), (float)context.startTime, context);
         }
         else
         {
@@ -98,14 +99,15 @@ public class InputManager : MonoBehaviour
     // if touch or mouse stops, every method subscribed to OnEndTouch or OnEndMouseTouch gets called
     private void EndTouch(InputAction.CallbackContext context)
     {
-        if (context.control == Mouse.current.leftButton)
+        //if (context.control == Mouse.current.leftButton)
+        //{
+        //    if (OnEndMouseTouch != null) OnEndMouseTouch(_touchControls.Debug.TouchPosition.ReadValue<Vector2>(), (float)context.time, context);
+        //    Debug.Log("Mouse touch ended");
+        //}
+        if (context.control == Pointer.current.press)
         {
-            if (OnEndMouseTouch != null) OnEndMouseTouch(_touchControls.Debug.TouchPosition.ReadValue<Vector2>(), (float)context.time, context);
-            Debug.Log("Mouse touch ended");
-        }
-        else if (context.control == Touchscreen.current.primaryTouch.press)
-        {
-            if (OnEndTouch != null) OnEndTouch(_touchControls.Touch.TouchPosition.ReadValue<Vector2>(), (float)context.time, context);
+            Vector2 screenPos = Pointer.current.position.ReadValue();
+            if (OnEndTouch != null) OnEndTouch(ScreenToWorld(_mainCamera, screenPos), (float)context.time, context);
         }
         else
         {
@@ -134,7 +136,7 @@ public class InputManager : MonoBehaviour
     // Convert screen coordinates to world coordinates
     public static Vector3 ScreenToWorld(Camera camera, Vector3 position)
     {
-        position.z = 0;
+        position.z = Mathf.Abs(camera.transform.position.z);
         return camera.ScreenToWorldPoint(position);
     }
 

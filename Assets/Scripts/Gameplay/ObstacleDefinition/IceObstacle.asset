@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3a070957c3fe9d44883afb66142044e, type: 3}
+  m_Name: IceObstacle
+  m_EditorClassIdentifier: 
+  paintedTile: {fileID: 11400000, guid: 04f96b68973292c45a2287fcc9ffb815, type: 2}
+  prefab: {fileID: 6280918931094232390, guid: 4f7db6cb232552144b82369339a5f228, type: 3}
+  hitPoints: 0
+  blocksSwap: 0
+  fallsWithGravity: 0
+  indestructible: 1
