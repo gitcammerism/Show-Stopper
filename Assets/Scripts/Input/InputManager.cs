@@ -87,7 +87,8 @@ public class InputManager : MonoBehaviour
         //}
         if (context.control == Pointer.current.press)
         {
-            if (OnStartTouch != null) OnStartTouch(ScreenToWorld(_mainCamera, _touchControls.Touch.TouchPosition.ReadValue<Vector2>()), (float)context.startTime, context);
+            Vector2 screenPos = Pointer.current.position.ReadValue();
+            if (OnStartTouch != null) OnStartTouch(ScreenToWorld(_mainCamera, screenPos), (float)context.startTime, context);
         }
         else
         {
@@ -105,7 +106,8 @@ public class InputManager : MonoBehaviour
         //}
         if (context.control == Pointer.current.press)
         {
-            if (OnEndTouch != null) OnEndTouch(ScreenToWorld(_mainCamera, _touchControls.Touch.TouchPosition.ReadValue<Vector2>()), (float)context.time, context);
+            Vector2 screenPos = Pointer.current.position.ReadValue();
+            if (OnEndTouch != null) OnEndTouch(ScreenToWorld(_mainCamera, screenPos), (float)context.time, context);
         }
         else
         {
