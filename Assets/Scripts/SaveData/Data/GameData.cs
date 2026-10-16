@@ -14,11 +14,15 @@ public class GameData
     // Each saved resource gained from levels
     public SerializableDictionary<string, int> resources;
 
+    // All information of animals
+    public SerializableDictionary<string, AnimalData> animals;
+
     // Defines default values for game data
     public GameData()
     {
         levelsCompleted = new SerializableDictionary<string, bool>();
         levelHighScores = new SerializableDictionary<string, int>();
         resources = new SerializableDictionary<string, int>();
+        animals = new SerializableDictionary<string, AnimalData>();
     }
 }

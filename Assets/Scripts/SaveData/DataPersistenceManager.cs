@@ -127,6 +127,29 @@ public class DataPersistenceManager : MonoBehaviour
         dataHandler.Save(gameData);
     }
 
+    // Checks if level is completed then saves
+    public void RecordLevelCompletion(string levelID)
+    {
+        if (gameData == null)
+        {
+            gameData = dataHandler.Load();
+
+            if (gameData == null)
+            {
+                gameData = new GameData();
+            }
+        }
+
+        if (gameData.levelsCompleted == null)
+        {
+            gameData.levelsCompleted = new SerializableDictionary<string, bool>();
+        }
+
+        gameData.levelsCompleted[levelID] = true;
+
+        dataHandler.Save(gameData);
+    }
+
     // Grabs the high score for each level
     public int GetLevelHighScore(string levelID)
     {

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class GoalTracker : MonoBehaviour
@@ -38,5 +39,28 @@ public class GoalTracker : MonoBehaviour
             if (collected[i] < level.goals[i].target) return false;
         }
         return true;
+    }
+
+    // FROM COLIN - Accessor to make saving collected resources easier
+    public Dictionary<TileType, int> GetCollectedResources()
+    {
+        Dictionary<TileType, int> resources = new Dictionary<TileType, int>();
+
+        for (int i = 0; i < level.goals.Length; i++)
+        {
+            TileType tileType = level.goals[i].tileType;
+            int amount = collected[i];
+
+            if (resources.ContainsKey(tileType))
+            {
+                resources[tileType] += amount;
+            }
+            else
+            {
+                resources.Add(tileType, amount);
+            }
+        }
+
+        return resources;
     }
 }

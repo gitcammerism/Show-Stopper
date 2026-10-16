@@ -1,11 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEditor.Tilemaps;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using UnityEngine.UI;
-using UnityEngine.UIElements;
 
 public class BoardBuilder : MonoBehaviour
 {
@@ -25,7 +22,6 @@ public class BoardBuilder : MonoBehaviour
     [SerializeField] private TilePrefab[] tilePrefabs;
 
     [Header("Customization")]
-    [SerializeField] Sprite maskSprite;
     [SerializeField] private float dropStagger = 0.08f; // stagger for ice block tile spawns
 
     private List<TileType> spawnableTypes;
@@ -53,7 +49,6 @@ public class BoardBuilder : MonoBehaviour
         boardMap.CompressBounds();
         bounds = boardMap.cellBounds;
         Build();
-        // BuildBoardMask();
 
         // ensures the board starts with valid moves
         if (!HasValidMove())
@@ -612,29 +607,6 @@ public class BoardBuilder : MonoBehaviour
         else
         {
             RegenerateTiles();
-        }
-    }
-
-    // builds sprite mask around the game grid (makes spawning tiles not visible)
-    private void BuildBoardMask()
-    {
-        var grid = boardMap.layoutGrid;
-        Vector3 size = Vector3.Scale(grid.cellSize, grid.transform.lossyScale);
-
-        var root = new GameObject("BoardMask").transform;
-
-        foreach (var c in Cells)
-        {
-            if (c == null) continue; // holes/missing tiles get no mask
-            if (c.obstacle != null && c.obstacle.definition.indestructible) continue; // ignore ice tiles
-
-            var go = new GameObject("MaskCell");
-            go.transform.SetParent(root, false);
-            go.transform.position = c.worldPos;
-            go.transform.localScale = new Vector3(size.x, size.y, 1f);
-
-            var mask = go.AddComponent<SpriteMask>();
-            mask.sprite = maskSprite;
         }
     }
 }
