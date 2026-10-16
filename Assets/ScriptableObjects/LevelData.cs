@@ -1,5 +1,7 @@
 using UnityEngine;
 
+// Stores the data/info for a given level's goals and time limit
+
 [CreateAssetMenu(menuName = "Match 3/Level Data")]
 public class LevelData : ScriptableObject
 {

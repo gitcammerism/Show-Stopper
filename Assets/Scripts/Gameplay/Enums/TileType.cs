@@ -2,11 +2,10 @@
 
 public enum TileType
 {
-    None, 
-    Comfort, 
-    Food, 
-    Toy, 
-    Treat, 
-    Water, 
-    // Obstacle,
+    None = -1, // empty, hole, obstacle, or out-of-bounds
+    Comfort = 0,
+    Food = 1,
+    Toy = 2,
+    Treat = 3,
+    Water = 4
 }
