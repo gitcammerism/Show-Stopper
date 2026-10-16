@@ -10,7 +10,8 @@ public class AnimalTween : MonoBehaviour
     private Vector3 currentPos;
     private Vector3 targetPosition = new Vector3(0, 0, 0); // Set your target position here 
 
-    private float displacement;
+    private float xDisplacement;
+    private float yDisplacement;    
 
     private float moveDuration = .5f; // Duration of the movement in seconds 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -19,7 +20,8 @@ public class AnimalTween : MonoBehaviour
         cameraPos = Camera.main.WorldToScreenPoint(transform.position);
         startingScale = transform.localScale;
         currentPos = transform.position;
-        displacement = 1f;
+        xDisplacement = 1f;
+        yDisplacement = 1f;
 
         endScale = new Vector3(startingScale.x, startingScale.y / 1.5f, startingScale.z);
         targetPosition = new Vector3(currentPos.x + 1f, currentPos.y, currentPos.z); // Set your target position here
@@ -30,41 +32,43 @@ public class AnimalTween : MonoBehaviour
         // transform.DOJump(new Vector3(currentPos.x, currentPos.y + 1f, currentPos.z), 1f, 1, moveDuration).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.OutCubic);
 
         StartCoroutine(AnimalMovement());
-        // transform.DOJump(targetPosition, 1f, 1, moveDuration * 2);
 
-        Sequence mySequence = DOTween.Sequence();
-        // mySequence.Append(transform.DOMove(new Vector3(currentPos.x, currentPos.y + 1f, currentPos.z), moveDuration).SetEase(Ease.OutCubic));
-        // mySequence.Insert(0, transform.DOMove(new Vector3(currentPos.x + 1f, currentPos.y, currentPos.z), mySequence.Duration()).SetEase(Ease.OutCubic));
 
     }
 
 
     IEnumerator AnimalMovement()
     {
-        while (!(cameraPos.x < 0 || cameraPos.x > Screen.width || cameraPos.y < 0 || cameraPos.y > Screen.height))
+        while (true)
         {
             cameraPos = Camera.main.WorldToScreenPoint(transform.position);
-            currentPos = transform.position;
-            targetPosition = new Vector3(currentPos.x + displacement, currentPos.y + displacement/2, currentPos.z);
+
+            // If the animal goes off-screen, choose a new target
+            if (cameraPos.x-1 < 0 || cameraPos.x+1 > Screen.width || cameraPos.y-1 < 0 || cameraPos.y+1 > Screen.height)
+            {
+                // Pick a random screen position - probably need to make less drastic
+                Vector3 randomScreenPos = new Vector3(
+                    Random.Range(50, Screen.width - 50),
+                    Random.Range(50, Screen.height - 50),
+                    cameraPos.z
+                );
+
+                // Convert the screen position to a world position
+                targetPosition = Camera.main.ScreenToWorldPoint(randomScreenPos);
+            }
+            else
+            {
+                // Continue moving in the current direction
+                currentPos = transform.position;
+
+                targetPosition = new Vector3(currentPos.x + xDisplacement, currentPos.y + yDisplacement, currentPos.z);
+            }
+
             yield return transform.DOJump(targetPosition, 1f, 1, moveDuration * 2).WaitForCompletion();
-            // displacement *= -1; // Reverse the direction of movement
-            // StartCoroutine(AnimalMovement()); // Restart the coroutine for continuous movement  
-            yield return null;
-            // Move the animal back to the original position
-            // yield return transform.DOMove(currentPos, moveDuration).WaitForCompletion();
-        }
-    }
-    // Update is called once per frame
-    void Update()
-    {
 
-        if (cameraPos.x < 0 || cameraPos.x > Screen.width || cameraPos.y < 0 || cameraPos.y > Screen.height)
-        {
-            DOTween.Pause(transform);   
-        }
-        else
-        {
-
+            // Pick a new direction for the next movement
+            xDisplacement = Random.Range(-1f, 1f);
+            yDisplacement = Random.Range(-1f, 1f);
         }
     }
 }
