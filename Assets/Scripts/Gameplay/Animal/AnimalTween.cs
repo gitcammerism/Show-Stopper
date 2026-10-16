@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class AnimalTween : MonoBehaviour
 {
+    // This script handles the animal movement around the hub lvl
+
     private Vector3 startingScale;
     private Vector3 endScale;
     private Vector3 cameraPos;
