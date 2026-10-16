@@ -7,8 +7,7 @@ using System.Collections;
 
 public class GameManager : MonoBehaviour
 {
-    [Header("Level")]
-    [SerializeField] private string levelID;
+    public string levelID;
 
     [SerializeField] private LevelTimer timer;
     [SerializeField] private ScoreManager scoreManager;

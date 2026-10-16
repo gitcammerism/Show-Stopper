@@ -119,6 +119,28 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!114 &28563927 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 905527180909648499, guid: 959570488e4a7dc49a75c8bfd8b3619d, type: 3}
+  m_PrefabInstance: {fileID: 1510845272}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 639244b521278e54c986766fdc12bb5e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &725079952 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3176697884898718976, guid: 959570488e4a7dc49a75c8bfd8b3619d, type: 3}
+  m_PrefabInstance: {fileID: 1510845272}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1024094079
 GameObject:
   m_ObjectHideFlags: 0
@@ -472,6 +494,34 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8624588738915325392, guid: 959570488e4a7dc49a75c8bfd8b3619d, type: 3}
+      propertyPath: m_TileSpriteArray.Array.data[2].m_Data
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8624588738915325392, guid: 959570488e4a7dc49a75c8bfd8b3619d, type: 3}
+      propertyPath: m_TileSpriteArray.Array.data[5].m_Data
+      value: 
+      objectReference: {fileID: -5641712530122005352, guid: 34e0f0c6258e47947b040afbc9818cd7, type: 3}
+    - target: {fileID: 8624588738915325392, guid: 959570488e4a7dc49a75c8bfd8b3619d, type: 3}
+      propertyPath: m_TileSpriteArray.Array.data[2].m_RefCount
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8624588738915325392, guid: 959570488e4a7dc49a75c8bfd8b3619d, type: 3}
+      propertyPath: m_TileSpriteArray.Array.data[5].m_RefCount
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8624588738915325392, guid: 959570488e4a7dc49a75c8bfd8b3619d, type: 3}
+      propertyPath: m_Tiles.Array.data[30].second.m_TileSpriteIndex
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8773909360544223418, guid: 959570488e4a7dc49a75c8bfd8b3619d, type: 3}
+      propertyPath: gameManager
+      value: 
+      objectReference: {fileID: 28563927}
+    - target: {fileID: 8773909360544223418, guid: 959570488e4a7dc49a75c8bfd8b3619d, type: 3}
+      propertyPath: highScoreText
+      value: 
+      objectReference: {fileID: 725079952}
     - target: {fileID: 9096094315830682621, guid: 959570488e4a7dc49a75c8bfd8b3619d, type: 3}
       propertyPath: m_Color.b
       value: 0.83191586
