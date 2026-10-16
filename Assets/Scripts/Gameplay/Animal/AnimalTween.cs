@@ -22,8 +22,8 @@ public class AnimalTween : MonoBehaviour
         cameraPos = Camera.main.WorldToScreenPoint(transform.position);
         startingScale = transform.localScale;
         currentPos = transform.position;
-        xDisplacement = 1f;
-        yDisplacement = 1f;
+        xDisplacement = Random.Range(-1f, 1f);
+        yDisplacement = Random.Range(-1f, 1f);
 
         endScale = new Vector3(startingScale.x, startingScale.y / 1.5f, startingScale.z);
         targetPosition = new Vector3(currentPos.x + 1f, currentPos.y, currentPos.z); // Set your target position here
