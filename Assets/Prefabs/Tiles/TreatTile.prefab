@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4486383095675332409}
   - component: {fileID: 8269399193441262892}
-  - component: {fileID: 2848574253334477356}
+  - component: {fileID: 7304358538958405523}
   m_Layer: 0
   m_Name: TreatTile
   m_TagString: Untagged
@@ -88,7 +88,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &2848574253334477356
+--- !u!114 &7304358538958405523
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -97,7 +97,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 7793718202423598248}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 566115ccd4b032c4eb95b7cd0571819e, type: 3}
+  m_Script: {fileID: 11500000, guid: 5f4c02c0fd9b0f74e9fc4822df054a6e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tileType: 4
+  type: 3
+  moveSpeed: 5
