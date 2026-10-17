@@ -18,16 +18,19 @@ public class GoalDisplay : MonoBehaviour
     {
         if (goalIndex >= tracker.GoalCount)
         {
-            // change slider to grayed out background color
-            gameObject.SetActive(false); return;
+            // change slider to grayed out background color (will make this a variable later bleh)
+            Color color = new();
+            if (ColorUtility.TryParseHtmlString("#ABA7A7", out color))
+            {
+                Debug.Log("aaaa");
+                backgroundImage.color = color;
+            }
+            return;
         }
 
         // change slider fill and background colors based on goal
-        fillImage.sprite = tracker.fillImages[goalIndex];
-        fillImage.color = Color.white;
-        backgroundImage.sprite = tracker.backgroundImages[goalIndex];
-        // fillImage.color = tracker.fillColors[goalIndex];
-        // backgroundImage.color = tracker.backgroundColors[goalIndex];
+        fillImage.sprite = tracker.fillImages[(int)tracker.GetGoal(goalIndex).tileType];
+        backgroundImage.sprite = tracker.backgroundImages[(int)tracker.GetGoal(goalIndex).tileType];
 
         slider.minValue = 0f;
         slider.maxValue = 1f;
@@ -39,11 +42,13 @@ public class GoalDisplay : MonoBehaviour
 
     void Update()
     {
+        if (goalIndex >= tracker.GoalCount) return;
         slider.value = Mathf.MoveTowards(slider.value, targetValue, fillSpeed * Time.deltaTime);
     }
 
     void OnDestroy() => tracker.Changed -= Refresh;
 
+    // updates slider value
     private void Refresh()
     {
         var goal = tracker.GetGoal(goalIndex);
