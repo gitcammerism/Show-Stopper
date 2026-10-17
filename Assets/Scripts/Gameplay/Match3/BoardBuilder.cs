@@ -368,7 +368,11 @@ public class BoardBuilder : MonoBehaviour
             goalTracker.RecordCleared(c.tile.type);
 
             // play vfx at each tile position
-            if (matchVFX != null) Instantiate(matchVFX, c.worldPos, Quaternion.identity);
+            if (matchVFX != null)
+            {
+                GameObject vfx = Instantiate(matchVFX, c.worldPos, Quaternion.identity);
+                Destroy(vfx, 2f);
+            }
 
             var g = c.tile;
             c.tile = null;
