@@ -2,8 +2,10 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-// This script is responsible for creating a new level select button. 
-// Cami TODO: instead of assigning sceneswitcher and levelselect in inspector, grab it and assign lvl num in the script. 
+/*
+ * This script is responsible for loading levels when the corresponding button is pressed. 
+ * This script may also be expanded to handle buttons being unavailable for unlocked levels.
+ */
 
 public class LevelButton : MonoBehaviour
 {
