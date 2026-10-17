@@ -36,7 +36,11 @@ public class LevelButton : MonoBehaviour
     public void OnPress()
     {
         string buttonText = _lvlButton.GetComponentInChildren<TMP_Text>().text;
-
+        if (buttonText.Contains("Hub"))
+        {
+            _sceneSwitcher.LoadHub();
+                        return;
+        }
         if (int.TryParse(buttonText, out int result))
         {
             int levelNum = result;

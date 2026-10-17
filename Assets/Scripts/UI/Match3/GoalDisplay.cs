@@ -23,8 +23,11 @@ public class GoalDisplay : MonoBehaviour
         }
 
         // change slider fill and background colors based on goal
-        fillImage.color = tracker.fillColors[goalIndex];
-        backgroundImage.color = tracker.backgroundColors[goalIndex];
+        fillImage.sprite = tracker.fillImages[goalIndex];
+        fillImage.color = Color.white;
+        backgroundImage.sprite = tracker.backgroundImages[goalIndex];
+        // fillImage.color = tracker.fillColors[goalIndex];
+        // backgroundImage.color = tracker.backgroundColors[goalIndex];
 
         slider.minValue = 0f;
         slider.maxValue = 1f;

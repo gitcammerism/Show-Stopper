@@ -1,10 +1,13 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GoalTracker : MonoBehaviour
 {
     [SerializeField] private LevelData level;
+    public Sprite[] fillImages;
+    public Sprite[] backgroundImages;
     public Color[] fillColors;
     public Color[] backgroundColors;
 
