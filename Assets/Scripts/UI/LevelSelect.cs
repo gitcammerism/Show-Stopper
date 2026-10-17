@@ -1,6 +1,9 @@
 using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.UIElements;
+
+/*
+ * This script is responsible for toggling the Coming Soon panel on and off in the Level Select scene.
+ * This script can also be expanded to handle other Level Select scene management tasks.
+ */
 
 public class LevelSelect : MonoBehaviour
 {

@@ -32,12 +32,6 @@ public class SceneSwitcher : MonoBehaviour
         SceneManager.LoadScene("Level" + levelNum);
     }
 
-    // Toggles the Coming Soon panel on and off (positioned in this script unless a more suitable one is found)
-    public void ToggleComingSoonPanel(GameObject panel)
-    {
-        panel.SetActive(!panel.activeSelf);
-    }
-
     public void QuitGame()
     {
         Application.Quit();

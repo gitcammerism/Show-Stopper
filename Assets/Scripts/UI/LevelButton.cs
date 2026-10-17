@@ -12,33 +12,25 @@ public class LevelButton : MonoBehaviour
     [SerializeField] private SceneSwitcher _sceneSwitcher;
     private LevelSelect _levelSelect;
 
-    // public getter for levelNum
-    public int LevelNum => _levelNum;
-    public Button LevelBtn => _lvlButton;
-
     // public constructor that creates a new level button
-    // Cami TODO: have buttons appear as they are loaded in the level select scene, instead of being preloaded in the scene.
+    // Cami TODO: maybe have buttons appear as they are loaded in the level select scene, instead of being preloaded in the scene.
+    // Either that or have the buttons be greyed out
     //public LevelButton(int levelNum)
     //{
     //    _levelNum = levelNum;
     //    _lvlButton = this;
     //}
 
-    // no
-    //public LevelButton SpawnButton()
-    //{
-    //    return _lvlButton;
-    //}
-
     private void Awake()
     {
-        // Get the button component from the child object and grab the SceneSwitcher
+        // Get the button component from the child object and grab the SceneSwitcher and LevelSelectManager
         _lvlButton = this.GetComponentInChildren<Button>();
         _sceneSwitcher = FindAnyObjectByType<SceneSwitcher>();
         _levelSelect = FindAnyObjectByType<LevelSelect>();
         _lvlButton.onClick.AddListener(OnPress);
     }
 
+    // Called when the button is pressed. Loads the level if it exists, otherwise toggles the Coming Soon panel.
     public void OnPress()
     {
         string buttonText = _lvlButton.GetComponentInChildren<TMP_Text>().text;
