@@ -17786,6 +17786,7 @@ MonoBehaviour:
   gameWinText: {fileID: 8560218611540480125}
   restartButton: {fileID: 4414863603675829074}
   goalTracker: {fileID: 4059326191150186030}
+  fireworkVFX: {fileID: 2188066472306893174}
 --- !u!114 &5480566328773434174
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17819,6 +17820,7 @@ MonoBehaviour:
   - type: 4
     prefab: {fileID: 6813439669782754178, guid: b3e711a76e152dd4ebd6ed06b766fe1c, type: 3}
   dropStagger: 0.08
+  matchVFX: {fileID: 5597781018065852189, guid: 4573941865119d646af4297ae735ec8b, type: 3}
 --- !u!1 &4056839567193772081
 GameObject:
   m_ObjectHideFlags: 0
@@ -17936,7 +17938,7 @@ MonoBehaviour:
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 0
-  m_FillAmount: 1
+  m_FillAmount: 0
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
@@ -23784,7 +23786,7 @@ MonoBehaviour:
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 0
-  m_FillAmount: 1
+  m_FillAmount: 0
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
