@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b49fb885b7b7874897ef9d94de9becc, type: 3}
+  m_Name: Level_04
+  m_EditorClassIdentifier: 
+  timeLimit: 90
+  goals:
+  - tileType: 1
+    target: 25
+  - tileType: 4
+    target: 20
