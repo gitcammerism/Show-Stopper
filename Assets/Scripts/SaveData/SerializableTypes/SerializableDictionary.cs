@@ -36,7 +36,6 @@ public class SerializableDictionary<TKey, TValue> : Dictionary<TKey, TValue>, IS
         {
             Debug.LogError("Error when deserializing the SerializableDictionary. " +
                 "Amount of Keys (" + keys.Count + ") does not match values (" + values.Count + ")");
-
         }
 
         // Loop through and add each key to dictionary
