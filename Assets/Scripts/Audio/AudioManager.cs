@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.SceneManagement;
 
 /**
  * This script manages setting up the audio sources and clips and playing them.
@@ -12,10 +13,8 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioSource musicSource;
     [SerializeField] private AudioSource SFXSource;
 
-    public AudioClip bgMusic;
+    public AudioClip[] bgMusicArray;
     public AudioClip[] sfxArray;
-
-    private AudioType _audioType;
 
     private void Awake()
     {
@@ -31,10 +30,19 @@ public class AudioManager : MonoBehaviour
 
     void Start()
     {
-        // start bg music, have it loop
-        musicSource.clip = bgMusic;
-        musicSource.Play();
-        musicSource.loop = true;
+        // start main menu bg music, have it loop
+        if (SceneManager.GetActiveScene().name == "MainMenu")
+        {
+            musicSource.clip = bgMusicArray[0];
+            musicSource.Play();
+            musicSource.loop = true;
+            Debug.Log("mainmenu music playing");
+        }
+        else
+        {
+            Debug.Log("mainmenu music not playing");
+
+        }
     }
 
 
@@ -42,5 +50,14 @@ public class AudioManager : MonoBehaviour
     public void PlaySFX(AudioClip clip)
     {
         SFXSource.PlayOneShot(clip);
+    }
+
+    // call from other scene manager scripts when a scene is loaded
+    public void PlayMusic(AudioClip clip)
+    {
+        musicSource.clip = clip;
+        musicSource.Play();
+        musicSource.loop = true;
+        Debug.Log($"playing {clip.name}");
     }
 }
