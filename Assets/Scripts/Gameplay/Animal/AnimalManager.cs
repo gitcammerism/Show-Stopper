@@ -66,7 +66,7 @@ public class AnimalManager : MonoBehaviour
         }
         if (currentAnimal != null)
         {
-            currentAnimal.transform.DOScale(Vector3.one * 2f, 1f).SetEase(Ease.OutBounce);
+            currentAnimal.transform.DOScale(currentAnimal.transform.lossyScale*1.1f, 1f).SetEase(Ease.OutBounce).SetLoops(-1, LoopType.Yoyo);
         }
     }
 }
