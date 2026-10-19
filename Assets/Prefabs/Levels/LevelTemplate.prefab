@@ -11390,7 +11390,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.39607847, g: 0.7686275, b: 0.654902, a: 1}
+  m_Color: {r: 0.39607847, g: 0.7686275, b: 0.654902, a: 0.20392157}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -11398,11 +11398,11 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
+  m_FillMethod: 0
+  m_FillAmount: 0
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
@@ -17786,6 +17786,7 @@ MonoBehaviour:
   gameWinText: {fileID: 8560218611540480125}
   restartButton: {fileID: 4414863603675829074}
   goalTracker: {fileID: 4059326191150186030}
+  fireworkVFX: {fileID: 2188066472306893174}
 --- !u!114 &5480566328773434174
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17819,6 +17820,7 @@ MonoBehaviour:
   - type: 4
     prefab: {fileID: 6813439669782754178, guid: b3e711a76e152dd4ebd6ed06b766fe1c, type: 3}
   dropStagger: 0.08
+  matchVFX: {fileID: 5597781018065852189, guid: 4573941865119d646af4297ae735ec8b, type: 3}
 --- !u!1 &4056839567193772081
 GameObject:
   m_ObjectHideFlags: 0
@@ -17932,11 +17934,11 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
+  m_FillMethod: 0
+  m_FillAmount: 0
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
@@ -23426,6 +23428,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   level: {fileID: 11400000, guid: 30df54b561bc0c241bd44b58ae9a64bb, type: 2}
+  fillImages:
+  - {fileID: -421228319, guid: 828419308257eb342a2884aac38482d6, type: 3}
+  - {fileID: 1683854679, guid: 828419308257eb342a2884aac38482d6, type: 3}
+  - {fileID: -1734138110, guid: 828419308257eb342a2884aac38482d6, type: 3}
+  - {fileID: 1957424277, guid: 828419308257eb342a2884aac38482d6, type: 3}
+  - {fileID: -1482864094, guid: 828419308257eb342a2884aac38482d6, type: 3}
+  backgroundImages:
+  - {fileID: -1224448967, guid: 828419308257eb342a2884aac38482d6, type: 3}
+  - {fileID: 3735128532906428629, guid: 828419308257eb342a2884aac38482d6, type: 3}
+  - {fileID: 1968607013, guid: 828419308257eb342a2884aac38482d6, type: 3}
+  - {fileID: 683974497, guid: 828419308257eb342a2884aac38482d6, type: 3}
+  - {fileID: -886033449, guid: 828419308257eb342a2884aac38482d6, type: 3}
   fillColors:
   - {r: 0.47451907, g: 0.32373622, b: 0.7075472, a: 1}
   - {r: 0.9150943, g: 0.64126503, b: 0.15107687, a: 1}
@@ -23768,11 +23782,11 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
+  m_FillMethod: 0
+  m_FillAmount: 0
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
@@ -33958,7 +33972,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scoreManager: {fileID: 1092914217789948498}
+  gameManager: {fileID: 0}
   scoreText: {fileID: 7164825508355774383}
+  highScoreText: {fileID: 0}
   countUpSpeed: 400
 --- !u!114 &2249706975283334068
 MonoBehaviour:
