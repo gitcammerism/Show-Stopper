@@ -15,8 +15,6 @@ public class AudioManager : MonoBehaviour
     public AudioClip bgMusic;
     public AudioClip[] sfxArray;
 
-    private AudioType _audioType;
-
     private void Awake()
     {
         // check if instance exists
