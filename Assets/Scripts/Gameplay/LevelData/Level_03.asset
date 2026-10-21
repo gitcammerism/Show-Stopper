@@ -17,4 +17,6 @@ MonoBehaviour:
   - tileType: 1
     target: 15
   - tileType: 4
+    target: 20
+  - tileType: 0
     target: 15

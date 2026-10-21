@@ -327,7 +327,8 @@ public class BoardBuilder : MonoBehaviour
             cascade++;
             var matches = CellsOf(runs);
 
-            AudioManager.Instance.PlaySFX(AudioManager.Instance.sfxArray[0]);
+            if (AudioManager.Instance != null && AudioManager.Instance.sfxArray.Length > 0)
+                AudioManager.Instance.PlaySFX(AudioManager.Instance.sfxArray[0]);
 
             yield return new WaitForSeconds(0.15f); // brief pause before updating score
             scoreManager.ScoreRuns(runs, cascade);
