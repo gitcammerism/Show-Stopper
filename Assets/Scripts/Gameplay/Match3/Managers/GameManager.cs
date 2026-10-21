@@ -17,7 +17,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI gameWinText;
     [SerializeField] private Button restartButton;
     [SerializeField] private GoalTracker goalTracker;
-
+    [SerializeField] private ParticleSystem fireworkVFX;
     public bool LevelEnded { get; private set; }
 
     // FROM COLIN - Give each level a unique GUID
@@ -68,6 +68,7 @@ public class GameManager : MonoBehaviour
         boardInput.inputLocked = true;
         gameOverText.gameObject.SetActive(true);
         restartButton.gameObject.SetActive(true);
+        AudioManager.Instance.PlaySFX(AudioManager.Instance.sfxArray[1]); // play lose sfx
     }
 
     // player won
@@ -104,6 +105,8 @@ public class GameManager : MonoBehaviour
         while (!scoreDisplay.IsSettled) yield return null;
         yield return new WaitForSeconds(0.3f); // small pause before continuing
 
+        AudioManager.Instance.PlaySFX(AudioManager.Instance.sfxArray[2]); // play win sfx
+        fireworkVFX.Play();
 
         // FROM COLIN - Save all necessary data
         DataPersistenceManager.instance.RecordLevelScore(levelID, scoreManager.Score);

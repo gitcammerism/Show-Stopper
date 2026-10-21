@@ -18,6 +18,7 @@ public class GoalDisplay : MonoBehaviour
     {
         if (goalIndex >= tracker.GoalCount)
         {
+
             // change slider to grayed out background color (will make this a variable later bleh)
             Color color = new();
             if (ColorUtility.TryParseHtmlString("#ABA7A7", out color))
@@ -31,6 +32,8 @@ public class GoalDisplay : MonoBehaviour
         // change slider fill and background colors based on goal
         fillImage.sprite = tracker.fillImages[(int)tracker.GetGoal(goalIndex).tileType];
         backgroundImage.sprite = tracker.backgroundImages[(int)tracker.GetGoal(goalIndex).tileType];
+
+        fillImage.color = Color.white;
 
         slider.minValue = 0f;
         slider.maxValue = 1f;

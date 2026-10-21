@@ -24,6 +24,10 @@ public class BoardBuilder : MonoBehaviour
     [Header("Customization")]
     [SerializeField] private float dropStagger = 0.08f; // stagger for any wall obstacle spawns
 
+    [Header("VFX")]
+    [SerializeField] private GameObject matchVFX;
+   
+
     private List<TileType> spawnableTypes;
     private Dictionary<TileBase, ObstacleDefinition> obstacleLookup;
     private Dictionary<TileType, GameObject> prefabLookup;
@@ -323,6 +327,9 @@ public class BoardBuilder : MonoBehaviour
             cascade++;
             var matches = CellsOf(runs);
 
+            if (AudioManager.Instance != null && AudioManager.Instance.sfxArray.Length > 0)
+                AudioManager.Instance.PlaySFX(AudioManager.Instance.sfxArray[0]);
+
             yield return new WaitForSeconds(0.15f); // brief pause before updating score
             scoreManager.ScoreRuns(runs, cascade);
             yield return ClearMatches(matches);
@@ -360,6 +367,13 @@ public class BoardBuilder : MonoBehaviour
         foreach (var c in matches)
         {
             goalTracker.RecordCleared(c.tile.type);
+
+            // play vfx at each tile position
+            if (matchVFX != null)
+            {
+                GameObject vfx = Instantiate(matchVFX, c.worldPos, Quaternion.identity);
+                Destroy(vfx, 2f);
+            }
 
             var g = c.tile;
             c.tile = null;
