@@ -18,6 +18,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Button restartButton;
     [SerializeField] private GoalTracker goalTracker;
     [SerializeField] private ParticleSystem fireworkVFX;
+
+    private AudioManager _audioManager;
     public bool LevelEnded { get; private set; }
 
     // FROM COLIN - Give each level a unique GUID
@@ -58,6 +60,9 @@ public class GameManager : MonoBehaviour
         gameWinText.gameObject.SetActive(false);
         restartButton.gameObject.SetActive(false);
         timer.StartTimer();
+
+        _audioManager = AudioManager.Instance;
+        _audioManager.PlayMusic(_audioManager.bgMusicArray[3]);
     }
 
     // game over, player lost
