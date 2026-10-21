@@ -28,6 +28,11 @@ public class AudioManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
     void Start()
     {
         // start main menu bg music, have it loop
@@ -42,6 +47,22 @@ public class AudioManager : MonoBehaviour
         {
             Debug.Log("mainmenu music not playing");
 
+        }
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        // stops main menu song in other scenes, plays again in main menu
+        if (scene.name != "MainMenu")
+        {
+            musicSource.Stop();
+        }
+        else
+        {
+            musicSource.clip = bgMusicArray[0];
+            musicSource.Play();
+            musicSource.loop = true;
+            Debug.Log("mainmenu music playing");
         }
     }
 
