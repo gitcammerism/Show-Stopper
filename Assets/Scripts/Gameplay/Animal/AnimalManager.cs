@@ -2,7 +2,7 @@ using DG.Tweening;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AnimalManager : MonoBehaviour
+public class AnimalManager : MonoBehaviour, IDataPersistence
 {
     // This script handles the animal spawning and scaling in the levels
     public enum AnimalType
@@ -22,6 +22,11 @@ public class AnimalManager : MonoBehaviour
     public GameObject currentAnimal;
 
     public AnimalType animalType;
+
+    // FROM COLIN - For saving animals
+    [SerializeField]
+    private bool isUnlocked;
+    public bool IsUnlocked => isUnlocked;
 
     private void Start()
     {
@@ -67,6 +72,82 @@ public class AnimalManager : MonoBehaviour
         if (currentAnimal != null)
         {
             currentAnimal.transform.DOScale(currentAnimal.transform.lossyScale*1.1f, 1f).SetEase(Ease.OutBounce).SetLoops(-1, LoopType.Yoyo);
+        }
+    }
+
+    // FROM COLIN - Force animal to be unlocked
+    public void SetUnlocked()
+    {
+        isUnlocked = true;
+    }
+
+    // FROM COLIN - Called when scene is loaded
+    public void LoadData(GameData data)
+    {
+        if (data.animals == null)
+        {
+            data.animals = new SerializableDictionary<string, AnimalData>();
+        }
+
+        string animalID = animalType.ToString();
+
+        if (data.animals.TryGetValue(animalID, out AnimalData savedAnimal))
+        {
+            isUnlocked = savedAnimal.isUnlocked;
+        }
+        else
+        {
+            // Animal stays locked until unlocked
+            isUnlocked = false;
+        }
+
+        Debug.Log($"{animalID} unlocked = {isUnlocked}");
+    }
+
+    // FROM COLIN - Called when scene is saved (Exited/Level Completed)
+    public void SaveData(ref GameData data)
+    {
+        if (animalType == AnimalType.none)
+        {
+            return;
+        }
+
+        if (data.animals == null)
+        {
+            data.animals = new SerializableDictionary<string, AnimalData>();
+        }
+
+        string animalID = animalType.ToString();
+
+        // Keep an unlock that has been saved as such
+        bool alreadyUnlocked = data.animals.TryGetValue(animalID, out AnimalData savedAnimal)
+            && savedAnimal != null
+            && savedAnimal.isUnlocked;
+
+        if (!data.animals.ContainsKey(animalID) || data.animals[animalID] == null)
+        {
+            data.animals[animalID] = new AnimalData();
+        }
+
+        // Unlocks remain true
+        data.animals[animalID].isUnlocked = isUnlocked || alreadyUnlocked;
+    }
+
+    // FROM COLIN - Call when animal should be unlocked
+    public void UnlockAnimal()
+    {
+        if (isUnlocked)
+        {
+            return;
+        }
+
+        isUnlocked = true;
+
+        Debug.Log($"{animalType} has been unlocked");
+
+        if (DataPersistenceManager.instance != null)
+        {
+            DataPersistenceManager.instance.SaveGame();
         }
     }
 }

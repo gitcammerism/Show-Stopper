@@ -284,6 +284,72 @@ public class DataPersistenceManager : MonoBehaviour
         return 0;
     }
 
+    // Unlocks animals for saving
+    public void UnlockAnimal(AnimalManager.AnimalType animalType)
+    {
+        if (animalType == AnimalManager.AnimalType.none)
+        {
+            return;
+        }
+
+        if (gameData == null)
+        {
+            gameData = dataHandler.Load();
+
+            if (gameData == null)
+            {
+                gameData = new GameData();
+            }
+        }
+
+        if (gameData.animals == null)
+        {
+            gameData.animals = new SerializableDictionary<string, AnimalData>();
+        }
+
+        string animalID = animalType.ToString();
+
+        if (!gameData.animals.TryGetValue(animalID, out AnimalData animalData))
+        {
+            animalData = new AnimalData();
+            gameData.animals[animalID] = animalData;
+        }
+
+        // Unlock the animal in save data
+        animalData.isUnlocked = true;
+
+        // Write this to JSON
+        dataHandler.Save(gameData);
+    }
+
+    // Check to see if animal is unlocked
+    public bool IsAnimalUnlocked(AnimalManager.AnimalType animalType)
+    {
+        if (animalType == AnimalManager.AnimalType.none)
+        {
+            return false;
+        }
+
+        if (gameData == null)
+        {
+            gameData = dataHandler.Load();
+
+            if (gameData == null)
+            {
+                gameData = new GameData();
+            }
+        }
+
+        if (gameData.animals == null)
+        {
+            return false;
+        }
+
+        string animalID = animalType.ToString();
+
+        return gameData.animals.TryGetValue(animalID, out AnimalData animalData) && animalData.isUnlocked;
+    }
+
     // Save the game when quitting the game
     private void OnApplicationQuit()
     {

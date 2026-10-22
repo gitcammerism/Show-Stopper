@@ -18,6 +18,10 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Button restartButton;
     [SerializeField] private GoalTracker goalTracker;
     [SerializeField] private ParticleSystem fireworkVFX;
+
+    // FROM COLIN - For game saving
+    [SerializeField] private AnimalManager.AnimalType rewardAnimal = AnimalManager.AnimalType.none;
+
     public bool LevelEnded { get; private set; }
 
     // FROM COLIN - Give each level a unique GUID
@@ -112,6 +116,7 @@ public class GameManager : MonoBehaviour
         DataPersistenceManager.instance.RecordLevelScore(levelID, scoreManager.Score);
         DataPersistenceManager.instance.RecordLevelCompletion(levelID);
         DataPersistenceManager.instance.AddCollectedResources(goalTracker.GetCollectedResources());
+        DataPersistenceManager.instance.UnlockAnimal(rewardAnimal);
 
         // logic that goes after drain completes
         gameWinText.gameObject.SetActive(true);
