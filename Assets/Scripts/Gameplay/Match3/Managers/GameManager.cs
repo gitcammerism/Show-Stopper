@@ -12,12 +12,14 @@ public class GameManager : MonoBehaviour
     [SerializeField] private LevelTimer timer;
     [SerializeField] private GameObject pauseMenu;
     [SerializeField] private GameObject settingsPanel;
+    [SerializeField] private GameObject gameOverScreen;
     [SerializeField] private ScoreManager scoreManager;
     [SerializeField] private ScoreDisplay scoreDisplay;
     [SerializeField] private BoardInput boardInput;
     [SerializeField] private TextMeshProUGUI gameOverText;
     [SerializeField] private TextMeshProUGUI gameWinText;
     [SerializeField] private Button restartButton;
+    [SerializeField] private Button restartButtonWin;
     [SerializeField] private GoalTracker goalTracker;
     [SerializeField] private ParticleSystem fireworkVFX;
 
@@ -62,11 +64,14 @@ public class GameManager : MonoBehaviour
         gameOverText.gameObject.SetActive(false);
         gameWinText.gameObject.SetActive(false);
         restartButton.gameObject.SetActive(false);
+        restartButtonWin.gameObject.SetActive(false);
         pauseMenu.gameObject.SetActive(false);
         settingsPanel.gameObject.SetActive(false);
+        gameOverScreen.gameObject.SetActive(false);
 
         timer.StartTimer();
 
+        // index 3 of music array is level music
         _audioManager = AudioManager.Instance;
         _audioManager.PlayMusic(_audioManager.bgMusicArray[3]);
     }
@@ -78,7 +83,9 @@ public class GameManager : MonoBehaviour
         LevelEnded = true;
         boardInput.inputLocked = true;
         gameOverText.gameObject.SetActive(true);
+        gameOverScreen.gameObject.SetActive(true);
         restartButton.gameObject.SetActive(true);
+        _audioManager.StopMusic(_audioManager.bgMusicArray[3]);
         AudioManager.Instance.PlaySFX(AudioManager.Instance.sfxArray[1]); // play lose sfx
     }
 
@@ -126,7 +133,7 @@ public class GameManager : MonoBehaviour
 
         // logic that goes after drain completes
         gameWinText.gameObject.SetActive(true);
-        restartButton.gameObject.SetActive(true);
+        restartButtonWin.gameObject.SetActive(true);
     }
 
     public void TogglePauseMenu()
@@ -167,11 +174,6 @@ public class GameManager : MonoBehaviour
             Debug.Log("wtf again");
         }
     }
-
-    //public void GoToMainMenu()
-    //{
-    //    _sceneSwitcher.LoadMainMenu();
-    //}
 
     public void Restart()
     {

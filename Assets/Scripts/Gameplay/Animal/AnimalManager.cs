@@ -8,6 +8,8 @@ public class AnimalManager : MonoBehaviour
     public enum AnimalType
     {
         none = -1,
+        Elephant,
+        Giraffe,
         Horse,
         Lion,
         Parrot,
@@ -39,6 +41,18 @@ public class AnimalManager : MonoBehaviour
         {
             case AnimalType.none:
                 Debug.Log("No animal selected.");
+                break;
+            case AnimalType.Elephant:
+                currentAnimal = Instantiate(animalPrefab[(int)animalType], spawnPosition);
+                currentAnimal.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
+                currentAnimal.GetComponent<RectTransform>().localScale = Vector3.one;
+                Debug.Log("This is an elephant.");
+                break;
+            case AnimalType.Giraffe:
+                currentAnimal = Instantiate(animalPrefab[(int)animalType], spawnPosition);
+                currentAnimal.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
+                currentAnimal.GetComponent<RectTransform>().localScale = Vector3.one;
+                Debug.Log("This is a giraffe.");
                 break;
             case AnimalType.Horse:
                 currentAnimal = Instantiate(animalPrefab[(int)animalType], spawnPosition);
