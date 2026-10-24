@@ -10,16 +10,21 @@ public class GameManager : MonoBehaviour
     public string levelID;
 
     [SerializeField] private LevelTimer timer;
+    [SerializeField] private GameObject pauseMenu;
+    [SerializeField] private GameObject settingsPanel;
+    [SerializeField] private GameObject gameOverScreen;
     [SerializeField] private ScoreManager scoreManager;
     [SerializeField] private ScoreDisplay scoreDisplay;
     [SerializeField] private BoardInput boardInput;
     [SerializeField] private TextMeshProUGUI gameOverText;
     [SerializeField] private TextMeshProUGUI gameWinText;
     [SerializeField] private Button restartButton;
+    [SerializeField] private Button restartButtonWin;
     [SerializeField] private GoalTracker goalTracker;
     [SerializeField] private ParticleSystem fireworkVFX;
 
     private AudioManager _audioManager;
+    private SceneSwitcher _sceneSwitcher;
     public bool LevelEnded { get; private set; }
 
     // FROM COLIN - Give each level a unique GUID
@@ -59,8 +64,14 @@ public class GameManager : MonoBehaviour
         gameOverText.gameObject.SetActive(false);
         gameWinText.gameObject.SetActive(false);
         restartButton.gameObject.SetActive(false);
+        restartButtonWin.gameObject.SetActive(false);
+        pauseMenu.gameObject.SetActive(false);
+        settingsPanel.gameObject.SetActive(false);
+        gameOverScreen.gameObject.SetActive(false);
+
         timer.StartTimer();
 
+        // index 3 of music array is level music
         _audioManager = AudioManager.Instance;
         _audioManager.PlayMusic(_audioManager.bgMusicArray[3]);
     }
@@ -72,7 +83,9 @@ public class GameManager : MonoBehaviour
         LevelEnded = true;
         boardInput.inputLocked = true;
         gameOverText.gameObject.SetActive(true);
+        gameOverScreen.gameObject.SetActive(true);
         restartButton.gameObject.SetActive(true);
+        _audioManager.StopMusic(_audioManager.bgMusicArray[3]);
         AudioManager.Instance.PlaySFX(AudioManager.Instance.sfxArray[1]); // play lose sfx
     }
 
@@ -120,7 +133,46 @@ public class GameManager : MonoBehaviour
 
         // logic that goes after drain completes
         gameWinText.gameObject.SetActive(true);
-        restartButton.gameObject.SetActive(true);
+        restartButtonWin.gameObject.SetActive(true);
+    }
+
+    public void TogglePauseMenu()
+    {
+        if (!pauseMenu.activeSelf)
+        {
+            pauseMenu.gameObject.SetActive(true);
+            settingsPanel.gameObject.SetActive(false);
+            timer.StopTimer();
+        }
+        else if (pauseMenu.activeSelf)
+        {
+            pauseMenu.gameObject.SetActive(false);
+            settingsPanel.gameObject.SetActive(false);
+            // find out if this starts it over
+            timer.StartTimer();
+        }
+        else
+        {
+            Debug.Log("wtf");
+        }
+    }
+
+    public void ToggleSettings()
+    {
+        if (!settingsPanel.activeSelf)
+        {
+            settingsPanel.gameObject.SetActive(true);
+            pauseMenu.gameObject.SetActive(false);
+        }
+        else if (settingsPanel.activeSelf)
+        {
+            settingsPanel.gameObject.SetActive(false);
+            pauseMenu.gameObject.SetActive(true);
+        }
+        else
+        {
+            Debug.Log("wtf again");
+        }
     }
 
     public void Restart()
