@@ -81,4 +81,23 @@ public class AudioManager : MonoBehaviour
         musicSource.loop = true;
         Debug.Log($"playing {clip.name}");
     }
+
+    // Stops when the player gets a Game Over
+    public void StopMusic(AudioClip clip)
+    {
+        musicSource.clip = clip;
+        musicSource.Stop();
+    }
+
+    // Not currently in use, but handy functions to have if we want to pause/unpause music
+    public void PauseMusic(AudioClip clip)
+    {
+        musicSource.clip = clip;
+        musicSource.Pause();
+    }
+
+    public void UnpauseMusic()
+    {
+        musicSource.UnPause();
+    }
 }

@@ -718,6 +718,14 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2417424358812502327, guid: 959570488e4a7dc49a75c8bfd8b3619d, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2417424358812502327, guid: 959570488e4a7dc49a75c8bfd8b3619d, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3117896135877597884, guid: 959570488e4a7dc49a75c8bfd8b3619d, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -889,11 +897,11 @@ PrefabInstance:
     - target: {fileID: 5480566328773434174, guid: 959570488e4a7dc49a75c8bfd8b3619d, type: 3}
       propertyPath: boardMap
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 2059346252}
     - target: {fileID: 5480566328773434174, guid: 959570488e4a7dc49a75c8bfd8b3619d, type: 3}
       propertyPath: obstacleMap
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1953079198}
     - target: {fileID: 5786533190234629108, guid: 959570488e4a7dc49a75c8bfd8b3619d, type: 3}
       propertyPath: ID
       value: 2
@@ -914,6 +922,14 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1024094081}
+    - target: {fileID: 6499041090850550677, guid: 959570488e4a7dc49a75c8bfd8b3619d, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6499041090850550677, guid: 959570488e4a7dc49a75c8bfd8b3619d, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7023131059214400317, guid: 959570488e4a7dc49a75c8bfd8b3619d, type: 3}
       propertyPath: m_Tiles.Array.size
       value: 24
@@ -1241,6 +1257,18 @@ PrefabInstance:
     - target: {fileID: 7088667403103325750, guid: 959570488e4a7dc49a75c8bfd8b3619d, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7916514980340307561, guid: 959570488e4a7dc49a75c8bfd8b3619d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1024094081}
+    - target: {fileID: 7916514980340307561, guid: 959570488e4a7dc49a75c8bfd8b3619d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: LoadMainMenu
+      objectReference: {fileID: 0}
+    - target: {fileID: 7916514980340307561, guid: 959570488e4a7dc49a75c8bfd8b3619d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: SceneSwitcher, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 8121527163988518505, guid: 959570488e4a7dc49a75c8bfd8b3619d, type: 3}
       propertyPath: m_AnchorMax.y
@@ -1966,6 +1994,14 @@ PrefabInstance:
       propertyPath: highScoreText
       value: 
       objectReference: {fileID: 1510845273}
+    - target: {fileID: 8982303862731201364, guid: 959570488e4a7dc49a75c8bfd8b3619d, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8982303862731201364, guid: 959570488e4a7dc49a75c8bfd8b3619d, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 9096094315830682621, guid: 959570488e4a7dc49a75c8bfd8b3619d, type: 3}
       propertyPath: m_Color.b
       value: 0.8584906
