@@ -143,11 +143,11 @@ public class AnimalManager : MonoBehaviour, IDataPersistence
 
         isUnlocked = true;
 
-        Debug.Log($"{animalType} has been unlocked");
-
         if (DataPersistenceManager.instance != null)
         {
-            DataPersistenceManager.instance.SaveGame();
+            DataPersistenceManager.instance.UnlockAnimal(animalType);
         }
+
+        Debug.Log($"{animalType} has been unlocked");
     }
 }

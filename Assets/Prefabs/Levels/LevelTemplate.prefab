@@ -17475,6 +17475,7 @@ MonoBehaviour:
   restartButton: {fileID: 4414863603675829074}
   goalTracker: {fileID: 4059326191150186030}
   fireworkVFX: {fileID: 2188066472306893174}
+  _animManager: {fileID: 985504129325460337}
 --- !u!114 &5480566328773434174
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23545,6 +23546,7 @@ MonoBehaviour:
   - {fileID: 3183018147582250530, guid: d2b97e4386e56094d8e6c199ce980d83, type: 3}
   currentAnimal: {fileID: 0}
   animalType: 0
+  isUnlocked: 0
 --- !u!1 &6670925011339946885
 GameObject:
   m_ObjectHideFlags: 0
@@ -33799,7 +33801,7 @@ MonoBehaviour:
   scoreManager: {fileID: 1092914217789948498}
   gameManager: {fileID: 0}
   scoreText: {fileID: 7164825508355774383}
-  highScoreText: {fileID: 0}
+  highScoreText: {fileID: 3176697884898718976}
   countUpSpeed: 400
 --- !u!114 &2249706975283334068
 MonoBehaviour:

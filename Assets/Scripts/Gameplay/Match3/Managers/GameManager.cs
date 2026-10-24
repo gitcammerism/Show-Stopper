@@ -20,6 +20,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private ParticleSystem fireworkVFX;
 
     private AudioManager _audioManager;
+    [SerializeField] private AnimalManager _animManager;
+
     public bool LevelEnded { get; private set; }
 
     // FROM COLIN - Give each level a unique GUID
@@ -117,6 +119,7 @@ public class GameManager : MonoBehaviour
         DataPersistenceManager.instance.RecordLevelScore(levelID, scoreManager.Score);
         DataPersistenceManager.instance.RecordLevelCompletion(levelID);
         DataPersistenceManager.instance.AddCollectedResources(goalTracker.GetCollectedResources());
+        _animManager.UnlockAnimal();
 
         // logic that goes after drain completes
         gameWinText.gameObject.SetActive(true);
