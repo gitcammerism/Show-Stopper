@@ -23,6 +23,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GoalTracker goalTracker;
     [SerializeField] private ParticleSystem fireworkVFX;
 
+    [SerializeField] private AnimalManager _animManager;
     private AudioManager _audioManager;
     private SceneSwitcher _sceneSwitcher;
     public bool LevelEnded { get; private set; }
