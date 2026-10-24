@@ -18,6 +18,7 @@ public class AnimalManager : MonoBehaviour, IDataPersistence
     }
 
     [SerializeField] RectTransform spawnPosition;
+    [SerializeField] private float animalScaleMultiplier;
 
     public GameObject[] animalPrefab;
 
@@ -48,45 +49,32 @@ public class AnimalManager : MonoBehaviour, IDataPersistence
                 Debug.Log("No animal selected.");
                 break;
             case AnimalType.Elephant:
-                currentAnimal = Instantiate(animalPrefab[(int)animalType], spawnPosition);
-                currentAnimal.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
-                currentAnimal.GetComponent<RectTransform>().localScale = Vector3.one;
+                InstantiateAnimal();
                 Debug.Log("This is an elephant.");
                 break;
             case AnimalType.Giraffe:
-                currentAnimal = Instantiate(animalPrefab[(int)animalType], spawnPosition);
-                currentAnimal.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
-                currentAnimal.GetComponent<RectTransform>().localScale = Vector3.one;
+                InstantiateAnimal();
                 Debug.Log("This is a giraffe.");
                 break;
             case AnimalType.Horse:
-                currentAnimal = Instantiate(animalPrefab[(int)animalType], spawnPosition);
-                currentAnimal.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
-                currentAnimal.GetComponent<RectTransform>().localScale = Vector3.one;
+                InstantiateAnimal();
                 Debug.Log("This is a horse.");
                 break;
             case AnimalType.Lion:
-                currentAnimal = Instantiate(animalPrefab[(int)animalType], spawnPosition);
-                currentAnimal.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
-                currentAnimal.GetComponent<RectTransform>().localScale = Vector3.one; Debug.Log("This is a lion.");
+                InstantiateAnimal();
+                Debug.Log("This is a lion.");
                 break;
             case AnimalType.Parrot:
+                InstantiateAnimal();
                 Debug.Log("This is a parrot.");
-                currentAnimal = Instantiate(animalPrefab[(int)animalType], spawnPosition);
-                currentAnimal.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
-                currentAnimal.GetComponent<RectTransform>().localScale = Vector3.one; 
                 break;
             case AnimalType.Rabbit:
+                InstantiateAnimal();
                 Debug.Log("This is a rabbit.");
-                currentAnimal = Instantiate(animalPrefab[(int)animalType], spawnPosition);
-                currentAnimal.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
-                currentAnimal.GetComponent<RectTransform>().localScale = Vector3.one; 
                 break;
             case AnimalType.Seal:
+                InstantiateAnimal();
                 Debug.Log("This is a seal.");
-                currentAnimal = Instantiate(animalPrefab[(int)animalType], spawnPosition);
-                currentAnimal.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
-                currentAnimal.GetComponent<RectTransform>().localScale = Vector3.one; 
                 break;
             default:
                 Debug.Log("Unknown animal type.");
@@ -100,6 +88,20 @@ public class AnimalManager : MonoBehaviour, IDataPersistence
         {
             Debug.Log("animal not created");
         }
+    }
+
+    // Cami - Instantiates the animal, sets the position, and scales down the size by the set multiplier
+    private void InstantiateAnimal()
+    {
+        // Scales animal down from native size in order to fit in the cage
+        animalScaleMultiplier = 0.08f;
+
+        currentAnimal = Instantiate(animalPrefab[(int)animalType], spawnPosition);
+        currentAnimal.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
+
+        Vector3 nativeScale = currentAnimal.GetComponent<RectTransform>().localScale;
+        Vector3 targetScale = Vector3.Scale(nativeScale, new Vector3(animalScaleMultiplier, animalScaleMultiplier, 1f));
+        currentAnimal.GetComponent<RectTransform>().localScale = targetScale;
     }
 
     // FROM COLIN - Force animal to be unlocked

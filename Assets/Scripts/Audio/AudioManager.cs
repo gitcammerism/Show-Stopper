@@ -4,6 +4,7 @@ using UnityEngine.SceneManagement;
 
 /**
  * This script manages setting up the audio sources and clips and playing them.
+ * CAMI TODO: Consider turning the audio arrays into sets or dictionaries
  */
 
 public class AudioManager : MonoBehaviour
@@ -13,7 +14,7 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioSource musicSource;
     [SerializeField] private AudioSource SFXSource;
 
-    public AudioClip[] bgMusicArray;
+    public AudioClip[] bgMusicArray; // 0 - Main Menu, 1 - Level Select, 2 - Hub Level, 3 - Levels
     public AudioClip[] sfxArray;
 
     private void Awake()
