@@ -1,18 +1,25 @@
 using UnityEngine;
 
 /*
- * This script is responsible for toggling the Coming Soon panel on and off in the Level Select scene.
- * This script can also be expanded to handle other Level Select scene management tasks.
+ * This script is responsible for managing tasks specific to the Level Select scene.
+ * It plays the level select music and toggles the "coming soon" panel if player tries to open a nonexistent level.
  */
 
 public class LevelSelect : MonoBehaviour
 {
     [SerializeField] private GameObject comingSoonPanel;
+    [SerializeField] private AudioManager _audioManager;
 
 
     private void OnEnable()
     {
         comingSoonPanel.SetActive(false);
+    }
+
+    private void Start()
+    {
+        _audioManager = AudioManager.Instance;
+        _audioManager.PlayMusic(_audioManager.bgMusicArray[1]);
     }
 
     public void ToggleComingSoonPanel()
