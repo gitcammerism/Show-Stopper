@@ -21,7 +21,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Button restartButton;
     [SerializeField] private Button restartButtonWin;
     [SerializeField] private GoalTracker goalTracker;
-    [SerializeField] private ParticleSystem fireworkVFX;
+    [SerializeField] private GameObject fireworkVFX;
 
     [SerializeField] private AnimalManager _animManager;
     private AudioManager _audioManager;
@@ -75,6 +75,8 @@ public class GameManager : MonoBehaviour
         // index 3 of music array is level music
         _audioManager = AudioManager.Instance;
         _audioManager.PlayMusic(_audioManager.bgMusicArray[3]);
+
+    
     }
 
     // game over, player lost
@@ -124,8 +126,12 @@ public class GameManager : MonoBehaviour
         while (!scoreDisplay.IsSettled) yield return null;
         yield return new WaitForSeconds(0.3f); // small pause before continuing
 
-        AudioManager.Instance.PlaySFX(AudioManager.Instance.sfxArray[2]); // play win sfx
-        fireworkVFX.Play();
+        if (AudioManager.Instance != null)
+            AudioManager.Instance.PlaySFX(AudioManager.Instance.sfxArray[2]); // play win sfx
+        if (fireworkVFX != null)
+        {
+            fireworkVFX.GetComponent<ParticleSystem>().Play();
+        }
 
         // FROM COLIN - Save all necessary data
         DataPersistenceManager.instance.RecordLevelScore(levelID, scoreManager.Score);

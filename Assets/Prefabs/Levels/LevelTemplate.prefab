@@ -6565,6 +6565,38 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!1 &1208810094950879468
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4534605598005616489}
+  m_Layer: 0
+  m_Name: Managers
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4534605598005616489
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1208810094950879468}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 1226.8577, y: 1216.0342, z: -12.237484}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 2608755369344982743}
+  m_Father: {fileID: 8124138340305931649}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1226011073521649115
 GameObject:
   m_ObjectHideFlags: 0
@@ -11459,9 +11491,9 @@ ParticleSystemRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingLayerID: 1830640365
+  m_SortingLayer: 1
+  m_SortingOrder: 20
   m_RenderMode: 0
   m_MeshDistribution: 0
   m_SortMode: 0
@@ -19728,7 +19760,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 0, y: 206.19}
+  m_AnchoredPosition: {x: 0, y: 206.18994}
   m_SizeDelta: {x: 0, y: 2280}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!222 &2408732986806874552
@@ -19827,7 +19859,7 @@ MonoBehaviour:
   restartButton: {fileID: 4227120447386217690}
   restartButtonWin: {fileID: 6650752853130915481}
   goalTracker: {fileID: 4059326191150186030}
-  fireworkVFX: {fileID: 2188066472306893174}
+  fireworkVFX: {fileID: 7505081653631545858}
   _animManager: {fileID: 985504129325460337}
 --- !u!114 &5480566328773434174
 MonoBehaviour:
@@ -20463,6 +20495,50 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!1 &4399567912724849545
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2608755369344982743}
+  - component: {fileID: 706698257829281609}
+  m_Layer: 0
+  m_Name: SceneManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2608755369344982743
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4399567912724849545}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -543.55646, y: -51.39856, z: 6.2680297}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4534605598005616489}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &706698257829281609
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4399567912724849545}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd919da75c0e0b94c867b8077ac94399, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4632594476062225702
 GameObject:
   m_ObjectHideFlags: 0
@@ -25867,9 +25943,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
-        m_MethodName: 
+      - m_Target: {fileID: 706698257829281609}
+        m_TargetAssemblyTypeName: SceneSwitcher, Assembly-CSharp
+        m_MethodName: LoadMainMenu
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -27091,9 +27167,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
-        m_MethodName: 
+      - m_Target: {fileID: 706698257829281609}
+        m_TargetAssemblyTypeName: SceneSwitcher, Assembly-CSharp
+        m_MethodName: LoadMainMenu
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -27170,6 +27246,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 4534605598005616489}
   - {fileID: 4207410326150235822}
   - {fileID: 2325087547289937133}
   - {fileID: 884593805551912352}
@@ -27223,6 +27300,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnPosition: {fileID: 977382684938638317}
+  animalScaleMultiplier: 0
   animalPrefab:
   - {fileID: 3183018147582250530, guid: 27f45ebba17f83a429d67932907ff463, type: 3}
   - {fileID: 3183018147582250530, guid: 58ade1a46d1d8fc438efb67525b944f4, type: 3}
@@ -27233,6 +27311,7 @@ MonoBehaviour:
   - {fileID: 3183018147582250530, guid: d2b97e4386e56094d8e6c199ce980d83, type: 3}
   currentAnimal: {fileID: 0}
   animalType: 0
+  isUnlocked: 0
 --- !u!1 &6668565907953893993
 GameObject:
   m_ObjectHideFlags: 0
@@ -32256,9 +32335,9 @@ ParticleSystemRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingLayerID: 1830640365
+  m_SortingLayer: 1
+  m_SortingOrder: 20
   m_RenderMode: 0
   m_MeshDistribution: 0
   m_SortMode: 0
@@ -32664,7 +32743,7 @@ Transform:
   m_GameObject: {fileID: 7505081653631545858}
   serializedVersion: 2
   m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: -1397.3143, z: -14657.144}
+  m_LocalPosition: {x: 0, y: -1397.3143, z: 0}
   m_LocalScale: {x: 162.85715, y: 162.85715, z: 162.85715}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -37442,9 +37521,9 @@ ParticleSystemRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingLayerID: 1830640365
+  m_SortingLayer: 1
+  m_SortingOrder: 20
   m_RenderMode: 0
   m_MeshDistribution: 0
   m_SortMode: 0

@@ -3815,9 +3815,9 @@ MonoBehaviour:
   SFXSource: {fileID: 424418385}
   bgMusicArray:
   - {fileID: 8300000, guid: 942dcd35101a20f4eaee1c4b2ea28c85, type: 3}
-  - {fileID: 8300000, guid: 942dcd35101a20f4eaee1c4b2ea28c85, type: 3}
-  - {fileID: 8300000, guid: 942dcd35101a20f4eaee1c4b2ea28c85, type: 3}
-  - {fileID: 8300000, guid: 942dcd35101a20f4eaee1c4b2ea28c85, type: 3}
+  - {fileID: 8300000, guid: d10531a53f9a7e74ba4592793d58aadd, type: 3}
+  - {fileID: 8300000, guid: 8a243aa06cf25da43a07b7cb9e159869, type: 3}
+  - {fileID: 8300000, guid: b598dac207edd6e4b8a32927b0a7a374, type: 3}
   sfxArray:
   - {fileID: 8300000, guid: 4d94e60654b164c489b8ad0ec74621b6, type: 3}
   - {fileID: 8300000, guid: e2bcd24d20f15fc40aeb11861961d578, type: 3}
