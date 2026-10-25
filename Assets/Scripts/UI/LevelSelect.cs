@@ -24,6 +24,7 @@ public class LevelSelect : MonoBehaviour
 
     public void ToggleComingSoonPanel()
     {
+        AudioManager.Instance.PlaySFX(AudioManager.Instance.sfxArray[3]);
         comingSoonPanel.SetActive(!comingSoonPanel.activeSelf);
     }
 

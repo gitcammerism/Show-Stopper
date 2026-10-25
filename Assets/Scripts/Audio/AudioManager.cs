@@ -15,7 +15,7 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioSource SFXSource;
 
     public AudioClip[] bgMusicArray; // 0 - Main Menu, 1 - Level Select, 2 - Hub Level, 3 - Levels
-    public AudioClip[] sfxArray;
+    public AudioClip[] sfxArray; // 0 - match sound, 1 - loss sound, 2 - win sound, 3 - button click
 
     private void Awake()
     {

@@ -146,6 +146,7 @@ public class GameManager : MonoBehaviour
 
     public void TogglePauseMenu()
     {
+        AudioManager.Instance.PlaySFX(AudioManager.Instance.sfxArray[3]);
         if (!pauseMenu.activeSelf)
         {
             pauseMenu.gameObject.SetActive(true);
@@ -167,6 +168,7 @@ public class GameManager : MonoBehaviour
 
     public void ToggleSettings()
     {
+        AudioManager.Instance.PlaySFX(AudioManager.Instance.sfxArray[3]);
         if (!settingsPanel.activeSelf)
         {
             settingsPanel.gameObject.SetActive(true);
@@ -185,6 +187,7 @@ public class GameManager : MonoBehaviour
 
     public void Restart()
     {
+        AudioManager.Instance.PlaySFX(AudioManager.Instance.sfxArray[3]);
         UnityEngine.SceneManagement.SceneManager.LoadScene(
             UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex
         );

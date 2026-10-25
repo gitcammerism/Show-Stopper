@@ -35,6 +35,7 @@ public class LevelButton : MonoBehaviour
     // Called when the button is pressed. Loads the level if it exists, otherwise toggles the Coming Soon panel.
     public void OnPress()
     {
+        AudioManager.Instance.PlaySFX(AudioManager.Instance.sfxArray[3]);
         string buttonText = _lvlButton.GetComponentInChildren<TMP_Text>().text;
         if (buttonText.Contains("Hub"))
         {
