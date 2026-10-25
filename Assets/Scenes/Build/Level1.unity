@@ -340,6 +340,10 @@ PrefabInstance:
       propertyPath: animalType
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1207120632857591809, guid: 959570488e4a7dc49a75c8bfd8b3619d, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 206.18994
+      objectReference: {fileID: 0}
     - target: {fileID: 1508790090253839246, guid: 959570488e4a7dc49a75c8bfd8b3619d, type: 3}
       propertyPath: m_Color.b
       value: 0.85098046
