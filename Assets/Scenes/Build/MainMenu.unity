@@ -3538,8 +3538,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4664885716373133457}
-        m_TargetAssemblyTypeName: DataPersistenceManager, Assembly-CSharp
+      - m_Target: {fileID: 2126621615}
+        m_TargetAssemblyTypeName: MainMenuManager, Assembly-CSharp
         m_MethodName: DeleteData
         m_Mode: 1
         m_Arguments:
@@ -7267,17 +7267,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a7e4a10947eaada44b59c4c6cd098fa1, type: 3}
---- !u!114 &4664885716373133457 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 681393538390763220, guid: a7e4a10947eaada44b59c4c6cd098fa1, type: 3}
-  m_PrefabInstance: {fileID: 4664885716373133456}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2b3c29a54c6adc840be4e218cd137622, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &4680670865213458796
 MonoBehaviour:
   m_ObjectHideFlags: 0

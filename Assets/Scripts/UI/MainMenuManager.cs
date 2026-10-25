@@ -64,4 +64,11 @@ public class MainMenuManager : MonoBehaviour
         areYouSure.SetActive(false);
         credits.SetActive(true);
     }
+
+    public void DeleteData()
+    {
+        AudioManager.Instance.PlaySFX(AudioManager.Instance.sfxArray[3]);
+        DataPersistenceManager.instance.DeleteData();
+        ToggleMainMenu();
+    }
 }
