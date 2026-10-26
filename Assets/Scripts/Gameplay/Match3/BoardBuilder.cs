@@ -26,7 +26,15 @@ public class BoardBuilder : MonoBehaviour
 
     [Header("VFX")]
     [SerializeField] private GameObject matchVFX;
-   
+
+    [Header("Hints")]
+    [SerializeField] private float hintDelay;
+    [SerializeField] private float hintDuration;
+    [SerializeField] private float hintHeight;
+    [SerializeField] private float hintSpeed;
+    private float idleTime;
+    private Coroutine hintCoroutine;
+    private readonly Dictionary<Tile, Vector3> hintOriginalPositions = new();
 
     private List<TileType> spawnableTypes;
     private Dictionary<TileBase, ObstacleDefinition> obstacleLookup;
@@ -59,6 +67,23 @@ public class BoardBuilder : MonoBehaviour
         {
             if (!TryShuffle(100)) RegenerateTiles();
             SnapTilesToCells();
+        }
+    }
+
+    private void Update()
+    {
+        if (boardInput == null || boardInput.inputLocked)
+        {
+            idleTime = 0f;
+            return;
+        }
+
+        idleTime += Time.deltaTime;
+
+        if (idleTime >= hintDelay && hintCoroutine == null)
+        {
+            idleTime = 0f;
+            hintCoroutine = StartCoroutine(ShowHint());
         }
     }
 
