@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using UnityEngine;
 
@@ -13,6 +14,7 @@ public class Tile : MonoBehaviour
     // initializes tile; basically a constructor
     public void Init(TileType type, Cell cell)
     {
+        transform.DORotate(new Vector3(0f, 0f, 6f), 1f, RotateMode.Fast).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.Linear);
         this.type = type;
         this.cell = cell;
     }
