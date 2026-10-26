@@ -12,6 +12,7 @@ public class ContentManager : MonoBehaviour, IEndDragHandler
     
     [Header("Content")]
     [SerializeField] private List<GameObject> pages = new List<GameObject>();
+    private float _pagePadding;
 
     [Header("Navigation Indicators")]
     [SerializeField] private Indicator indicator;
@@ -30,7 +31,6 @@ public class ContentManager : MonoBehaviour, IEndDragHandler
         scrollRect = GetComponentInChildren<ScrollRect>();
     }
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         foreach (var page in pages)
@@ -41,6 +41,12 @@ public class ContentManager : MonoBehaviour, IEndDragHandler
         }
 
         _indicators[0].Activate();
+        for (int i = 1;  i < _indicators.Count; i++)
+        {
+            _indicators[i].Deactivate();
+        }
+
+        _pagePadding = GetComponentInChildren<HorizontalLayoutGroup>().spacing;
         
     }
 
@@ -84,7 +90,7 @@ public class ContentManager : MonoBehaviour, IEndDragHandler
         _indicators[_currentIndex].Activate();
     }
 
-    private IEnumerator LerpToPos(float targetHorizontalPosition)
+    private IEnumerator LerpToPos(float targetHorizontalPosition)                                                                                                                                                                                                                                                                                                
     {
         float elapsedTime = 0;
         float initialPos = scrollRect.horizontalNormalizedPosition;
