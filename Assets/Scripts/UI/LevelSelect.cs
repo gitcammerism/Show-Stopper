@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 
 /*
@@ -9,6 +10,8 @@ public class LevelSelect : MonoBehaviour
 {
     [SerializeField] private GameObject comingSoonPanel;
     [SerializeField] private AudioManager _audioManager;
+    [SerializeField] private TMP_Text _panelText;
+
 
 
     private void OnEnable()
@@ -22,10 +25,24 @@ public class LevelSelect : MonoBehaviour
         _audioManager.PlayMusic(_audioManager.bgMusicArray[1]);
     }
 
+    // cami todo: implement with levels
+    public bool IsLocked()
+    {
+        return true;
+    }
+
     public void ToggleComingSoonPanel()
     {
         AudioManager.Instance.PlaySFX(AudioManager.Instance.sfxArray[3]);
         comingSoonPanel.SetActive(!comingSoonPanel.activeSelf);
+        _panelText.text = "Coming Soon!";
+    }
+
+    public void ToggleUnlockLevelPanel()
+    {
+        AudioManager.Instance.PlaySFX(AudioManager.Instance.sfxArray[3]);
+        comingSoonPanel.SetActive(!comingSoonPanel.activeSelf);
+        _panelText.text = "Complete the previous level(s) to unlock this one!";
     }
 
 }
