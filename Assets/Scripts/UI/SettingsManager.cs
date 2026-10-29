@@ -1,5 +1,6 @@
-using UnityEngine;
+using System;
 using TMPro;
+using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.UI;
 
@@ -21,9 +22,21 @@ public class SettingsManager : MonoBehaviour
     [SerializeField]
     public Scrollbar masterVolScrollbar, musicVolScrollbar, sfxVolScrollbar;
 
+    // For Hints
+    private const string HintsEnabledKey = "HintsEnabled";
+
+    public static event Action<bool> OnHintsChanged;
+
     private void Awake()
     {
         _audioManager = AudioManager.Instance;
+    }
+    public static bool IsEnabled
+    {
+        get
+        {
+            return PlayerPrefs.GetInt(HintsEnabledKey, 1) == 1;
+        }
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -196,5 +209,21 @@ public class SettingsManager : MonoBehaviour
         PlayerPrefs.Save();
 
         Debug.Log("Audio settings reset");
+    }
+
+    // COLIN - Change bool to enable or disabled
+    public void SetHintsEnabled(bool enabled)
+    {
+        Debug.Log("Toggle passed this value: " + enabled);
+
+        PlayerPrefs.SetInt(HintsEnabledKey, enabled ? 1 : 0);
+        PlayerPrefs.Save();
+
+        Debug.Log("Saved integer: " +
+            PlayerPrefs.GetInt(HintsEnabledKey, -1));
+
+        Debug.Log("IsEnabled returns: " + IsEnabled);
+
+        OnHintsChanged?.Invoke(enabled);
     }
 }

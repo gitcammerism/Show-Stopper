@@ -19,6 +19,25 @@ public class Tile : MonoBehaviour
         this.cell = cell;
     }
 
+    // FROM COLIN - Hint tweening
+    public void StartHintTween()
+    {
+        transform.DOKill();
+
+        transform.DORotate(new Vector3(0f, 0f, 30f), 0.25f, RotateMode.Fast)
+            .SetLoops(-1, LoopType.Yoyo)
+            .SetEase(Ease.Linear);
+    }
+
+    public void StopHintTween()
+    {
+        transform.DOKill();
+
+        transform.DORotate(new Vector3(0f, 0f, 6f), 1f,RotateMode.Fast)
+            .SetLoops(-1, LoopType.Yoyo)
+            .SetEase(Ease.Linear);
+    }
+
     // moves tile to a world position with lerp and yields until it arrives
     public IEnumerator MoveTo(Vector3 target, float duration = 0.25f)
     {

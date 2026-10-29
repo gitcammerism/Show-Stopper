@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,12 +29,18 @@ public class BoardBuilder : MonoBehaviour
     [SerializeField] private GameObject matchVFX;
 
     [Header("Hints")]
+    [SerializeField] private bool hintsEnabled;
     [SerializeField] private float hintDelay;
     [SerializeField] private float hintDuration;
     [SerializeField] private float hintHeight;
     [SerializeField] private float hintSpeed;
+
     private float idleTime;
     private Coroutine hintCoroutine;
+
+    private Tile hintedTileA;
+    private Tile hintedTileB;
+
     private readonly Dictionary<Tile, Vector3> hintOriginalPositions = new();
 
     private List<TileType> spawnableTypes;
@@ -52,6 +59,8 @@ public class BoardBuilder : MonoBehaviour
 
     private void Awake()
     {
+        hintsEnabled = SettingsManager.IsEnabled;
+
         // handles dictionary and list definitions
         prefabLookup = tilePrefabs.ToDictionary(e => e.type, e => e.prefab);
         spawnableTypes = tilePrefabs.Select(e => e.type).ToList();
@@ -70,17 +79,29 @@ public class BoardBuilder : MonoBehaviour
         }
     }
 
+    private void OnEnable()
+    {
+        SettingsManager.OnHintsChanged += SetHintsEnabled;
+        SetHintsEnabled(SettingsManager.IsEnabled);
+    }
+
+    private void OnDisable()
+    {
+        SettingsManager.OnHintsChanged -= SetHintsEnabled;
+    }
+
     private void Update()
     {
         if (boardInput == null || boardInput.inputLocked)
         {
+            StopHint();
             idleTime = 0f;
             return;
         }
 
         idleTime += Time.deltaTime;
 
-        if (idleTime >= hintDelay && hintCoroutine == null)
+        if (hintsEnabled && idleTime >= hintDelay && hintCoroutine == null)
         {
             idleTime = 0f;
             hintCoroutine = StartCoroutine(ShowHint());
@@ -697,6 +718,183 @@ public class BoardBuilder : MonoBehaviour
         else
         {
             RegenerateTiles();
+        }
+    }
+
+    // FROM COLIN - Hint functionality
+    // FROM COLIN - Find valid moves for hints
+    private bool FindHintMove(out Cell moveA, out Cell moveB)
+    {
+        List<Cell[]> validMoves = new List<Cell[]>();
+        List<Cell[]> goalMoves = new List<Cell[]>();
+
+        int width = Cells.GetLength(0);
+        int height = Cells.GetLength(1);
+
+        for (int y = 0; y < height; y++)
+        {
+            for (int x = 0; x < width; x++)
+            {
+                Cell a = Cells[x, y];
+
+                if (a == null || a.tile == null)
+                {
+                    continue;
+                }
+
+                // FROM COLIN - Check right and up
+                for (int direction = 0; direction < 2; direction++)
+                {
+                    Cell b = direction == 0
+                        ? GetCell(x + 1, y)
+                        : GetCell(x, y + 1);
+
+                    if (b == null || b.tile == null)
+                    {
+                        continue;
+                    }
+
+                    if (a.obstacle != null && a.obstacle.BlocksSwap)
+                    {
+                        continue;
+                    }
+
+                    if (b.obstacle != null && b.obstacle.BlocksSwap)
+                    {
+                        continue;
+                    }
+
+                    if (a.tile.type == b.tile.type)
+                    {
+                        continue;
+                    }
+
+                    SwapTileRefs(a, b);
+
+                    List<List<Cell>> runs = FindRuns();
+
+                    bool valid = runs.Count > 0;
+                    bool helpsGoal = false;
+
+                    if (valid)
+                    {
+                        foreach (List<Cell> run in runs)
+                        {
+                            foreach (Cell cell in run)
+                            {
+                                if (cell.tile != null &&
+                                    goalTracker.NeedsMoreOf(cell.tile.type))
+                                {
+                                    helpsGoal = true;
+                                    break;
+                                }
+                            }
+
+                            if (helpsGoal)
+                                break;
+                        }
+                    }
+
+                    SwapTileRefs(a, b);
+
+                    if (!valid)
+                    {
+                        continue;
+                    }
+
+                    Cell[] move = { a, b };
+
+                    validMoves.Add(move);
+
+                    if (helpsGoal)
+                    {
+                        goalMoves.Add(move);
+                    }
+                }
+            }
+        }
+
+        // FROM COLIN - Focuses on needed moves
+        List<Cell[]> choices = goalMoves.Count > 0 ? goalMoves : validMoves;
+
+        if (choices.Count == 0)
+        {
+            moveA = null;
+            moveB = null;
+            return false;
+        }
+        
+        Cell[] selected = choices[Random.Range(0, choices.Count)];
+
+        moveA = selected[0];
+        moveB = selected[1];
+
+        return true;
+    }
+
+
+    // FROM COLIN - Start hint animation
+    private IEnumerator ShowHint()
+    {
+        if (!hintsEnabled || !FindHintMove(out Cell a, out Cell b))
+        {
+            hintCoroutine = null;
+            yield break;
+        }
+
+        hintedTileA = a.tile;
+        hintedTileB = b.tile;
+
+        hintedTileA.StartHintTween();
+        hintedTileB.StartHintTween();
+
+        yield return new WaitForSeconds(hintDuration);
+
+        StopHintAnimation();
+        hintCoroutine = null;
+    }
+
+
+    // FROM COLIN - Kill hint tile animations
+    private void StopHintAnimation()
+    {
+        if (hintedTileA != null)
+        {
+            hintedTileA.StopHintTween();
+        }
+
+        if (hintedTileB != null)
+        {
+            hintedTileB.StopHintTween();
+        }
+
+        hintedTileA = null;
+        hintedTileB = null;
+    }
+
+
+    // FROM COLIN - Stop hint animations
+    private void StopHint()
+    {
+        if (hintCoroutine != null)
+        {
+            StopCoroutine(hintCoroutine);
+            hintCoroutine = null;
+        }
+
+        StopHintAnimation();
+    }
+
+
+    // Set hints on or off
+    public void SetHintsEnabled(bool enabled)
+    {
+        hintsEnabled = enabled;
+        idleTime = 0f;
+
+        if (!hintsEnabled)
+        {
+            StopHint();
         }
     }
 }

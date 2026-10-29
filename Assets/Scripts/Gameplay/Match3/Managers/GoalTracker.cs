@@ -66,4 +66,21 @@ public class GoalTracker : MonoBehaviour
 
         return resources;
     }
+
+    // FROM COLIN - returns what tile type is needed to complete level
+    // FROM COLIN - for hint system
+    public bool NeedsMoreOf(TileType tileType)
+    {
+        for (int i = 0; i < level.goals.Length; i++)
+        {
+            TileGoal goal = level.goals[i];
+
+            if (goal.tileType == tileType && collected[i] < goal.target)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }
