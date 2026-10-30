@@ -12,6 +12,7 @@ public class LevelSelect : MonoBehaviour
     [SerializeField] private AudioManager _audioManager;
     [SerializeField] private TMP_Text _panelText;
 
+    private GameData _gameData;
 
 
     private void OnEnable()
@@ -23,12 +24,28 @@ public class LevelSelect : MonoBehaviour
     {
         _audioManager = AudioManager.Instance;
         _audioManager.PlayMusic(_audioManager.bgMusicArray[1]);
+        _gameData = DataPersistenceManager.instance.GetGameData();
     }
 
-    // cami todo: implement with levels
-    public bool IsLocked()
+    // checks if a level is locked or unlocked
+    public bool IsUnlocked(string level)
     {
-        return true;
+        if (DataPersistenceManager.instance.areAllLevelsUnlocked) return true;
+        else if (level.Equals("0"))
+        {
+            return true;
+        }
+        else if (_gameData != null && _gameData.levelsCompleted.ContainsKey(level))
+        {
+            return _gameData.levelsCompleted[level];
+        }
+        else if (_gameData != null && _gameData.levelsCompleted.ContainsKey(level) == false)
+        {
+            return false;
+        }
+
+        Debug.Log("level select went wrong");
+        return false;
     }
 
     public void ToggleComingSoonPanel()
