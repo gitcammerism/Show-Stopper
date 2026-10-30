@@ -926,7 +926,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &414187957
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1282,7 +1282,7 @@ GameObject:
   - component: {fileID: 483530690}
   - component: {fileID: 483530689}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: ComingSoonText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1863,6 +1863,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   comingSoonPanel: {fileID: 414187956}
   _audioManager: {fileID: 0}
+  _panelText: {fileID: 483530689}
 --- !u!1 &824668298
 GameObject:
   m_ObjectHideFlags: 0

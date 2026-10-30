@@ -19,6 +19,9 @@ public class DataPersistenceManager : MonoBehaviour
     // Instance can only be modified in this class
     public static DataPersistenceManager instance { get; private set; }
 
+    // CAMI - whether all levels are unlocked or not
+    public bool areAllLevelsUnlocked = false;
+
     // Makes sure there are no other Managers on objects in the scene
     private void Awake()
     {
@@ -148,6 +151,17 @@ public class DataPersistenceManager : MonoBehaviour
         gameData.levelsCompleted[levelID] = true;
 
         dataHandler.Save(gameData);
+    }
+
+    // Cami - to access saved information
+    public GameData GetGameData()
+    {
+        return gameData;
+    }
+
+    public void ToggleUnlockAllLevels(bool isUnlocked)
+    {
+        areAllLevelsUnlocked = isUnlocked;
     }
 
     // Grabs the high score for each level

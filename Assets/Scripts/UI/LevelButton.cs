@@ -45,10 +45,17 @@ public class LevelButton : MonoBehaviour
         if (int.TryParse(buttonText, out int result))
         {
             int levelNum = result;
+            int prevLvlNum = levelNum - 1;
+            string prevLevelID = prevLvlNum.ToString();
 
-            if (Application.CanStreamedLevelBeLoaded("Level" + levelNum))
+            if (Application.CanStreamedLevelBeLoaded("Level" + levelNum) && _levelSelect.IsUnlocked(prevLevelID))
             {
                 _sceneSwitcher.LoadLevel(levelNum);
+            }
+            else if (Application.CanStreamedLevelBeLoaded("Level" + levelNum) && !_levelSelect.IsUnlocked(prevLevelID))
+            {
+                Debug.Log("Level is locked.");
+                _levelSelect.ToggleUnlockLevelPanel();
             }
             else
             {

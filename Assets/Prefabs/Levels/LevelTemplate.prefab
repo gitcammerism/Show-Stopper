@@ -12916,7 +12916,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 8260777282596196465, guid: c7ebcf2ed286c654aab13311e5699864, type: 3}
+  m_Sprite: {fileID: -3397161771459762068, guid: bb6d722b6d5b5204f96430d9f97d14f4, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -13919,7 +13919,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 8260777282596196465, guid: c7ebcf2ed286c654aab13311e5699864, type: 3}
+  m_Sprite: {fileID: -3397161771459762068, guid: bb6d722b6d5b5204f96430d9f97d14f4, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -19761,6 +19761,11 @@ MonoBehaviour:
     prefab: {fileID: 6813439669782754178, guid: b3e711a76e152dd4ebd6ed06b766fe1c, type: 3}
   dropStagger: 0.08
   matchVFX: {fileID: 5597781018065852189, guid: 4573941865119d646af4297ae735ec8b, type: 3}
+  hintsEnabled: 0
+  hintDelay: 0
+  hintDuration: 0
+  hintHeight: 0
+  hintSpeed: 0
 --- !u!1 &3936535863328103744
 GameObject:
   m_ObjectHideFlags: 0
