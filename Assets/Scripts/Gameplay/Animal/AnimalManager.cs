@@ -15,6 +15,8 @@ public class AnimalManager : MonoBehaviour, IDataPersistence
         Parrot,
         Rabbit,
         Seal,
+        Zebra,
+        Bear
     }
 
     [SerializeField] RectTransform spawnPosition;
@@ -75,6 +77,14 @@ public class AnimalManager : MonoBehaviour, IDataPersistence
             case AnimalType.Seal:
                 InstantiateAnimal();
                 Debug.Log("This is a seal.");
+                break;
+            case AnimalType.Zebra:
+                InstantiateAnimal();
+                Debug.Log("This is a zebra.");
+                break;
+            case AnimalType.Bear:
+                InstantiateAnimal();
+                Debug.Log("This is a bear.");
                 break;
             default:
                 Debug.Log("Unknown animal type.");

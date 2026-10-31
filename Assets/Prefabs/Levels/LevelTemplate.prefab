@@ -12850,6 +12850,8 @@ MonoBehaviour:
   masterVolScrollbar: {fileID: 4975649272055030650}
   musicVolScrollbar: {fileID: 6031741854036323986}
   sfxVolScrollbar: {fileID: 8615813823030878674}
+  toggle: {fileID: 0}
+  hints: 0
 --- !u!1 &2038663968707455828
 GameObject:
   m_ObjectHideFlags: 0
@@ -19744,6 +19746,7 @@ MonoBehaviour:
   goalTracker: {fileID: 4059326191150186030}
   timer: {fileID: 4019764975868781640}
   boardInput: {fileID: 1194456773046949358}
+  settings: {fileID: 0}
   boardMap: {fileID: 7023131059214400317}
   obstacleMap: {fileID: 5211049069126853560}
   obstacleDefs:
@@ -27180,6 +27183,7 @@ MonoBehaviour:
   - {fileID: 4100670617638286338, guid: 10f50a154d7d0d045994e445a8ad08c0, type: 3}
   - {fileID: 7400552170135380747, guid: d86f4c11eb464694b82aaa78ed2b348f, type: 3}
   - {fileID: 3183018147582250530, guid: d2b97e4386e56094d8e6c199ce980d83, type: 3}
+  - {fileID: 7251040609430175309, guid: 0674f9ca07f64ba408ae45d542bb723c, type: 3}
   currentAnimal: {fileID: 0}
   animalType: 0
   isUnlocked: 0

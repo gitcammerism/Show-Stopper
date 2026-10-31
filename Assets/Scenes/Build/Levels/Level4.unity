@@ -150,6 +150,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fileName: lvl2_test
   useEncryption: 0
+  areAllLevelsUnlocked: 0
 --- !u!4 &28747039
 Transform:
   m_ObjectHideFlags: 0
@@ -893,7 +894,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 905527180909648499, guid: 959570488e4a7dc49a75c8bfd8b3619d, type: 3}
       propertyPath: levelID
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 905527180909648499, guid: 959570488e4a7dc49a75c8bfd8b3619d, type: 3}
       propertyPath: _animManager
@@ -901,7 +902,7 @@ PrefabInstance:
       objectReference: {fileID: 1510845276}
     - target: {fileID: 985504129325460337, guid: 959570488e4a7dc49a75c8bfd8b3619d, type: 3}
       propertyPath: animalType
-      value: 1
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 1207120632857591809, guid: 959570488e4a7dc49a75c8bfd8b3619d, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -1038,11 +1039,11 @@ PrefabInstance:
     - target: {fileID: 4019764975868781640, guid: 959570488e4a7dc49a75c8bfd8b3619d, type: 3}
       propertyPath: level
       value: 
-      objectReference: {fileID: 11400000, guid: 9bb0ebeb68f70f74fa95517a91f11561, type: 2}
+      objectReference: {fileID: 11400000, guid: 157fec4c0f26aa44195a98dfbc2f515d, type: 2}
     - target: {fileID: 4059326191150186030, guid: 959570488e4a7dc49a75c8bfd8b3619d, type: 3}
       propertyPath: level
       value: 
-      objectReference: {fileID: 11400000, guid: 9bb0ebeb68f70f74fa95517a91f11561, type: 2}
+      objectReference: {fileID: 11400000, guid: 157fec4c0f26aa44195a98dfbc2f515d, type: 2}
     - target: {fileID: 4154156438320579185, guid: 959570488e4a7dc49a75c8bfd8b3619d, type: 3}
       propertyPath: tilePrefabs.Array.size
       value: 6
@@ -1179,6 +1180,10 @@ PrefabInstance:
       propertyPath: obstacleMap
       value: 
       objectReference: {fileID: 1953079198}
+    - target: {fileID: 5480566328773434174, guid: 959570488e4a7dc49a75c8bfd8b3619d, type: 3}
+      propertyPath: hintsEnabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5786533190234629108, guid: 959570488e4a7dc49a75c8bfd8b3619d, type: 3}
       propertyPath: ID
       value: 2
