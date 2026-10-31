@@ -20,7 +20,13 @@ public class Tile : MonoBehaviour
 
     private void Start()
     {
+        StartNormalTween();
+    }
+
+    public void StartNormalTween()
+    {
         transform.DOKill();
+        transform.rotation = Quaternion.identity;
         transform.DORotate(new Vector3(0f, 0f, 6f), 1f, RotateMode.Fast).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.Linear);
     }
 
@@ -36,11 +42,7 @@ public class Tile : MonoBehaviour
 
     public void StopHintTween()
     {
-        transform.DOKill();
-
-        transform.DORotate(new Vector3(0f, 0f, 6f), 1f,RotateMode.Fast)
-            .SetLoops(-1, LoopType.Yoyo)
-            .SetEase(Ease.Linear);
+        StartNormalTween();
     }
 
     // moves tile to a world position with lerp and yields until it arrives

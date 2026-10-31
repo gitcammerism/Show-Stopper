@@ -247,6 +247,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fileName: chandler.json
   useEncryption: 0
+  areAllLevelsUnlocked: 0
 --- !u!4 &1218677009
 Transform:
   m_ObjectHideFlags: 0
@@ -722,7 +723,7 @@ PrefabInstance:
       objectReference: {fileID: 1510845277}
     - target: {fileID: 5480566328773434174, guid: 959570488e4a7dc49a75c8bfd8b3619d, type: 3}
       propertyPath: hintDelay
-      value: 3
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 5480566328773434174, guid: 959570488e4a7dc49a75c8bfd8b3619d, type: 3}
       propertyPath: hintSpeed
@@ -734,7 +735,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5480566328773434174, guid: 959570488e4a7dc49a75c8bfd8b3619d, type: 3}
       propertyPath: hintDuration
-      value: 10
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 5480566328773434174, guid: 959570488e4a7dc49a75c8bfd8b3619d, type: 3}
       propertyPath: hintsEnabled

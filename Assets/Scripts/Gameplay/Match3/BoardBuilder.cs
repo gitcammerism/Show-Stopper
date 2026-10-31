@@ -30,11 +30,9 @@ public class BoardBuilder : MonoBehaviour
     [SerializeField] private GameObject matchVFX;
 
     [Header("Hints")]
-    [SerializeField] private bool hintsEnabled;
-    [SerializeField] private float hintDelay;
-    [SerializeField] private float hintDuration;
-    [SerializeField] private float hintHeight;
-    [SerializeField] private float hintSpeed;
+    private bool hintsEnabled;
+    private float hintDelay = 10f;
+    private float hintDuration = 5f;
 
     private float idleTime;
     private Coroutine hintCoroutine;
