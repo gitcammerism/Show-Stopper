@@ -13,6 +13,7 @@ public class BoardBuilder : MonoBehaviour
     [SerializeField] private GoalTracker goalTracker;
     [SerializeField] private LevelTimer timer;
     [SerializeField] private BoardInput boardInput;
+    [SerializeField] private SettingsManager settings;
 
     [Header("Tilemaps")]
     [SerializeField] private Tilemap boardMap;
@@ -59,7 +60,7 @@ public class BoardBuilder : MonoBehaviour
 
     private void Awake()
     {
-        hintsEnabled = SettingsManager.IsEnabled;
+        hintsEnabled = settings != null && settings.hints;
 
         // handles dictionary and list definitions
         prefabLookup = tilePrefabs.ToDictionary(e => e.type, e => e.prefab);
@@ -81,17 +82,24 @@ public class BoardBuilder : MonoBehaviour
 
     private void OnEnable()
     {
-        SettingsManager.OnHintsChanged += SetHintsEnabled;
-        SetHintsEnabled(SettingsManager.IsEnabled);
+        if (settings != null)
+        {
+            SetHintsEnabled(settings.hints);
+        }
     }
 
     private void OnDisable()
     {
-        SettingsManager.OnHintsChanged -= SetHintsEnabled;
+        StopHint();
     }
 
     private void Update()
     {
+        if (settings != null && hintsEnabled != settings.hints)
+        {
+            SetHintsEnabled(settings.hints);
+        }
+
         if (boardInput == null || boardInput.inputLocked)
         {
             StopHint();
@@ -832,7 +840,6 @@ public class BoardBuilder : MonoBehaviour
         return true;
     }
 
-
     // FROM COLIN - Start hint animation
     private IEnumerator ShowHint()
     {
@@ -854,7 +861,6 @@ public class BoardBuilder : MonoBehaviour
         hintCoroutine = null;
     }
 
-
     // FROM COLIN - Kill hint tile animations
     private void StopHintAnimation()
     {
@@ -872,7 +878,6 @@ public class BoardBuilder : MonoBehaviour
         hintedTileB = null;
     }
 
-
     // FROM COLIN - Stop hint animations
     private void StopHint()
     {
@@ -884,7 +889,6 @@ public class BoardBuilder : MonoBehaviour
 
         StopHintAnimation();
     }
-
 
     // Set hints on or off
     public void SetHintsEnabled(bool enabled)

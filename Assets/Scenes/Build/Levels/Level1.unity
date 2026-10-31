@@ -346,19 +346,7 @@ MonoBehaviour:
   m_Group: {fileID: 0}
   onValueChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1510845277}
-        m_TargetAssemblyTypeName: SettingsManager, Assembly-CSharp
-        m_MethodName: SetHintsEnabled
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
+      m_Calls: []
   m_IsOn: 1
 --- !u!1001 &1510845272
 PrefabInstance:
@@ -408,6 +396,10 @@ PrefabInstance:
       propertyPath: goalList.Array.data[2].tile
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 584261336102144048, guid: 959570488e4a7dc49a75c8bfd8b3619d, type: 3}
+      propertyPath: toggle
+      value: 
+      objectReference: {fileID: 1385746904}
     - target: {fileID: 614150082357117230, guid: 959570488e4a7dc49a75c8bfd8b3619d, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -724,6 +716,10 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5480566328773434174, guid: 959570488e4a7dc49a75c8bfd8b3619d, type: 3}
+      propertyPath: settings
+      value: 
+      objectReference: {fileID: 1510845277}
     - target: {fileID: 5480566328773434174, guid: 959570488e4a7dc49a75c8bfd8b3619d, type: 3}
       propertyPath: hintDelay
       value: 3

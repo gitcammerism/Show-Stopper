@@ -24,19 +24,23 @@ public class SettingsManager : MonoBehaviour
 
     // For Hints
     private const string HintsEnabledKey = "HintsEnabled";
-
-    public static event Action<bool> OnHintsChanged;
+    [SerializeField] private Toggle toggle;
+    public bool hints;
 
     private void Awake()
     {
         _audioManager = AudioManager.Instance;
+        hints = PlayerPrefs.GetInt(HintsEnabledKey, 1) == 1;
     }
-    public static bool IsEnabled
+
+    private void OnEnable()
     {
-        get
-        {
-            return PlayerPrefs.GetInt(HintsEnabledKey, 1) == 1;
-        }
+        toggle.onValueChanged.AddListener(OnToggleChanged);
+    }
+
+    private void OnDisable()
+    {
+        toggle.onValueChanged.RemoveListener(OnToggleChanged);
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -46,6 +50,7 @@ public class SettingsManager : MonoBehaviour
         masterVol = PlayerPrefs.GetFloat("MasterVolume", 1f);
         musicVol = PlayerPrefs.GetFloat("MusicVolume", 1f);
         sfxVol = PlayerPrefs.GetFloat("SFXVolume", 1f);
+        hints = PlayerPrefs.GetInt(HintsEnabledKey, 1) == 1;
 
         masterVolScrollbar.SetValueWithoutNotify(masterVol);
         musicVolScrollbar.SetValueWithoutNotify(musicVol);
@@ -55,6 +60,9 @@ public class SettingsManager : MonoBehaviour
         ChangeMasterVolume();
         SetMusicVolume();
         SetSFXVolume();
+
+        // Update without triggering events
+        toggle.SetIsOnWithoutNotify(hints);
     }
 
     public void ChangeMasterVolume()
@@ -212,18 +220,12 @@ public class SettingsManager : MonoBehaviour
     }
 
     // COLIN - Change bool to enable or disabled
-    public void SetHintsEnabled(bool enabled)
+    public void OnToggleChanged(bool value)
     {
-        Debug.Log("Toggle passed this value: " + enabled);
+        hints = value;
+        Debug.Log($"Boolean updated to: {hints}");
 
-        PlayerPrefs.SetInt(HintsEnabledKey, enabled ? 1 : 0);
+        PlayerPrefs.SetInt(HintsEnabledKey, hints ? 1 : 0);
         PlayerPrefs.Save();
-
-        Debug.Log("Saved integer: " +
-            PlayerPrefs.GetInt(HintsEnabledKey, -1));
-
-        Debug.Log("IsEnabled returns: " + IsEnabled);
-
-        OnHintsChanged?.Invoke(enabled);
     }
 }

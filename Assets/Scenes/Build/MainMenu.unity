@@ -5066,19 +5066,7 @@ MonoBehaviour:
   m_Group: {fileID: 0}
   onValueChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 4183567138288021193}
-        m_TargetAssemblyTypeName: SettingsManager, Assembly-CSharp
-        m_MethodName: SetHintsEnabled
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
+      m_Calls: []
   m_IsOn: 1
 --- !u!1 &1857057460
 GameObject:
@@ -7662,6 +7650,8 @@ MonoBehaviour:
   masterVolScrollbar: {fileID: 4932644792960292568}
   musicVolScrollbar: {fileID: 1262422518017733290}
   sfxVolScrollbar: {fileID: 7482298541627913787}
+  toggle: {fileID: 1833013285}
+  hints: 0
 --- !u!222 &4188030728047894517
 CanvasRenderer:
   m_ObjectHideFlags: 0
