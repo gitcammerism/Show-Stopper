@@ -1,6 +1,8 @@
 using UnityEngine;
 using UnityEngine.UI;
 
+// This script locks/unlocks all levels in the game when the toggle it is attached to is clicked. 
+
 public class UnlockLevelsToggle : MonoBehaviour
 {
     private void Start()
