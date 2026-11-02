@@ -3,7 +3,7 @@ using UnityEngine;
 
 /*
  * This script is responsible for managing tasks specific to the Level Select scene.
- * It plays the level select music and toggles the "coming soon" panel if player tries to open a nonexistent level.
+ * It plays the level select music and toggles the "coming soon" and "unlock level" panels if player tries to open a nonexistent or locked level.
  */
 
 public class LevelSelect : MonoBehaviour
