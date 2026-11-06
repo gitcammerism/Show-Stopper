@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1905419226063469434}
   - component: {fileID: 8712580555172942014}
   - component: {fileID: 9182100279045132310}
+  - component: {fileID: 5892305120239749303}
   m_Layer: 0
   m_Name: ParrotPrefab
   m_TagString: Untagged
@@ -75,3 +76,21 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &5892305120239749303
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4100670617638286338}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed232a70408b17549a58a76ca37fd1bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animalType: 4
+  decayInterval: 60
+  decayAmount: 1
+  resourceCost: 1
+  needIncrease: 25
+  affectionIncrease: 5

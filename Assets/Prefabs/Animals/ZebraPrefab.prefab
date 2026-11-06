@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7216585594349825592}
   - component: {fileID: 636859736708511183}
   - component: {fileID: 4395929183337291323}
+  - component: {fileID: 550976340107692030}
   m_Layer: 0
   m_Name: ZebraPrefab
   m_TagString: Untagged
@@ -75,3 +76,21 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &550976340107692030
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7251040609430175309}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed232a70408b17549a58a76ca37fd1bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animalType: 7
+  decayInterval: 60
+  decayAmount: 1
+  resourceCost: 1
+  needIncrease: 25
+  affectionIncrease: 5

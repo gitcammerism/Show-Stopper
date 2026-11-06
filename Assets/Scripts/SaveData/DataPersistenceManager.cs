@@ -364,6 +364,72 @@ public class DataPersistenceManager : MonoBehaviour
         return gameData.animals.TryGetValue(animalID, out AnimalData animalData) && animalData.isUnlocked;
     }
 
+    // Get saved data for an individual animal
+    public AnimalData GetAnimalData(AnimalManager.AnimalType animalType)
+    {
+        if (gameData == null)
+        {
+            LoadGame();
+        }
+
+        if (gameData.animals == null)
+        {
+            gameData.animals = new SerializableDictionary<string, AnimalData>();
+        }
+
+        string animalID = animalType.ToString();
+
+        if (!gameData.animals.TryGetValue(animalID, out AnimalData animalData))
+        {
+            animalData = new AnimalData();
+            gameData.animals[animalID] = animalData;
+        }
+
+        return animalData;
+    }
+
+    // Save changes to an individual animal
+    public void UpdateAnimalData(AnimalManager.AnimalType animalType, AnimalData animalData)
+    {
+        if (gameData == null)
+        {
+            gameData = new GameData();
+        }
+
+        if (gameData.animals == null)
+        {
+            gameData.animals = new SerializableDictionary<string, AnimalData>();
+        }
+
+        string animalID = animalType.ToString();
+
+        gameData.animals[animalID] = animalData;
+
+        SaveGame();
+    }
+
+    // Spend player resources
+    public bool SpendResource(string resourceID, int amount)
+    {
+        if (amount <= 0)
+        {
+            return false;
+        }
+
+        int currentAmount = GetResourceCount(resourceID);
+
+        if (currentAmount < amount)
+        {
+            return false;
+        }
+
+        gameData.resources[resourceID] = currentAmount - amount;
+
+        SaveGame();
+
+        return true;
+    }
+
     // Save the game when quitting the game
     private void OnApplicationQuit()
     {

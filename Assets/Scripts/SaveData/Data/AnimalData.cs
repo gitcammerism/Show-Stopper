@@ -27,11 +27,11 @@ public class AnimalData
 
         affection = 0;
 
-        comfort = 0;
-        food = 0;
-        water = 0;
-        treats = 0;
-        toys = 0;
+        comfort = 100;
+        food = 100;
+        water = 100;
+        treats = 100;
+        toys = 100;
 
         animalName = "";
     }
