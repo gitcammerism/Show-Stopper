@@ -8,6 +8,9 @@ public class Animal : MonoBehaviour
     [Header("Animal")]
     [SerializeField] private AnimalManager.AnimalType animalType;
 
+    // FROM CHANDLER - added public getter variable for AnimalInput.cs
+    public AnimalManager.AnimalType AnimalType => animalType;
+
     [Header("Need Decay")]
     [SerializeField] private float decayInterval = 60f;
     [SerializeField] private int decayAmount = 1;

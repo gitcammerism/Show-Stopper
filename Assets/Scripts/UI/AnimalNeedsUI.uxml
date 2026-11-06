@@ -1,0 +1,19 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:Template name="NeedsRing" src="project://database/Assets/Scripts/UI/NeedsRing.uxml?fileID=9197481963319205126&amp;guid=463b0ab3a6c0e7f42b59541c69fde80b&amp;type=3#NeedsRing" />
+    <ui:VisualElement name="Row" style="flex-grow: 1; flex-direction: row; justify-content: space-evenly; align-items: center; bottom: auto; top: 90px;">
+        <ui:Instance template="NeedsRing" name="Food" style="height: 100px; width: 100px; flex-direction: column; align-items: center; justify-content: flex-start; align-self: stretch;">
+            <AttributeOverrides element-name="ring" tile-type="Food" />
+        </ui:Instance>
+        <ui:Instance template="NeedsRing" name="Comfort" style="width: 100px; height: 100px; flex-direction: column; align-self: flex-start;" />
+        <ui:Instance template="NeedsRing" name="Treat" style="width: 100px; height: 100px; align-self: flex-start;">
+            <AttributeOverrides element-name="ring" tile-type="Treat" />
+        </ui:Instance>
+        <ui:Instance template="NeedsRing" name="Toy" style="width: 100px; height: 100px; align-self: flex-start;">
+            <AttributeOverrides element-name="ring" tile-type="Toy" />
+        </ui:Instance>
+        <ui:Instance template="NeedsRing" name="Water" style="width: 100px; height: 100px; align-self: flex-start;">
+            <AttributeOverrides element-name="ring" tile-type="Water" />
+        </ui:Instance>
+    </ui:VisualElement>
+    <ui:Label text="Label" name="value-label" style="-unity-font-definition: url(&quot;project://database/Assets/TextMesh%20Pro/Examples%20&amp;%20Extras/Fonts/Roboto-Bold.ttf?fileID=12800000&amp;guid=4beb055f07aaff244873dec698d0363e&amp;type=3#Roboto-Bold&quot;); font-size: 20px;" />
+</ui:UXML>
