@@ -546,6 +546,10 @@ PrefabInstance:
       propertyPath: animalType
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 985504129325460337, guid: 959570488e4a7dc49a75c8bfd8b3619d, type: 3}
+      propertyPath: currentAnimal
+      value: 
+      objectReference: {fileID: 7400552170135380747, guid: d86f4c11eb464694b82aaa78ed2b348f, type: 3}
     - target: {fileID: 1508790090253839246, guid: 959570488e4a7dc49a75c8bfd8b3619d, type: 3}
       propertyPath: m_Color.b
       value: 0.18431373

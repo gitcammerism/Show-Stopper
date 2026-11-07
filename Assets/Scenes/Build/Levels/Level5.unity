@@ -150,6 +150,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fileName: lvl2_test
   useEncryption: 0
+  areAllLevelsUnlocked: 0
 --- !u!4 &28747039
 Transform:
   m_ObjectHideFlags: 0
@@ -509,6 +510,10 @@ PrefabInstance:
       propertyPath: gridShape
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 406445845777882426, guid: 959570488e4a7dc49a75c8bfd8b3619d, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 584261336102144048, guid: 959570488e4a7dc49a75c8bfd8b3619d, type: 3}
       propertyPath: toggle
       value: 
@@ -549,6 +554,10 @@ PrefabInstance:
       propertyPath: animalType
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 985504129325460337, guid: 959570488e4a7dc49a75c8bfd8b3619d, type: 3}
+      propertyPath: currentAnimal
+      value: 
+      objectReference: {fileID: 941363430684914365, guid: 1affae94f8f5ccf469cef956be599cd6, type: 3}
     - target: {fileID: 1508790090253839246, guid: 959570488e4a7dc49a75c8bfd8b3619d, type: 3}
       propertyPath: m_Color.b
       value: 0.18431373

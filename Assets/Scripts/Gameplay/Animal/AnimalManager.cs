@@ -16,7 +16,8 @@ public class AnimalManager : MonoBehaviour, IDataPersistence
         Rabbit,
         Seal,
         Zebra,
-        Bear
+        Bear,
+        Jaguar
     }
 
     [SerializeField] RectTransform spawnPosition;
@@ -35,7 +36,9 @@ public class AnimalManager : MonoBehaviour, IDataPersistence
 
     private void Start()
     {
-        if (spawnPosition) {             SpawnAnimal();
+        if (spawnPosition)
+        {
+            SpawnAnimal();
         }
         else
         {
@@ -92,7 +95,7 @@ public class AnimalManager : MonoBehaviour, IDataPersistence
         }
         if (currentAnimal != null)
         {
-            currentAnimal.transform.DOScale(currentAnimal.transform.localScale*1.1f, 1f).SetEase(Ease.OutBounce).SetLoops(-1, LoopType.Yoyo);
+            currentAnimal.transform.DOScale(currentAnimal.transform.localScale * 1.1f, 1f).SetEase(Ease.OutBounce).SetLoops(-1, LoopType.Yoyo);
         }
         else
         {

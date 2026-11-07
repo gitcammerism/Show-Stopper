@@ -150,6 +150,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fileName: lvl2_test
   useEncryption: 0
+  areAllLevelsUnlocked: 0
 --- !u!4 &28747039
 Transform:
   m_ObjectHideFlags: 0
@@ -545,6 +546,10 @@ PrefabInstance:
       propertyPath: animalType
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 985504129325460337, guid: 959570488e4a7dc49a75c8bfd8b3619d, type: 3}
+      propertyPath: currentAnimal
+      value: 
+      objectReference: {fileID: 4100670617638286338, guid: 10f50a154d7d0d045994e445a8ad08c0, type: 3}
     - target: {fileID: 1508790090253839246, guid: 959570488e4a7dc49a75c8bfd8b3619d, type: 3}
       propertyPath: m_Color.b
       value: 0.18431373

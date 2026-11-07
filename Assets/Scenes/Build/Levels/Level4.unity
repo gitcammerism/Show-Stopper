@@ -904,6 +904,10 @@ PrefabInstance:
       propertyPath: animalType
       value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: 985504129325460337, guid: 959570488e4a7dc49a75c8bfd8b3619d, type: 3}
+      propertyPath: currentAnimal
+      value: 
+      objectReference: {fileID: 7251040609430175309, guid: 0674f9ca07f64ba408ae45d542bb723c, type: 3}
     - target: {fileID: 1207120632857591809, guid: 959570488e4a7dc49a75c8bfd8b3619d, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 206.18994
