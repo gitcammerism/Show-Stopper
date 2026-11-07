@@ -2784,7 +2784,7 @@ RectTransform:
   m_GameObject: {fileID: 627911415}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalScale: {x: 0.4, y: 0.4, z: 0.4}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 1259593793}
@@ -2793,7 +2793,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: -65}
-  m_SizeDelta: {x: 1000, y: 1000}
+  m_SizeDelta: {x: 1000, y: 1900}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &627911417
 MonoBehaviour:
@@ -5787,7 +5787,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1718964330
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5797,7 +5797,7 @@ RectTransform:
   m_GameObject: {fileID: 1718964329}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalScale: {x: 0.4, y: 0.4, z: 0.4}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 1748584191}
@@ -5805,8 +5805,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -65}
-  m_SizeDelta: {x: 1000, y: 1000}
+  m_AnchoredPosition: {x: 0, y: -90}
+  m_SizeDelta: {x: 1000, y: 1900}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1718964331
 MonoBehaviour:
@@ -5828,7 +5828,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Texture: {fileID: 8400000, guid: 8632b314803e1bd44972d829062ca22e, type: 2}
+  m_Texture: {fileID: 8400000, guid: b179c4de1c0919146b3289df2043ba6f, type: 2}
   m_UVRect:
     serializedVersion: 2
     x: 0
@@ -5883,11 +5883,11 @@ VideoPlayer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1748584190}
   m_Enabled: 1
-  m_VideoClip: {fileID: 32900000, guid: 8c3fc18b20551d0469e228fab6067581, type: 3}
+  m_VideoClip: {fileID: 32900000, guid: ec62e35035bfbe347984aeed84385b83, type: 3}
   m_TargetCameraAlpha: 1
   m_TargetCamera3DLayout: 0
   m_TargetCamera: {fileID: 0}
-  m_TargetTexture: {fileID: 8400000, guid: 8632b314803e1bd44972d829062ca22e, type: 2}
+  m_TargetTexture: {fileID: 8400000, guid: b179c4de1c0919146b3289df2043ba6f, type: 2}
   m_TimeReference: 0
   m_TargetMaterialRenderer: {fileID: 0}
   m_TargetMaterialProperty: <noninit>
