@@ -2,6 +2,7 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class Animal : MonoBehaviour
 {
@@ -22,22 +23,30 @@ public class Animal : MonoBehaviour
 
     private InputManager inputManager;
     private AnimalData animalData;
+    private Button _animalButton;
+    private bool inFocus = false;
+
+    private void Awake()
+    {
+        _animalButton = GetComponent<Button>();
+        _animalButton.onClick.AddListener(OnTouch);
+    }
 
     private void OnEnable()
     {
-        inputManager = InputManager.instance;
+        //inputManager = InputManager.instance;
 
-        if (inputManager != null)
-        {
-            inputManager.OnStartTouch += OnTouch;
-        }
+        //if (inputManager != null)
+        //{
+        //    inputManager.OnStartTouch += OnTouch;
+        //}
     }
     private void OnDisable()
     {
-        if (inputManager != null)
-        {
-            inputManager.OnStartTouch -= OnTouch;
-        }
+        //if (inputManager != null)
+        //{
+        //    inputManager.OnStartTouch -= OnTouch;
+        //}
 
         StopAllCoroutines();
     }
@@ -48,6 +57,8 @@ public class Animal : MonoBehaviour
         LoadAnimalData();
 
         StartCoroutine(DecayNeeds());
+
+
     }
 
     // Load animal individual saved data
@@ -208,8 +219,16 @@ public class Animal : MonoBehaviour
         DataPersistenceManager.instance.UpdateAnimalData(animalType, animalData);
     }
 
-    private void OnTouch(Vector3 position, float time, InputAction.CallbackContext context)
+    private void OnTouch()
     {
         // Zoom in on animal here
+        // stop the jumping around and show the needs UI
+
+        if (!inFocus)
+        {
+            inFocus = true;
+            //AnimalInput.instance.FocusOnAnimal(this);
+        }
+
     }
 }
