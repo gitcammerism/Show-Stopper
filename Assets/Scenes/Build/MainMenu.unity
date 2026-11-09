@@ -718,7 +718,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Chandler Guzman - Technical Designer
+  m_text: Chandler Guzman - Technical Designer/Gameplay Programmer
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 555020be4b8dbf04e923eb672a2eaeac, type: 2}
   m_sharedMaterial: {fileID: -2636043739909530788, guid: 555020be4b8dbf04e923eb672a2eaeac, type: 2}
@@ -745,7 +745,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 12.65
+  m_fontSize: 12.1
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -9673,8 +9673,6 @@ MonoBehaviour:
   masterVolScrollbar: {fileID: 4932644792960292568}
   musicVolScrollbar: {fileID: 1262422518017733290}
   sfxVolScrollbar: {fileID: 7482298541627913787}
-  toggle: {fileID: 1833013285}
-  hints: 0
 --- !u!222 &4188030728047894517
 CanvasRenderer:
   m_ObjectHideFlags: 0
