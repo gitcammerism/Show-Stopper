@@ -112,4 +112,21 @@ public class AnimalTween : MonoBehaviour
             yDisplacement = Random.Range(-displacementRange, displacementRange);
         }
     }
+
+    // CAMI - zooms on animal when clicked in hub level, stops movement
+    public void Zoom()
+    {
+        StopAllCoroutines();
+        rectTransform.DOKill();
+        rectTransform.DOAnchorPos(Vector2.zero, 0.5f).SetEase(Ease.OutCubic);
+        rectTransform.DOScale(startingScale * 2f, 0.5f).SetEase(Ease.OutCubic);
+    }
+
+    // CAMI - unzooms on animal in hub level and resumes movement
+    public void Unzoom()
+    {
+        rectTransform.DOKill();
+        rectTransform.DOScale(endScale, moveDuration).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.OutQuint);
+        StartCoroutine(AnimalMovement());
+    }
 }

@@ -22,6 +22,7 @@ public class Animal : MonoBehaviour
     [SerializeField] private int affectionIncrease = 5;
 
     private InputManager inputManager;
+    private AnimalInput _animalInput;
     private AnimalData animalData;
     private Button _animalButton;
     private bool inFocus = false;
@@ -30,6 +31,8 @@ public class Animal : MonoBehaviour
     {
         _animalButton = GetComponent<Button>();
         _animalButton.onClick.AddListener(OnTouch);
+
+        _animalInput = FindFirstObjectByType<AnimalInput>();
     }
 
     private void OnEnable()
@@ -219,15 +222,20 @@ public class Animal : MonoBehaviour
         DataPersistenceManager.instance.UpdateAnimalData(animalType, animalData);
     }
 
+    // public setter for inFocus state
+    public void SetFocusState(bool state)
+    {
+        inFocus = state;
+    }
+
     private void OnTouch()
     {
-        // Zoom in on animal here
-        // stop the jumping around and show the needs UI
+        // zoom on animal, stop the jumping around and show the needs UI
 
-        if (!inFocus)
+        if (!inFocus && _animalInput != null)
         {
             inFocus = true;
-            //AnimalInput.instance.FocusOnAnimal(this);
+            _animalInput.FocusOnAnimal(this);
         }
 
     }

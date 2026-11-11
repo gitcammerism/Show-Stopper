@@ -89,7 +89,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed232a70408b17549a58a76ca37fd1bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animalType: 7
+  animalType: 8
   decayInterval: 60
   decayAmount: 1
   resourceCost: 1
