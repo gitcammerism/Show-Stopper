@@ -430,6 +430,71 @@ public class DataPersistenceManager : MonoBehaviour
         return true;
     }
 
+    // Save amount of stars gained
+    public void RecordLevelStars(string levelID, int stars)
+    {
+        // Make sure GameData exists
+        if (gameData == null)
+        {
+            gameData = dataHandler.Load();
+
+            if (gameData == null)
+            {
+                gameData = new GameData();
+            }
+        }
+
+        if (gameData.levelStars == null)
+        {
+            gameData.levelStars = new SerializableDictionary<string, int>();
+        }
+
+        // Clamp stars between 1 and 3
+        stars = Mathf.Clamp(stars, 1, 3);
+
+        // Get the previous star rating
+        int previousStars = 0;
+
+        gameData.levelStars.TryGetValue(levelID, out previousStars);
+
+        // Only update if new rating is higher
+        if (stars > previousStars)
+        {
+            gameData.levelStars[levelID] = stars;
+
+            // Immediately save the new rating.
+            dataHandler.Save(gameData);
+
+            Debug.Log($"Level {levelID} saved with {stars} stars!");
+        }
+    }
+
+    // Get the highest star rating earned for a level
+    public int GetLevelStars(string levelID)
+    {
+        if (gameData == null)
+        {
+            gameData = dataHandler.Load();
+
+            if (gameData == null)
+            {
+                gameData = new GameData();
+            }
+        }
+
+        if (gameData.levelStars == null)
+        {
+            return 0;
+        }
+
+        if (gameData.levelStars.TryGetValue(levelID, out int stars))
+        {
+            return stars;
+        }
+
+        return 0;
+    }
+
     // Save the game when quitting the game
     private void OnApplicationQuit()
     {

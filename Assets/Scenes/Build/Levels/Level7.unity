@@ -119,6 +119,25 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &16851539 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8464904184967434479, guid: 959570488e4a7dc49a75c8bfd8b3619d, type: 3}
+  m_PrefabInstance: {fileID: 1510845272}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &16851540
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 16851539}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfff52cc523ced643a29e2b29525c88e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  twoStarScore: 1500
+  threeStarScore: 3000
 --- !u!1 &28747037
 GameObject:
   m_ObjectHideFlags: 0
@@ -544,8 +563,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 905527180909648499, guid: 959570488e4a7dc49a75c8bfd8b3619d, type: 3}
       propertyPath: levelID
-      value: 5
+      value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: 905527180909648499, guid: 959570488e4a7dc49a75c8bfd8b3619d, type: 3}
+      propertyPath: starRating
+      value: 
+      objectReference: {fileID: 16851540}
     - target: {fileID: 905527180909648499, guid: 959570488e4a7dc49a75c8bfd8b3619d, type: 3}
       propertyPath: _animManager
       value: 
@@ -1896,7 +1919,10 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3318864556794084617, guid: 959570488e4a7dc49a75c8bfd8b3619d, type: 3}
       insertIndex: 3
       addedObject: {fileID: 229889399}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8464904184967434479, guid: 959570488e4a7dc49a75c8bfd8b3619d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 16851540}
   m_SourcePrefab: {fileID: 100100000, guid: 959570488e4a7dc49a75c8bfd8b3619d, type: 3}
 --- !u!114 &1510845273 stripped
 MonoBehaviour:

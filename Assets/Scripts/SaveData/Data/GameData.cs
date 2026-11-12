@@ -17,6 +17,9 @@ public class GameData
     // All information of animals
     public SerializableDictionary<string, AnimalData> animals;
 
+    // Star Ratings
+    public SerializableDictionary<string, int> levelStars;
+
     // Defines default values for game data
     public GameData()
     {
@@ -24,5 +27,6 @@ public class GameData
         levelHighScores = new SerializableDictionary<string, int>();
         resources = new SerializableDictionary<string, int>();
         animals = new SerializableDictionary<string, AnimalData>();
+        levelStars = new SerializableDictionary<string, int>();
     }
 }
