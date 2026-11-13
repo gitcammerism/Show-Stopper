@@ -22,6 +22,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Button restartButtonWin;
     [SerializeField] private GoalTracker goalTracker;
     [SerializeField] private GameObject fireworkVFX;
+    [SerializeField] private GameObject darkBackground;
 
     [SerializeField] private AnimalManager _animManager;
     [SerializeField] private LevelStarRating starRating;
@@ -149,6 +150,7 @@ public class GameManager : MonoBehaviour
         // logic that goes after drain completes
         gameWinText.gameObject.SetActive(true);
         restartButtonWin.gameObject.SetActive(true);
+        darkBackground.gameObject.SetActive(true);
     }
 
     public void TogglePauseMenu()

@@ -14,15 +14,6 @@ public class LevelButton : MonoBehaviour
     [SerializeField] private SceneSwitcher _sceneSwitcher;
     private LevelSelect _levelSelect;
 
-    // public constructor that creates a new level button
-    // Cami TODO: maybe have buttons appear as they are loaded in the level select scene, instead of being preloaded in the scene.
-    // Either that or have the buttons be greyed out
-    //public LevelButton(int levelNum)
-    //{
-    //    _levelNum = levelNum;
-    //    _lvlButton = this;
-    //}
-
     private void Awake()
     {
         // Get the button component from the child object and grab the SceneSwitcher and LevelSelectManager
@@ -30,6 +21,20 @@ public class LevelButton : MonoBehaviour
         _sceneSwitcher = FindAnyObjectByType<SceneSwitcher>();
         _levelSelect = FindAnyObjectByType<LevelSelect>();
         _lvlButton.onClick.AddListener(OnPress);
+    }
+
+    private void OnEnable()
+    {
+        if (_lvlButton != null && _levelSelect != null)
+        {
+            Invoke(nameof(GreyOut), 0.01f);
+        }
+    }
+
+    // check if this is needed
+    private void Start()
+    {
+        Invoke(nameof(GreyOut), 0.01f);
     }
 
     // Called when the button is pressed. Loads the level if it exists, otherwise toggles the Coming Soon panel.
@@ -66,6 +71,40 @@ public class LevelButton : MonoBehaviour
         else
         {
             Debug.LogError("What on earth is on that button. Where is the number");
+        }
+    }
+
+    // Checks if a level is unlocked. If it's locked, the button gets greyed out.
+    private void GreyOut()
+    {
+        string buttonText = _lvlButton.GetComponentInChildren<TMP_Text>().text;
+        if (buttonText.Contains("Hub"))
+        {
+            return;
+        }
+        if (int.TryParse(buttonText, out int result))
+        {
+            int levelNum = result;
+            int prevLvlNum = levelNum - 1;
+            string prevLevelID = prevLvlNum.ToString();
+
+            ColorBlock colors = _lvlButton.colors;
+            if (!_levelSelect.IsUnlocked(prevLevelID))
+            {
+                //_lvlButton.interactable = false;
+                colors.normalColor = Color.gray;
+                colors.highlightedColor = Color.gray;
+                colors.pressedColor = Color.gray;
+                _lvlButton.GetComponentInChildren<TMP_Text>().color = Color.grey;
+            }
+            else if (_levelSelect.IsUnlocked(prevLevelID))
+            {
+                colors.normalColor = Color.white;
+                colors.highlightedColor = Color.white;
+                colors.pressedColor = Color.gray;
+                _lvlButton.GetComponentInChildren<TMP_Text>().color = Color.white;
+            }
+            _lvlButton.colors = colors;
         }
     }
 }
