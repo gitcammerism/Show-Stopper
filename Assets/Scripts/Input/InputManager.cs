@@ -87,6 +87,8 @@ public class InputManager : MonoBehaviour
         //}
         if (context.control == Pointer.current.press)
         {
+            Camera camera = GetMainCamera();
+
             Vector2 screenPos = Pointer.current.position.ReadValue();
             if (OnStartTouch != null) OnStartTouch(ScreenToWorld(_mainCamera, screenPos), (float)context.startTime, context);
         }
@@ -106,6 +108,8 @@ public class InputManager : MonoBehaviour
         //}
         if (context.control == Pointer.current.press)
         {
+            Camera camera = GetMainCamera();
+
             Vector2 screenPos = Pointer.current.position.ReadValue();
             if (OnEndTouch != null) OnEndTouch(ScreenToWorld(_mainCamera, screenPos), (float)context.time, context);
         }
@@ -125,6 +129,8 @@ public class InputManager : MonoBehaviour
     {
         if (!context.started) return 0;
 
+        Camera camera = GetMainCamera();
+
         var rayHit = Physics2D.GetRayIntersection(_mainCamera.ScreenPointToRay(_touchControls.Touch.TouchPosition.ReadValue<Vector3>()));
         if (!rayHit.collider) return 0;
 
@@ -143,6 +149,19 @@ public class InputManager : MonoBehaviour
     // currently not in use
     public Vector2 PrimaryPosition()
     {
+        Camera camera = GetMainCamera();
+
         return ScreenToWorld(_mainCamera, _touchControls.Touch.TouchPosition.ReadValue<Vector3>());
+    }
+
+
+    private Camera GetMainCamera()
+    {
+        if (_mainCamera == null)
+        {
+            _mainCamera = Camera.main;
+        }
+
+        return _mainCamera;
     }
 }

@@ -15,4 +15,4 @@ MonoBehaviour:
   timeLimit: 120
   goals:
   - tileType: 1
-    target: 20
+    target: 25

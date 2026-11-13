@@ -24,12 +24,14 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject fireworkVFX;
 
     [SerializeField] private AnimalManager _animManager;
+    [SerializeField] private LevelStarRating starRating;
     private AudioManager _audioManager;
     private SceneSwitcher _sceneSwitcher;
     public bool LevelEnded { get; private set; }
+    public int EarnedStars { get; private set; }
 
     // FROM COLIN - Give each level a unique GUID
-    #if UNITY_EDITOR
+#if UNITY_EDITOR
     private void OnValidate()
     {
         if (gameObject == null)
@@ -124,6 +126,10 @@ public class GameManager : MonoBehaviour
 
         // waits for the displayed score to catch up
         while (!scoreDisplay.IsSettled) yield return null;
+
+        // Calculate stars using score
+        EarnedStars = starRating.CalculateStars(scoreManager.Score);
+
         yield return new WaitForSeconds(0.3f); // small pause before continuing
 
         if (AudioManager.Instance != null)
@@ -137,6 +143,7 @@ public class GameManager : MonoBehaviour
         DataPersistenceManager.instance.RecordLevelScore(levelID, scoreManager.Score);
         DataPersistenceManager.instance.RecordLevelCompletion(levelID);
         DataPersistenceManager.instance.AddCollectedResources(goalTracker.GetCollectedResources());
+        DataPersistenceManager.instance.RecordLevelStars(levelID, EarnedStars);
         _animManager.UnlockAnimal();
 
         // logic that goes after drain completes

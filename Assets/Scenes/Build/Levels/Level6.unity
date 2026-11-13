@@ -150,6 +150,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fileName: lvl2_test
   useEncryption: 0
+  areAllLevelsUnlocked: 0
 --- !u!4 &28747039
 Transform:
   m_ObjectHideFlags: 0
@@ -251,6 +252,25 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_IsOn: 1
+--- !u!1 &912716305 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8464904184967434479, guid: 959570488e4a7dc49a75c8bfd8b3619d, type: 3}
+  m_PrefabInstance: {fileID: 1510845272}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &912716306
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 912716305}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfff52cc523ced643a29e2b29525c88e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  twoStarScore: 1000
+  threeStarScore: 1500
 --- !u!1 &1024094079
 GameObject:
   m_ObjectHideFlags: 0
@@ -554,6 +574,10 @@ PrefabInstance:
       propertyPath: animalType
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 985504129325460337, guid: 959570488e4a7dc49a75c8bfd8b3619d, type: 3}
+      propertyPath: currentAnimal
+      value: 
+      objectReference: {fileID: 6572259859696477519, guid: 7e62e94383d823e46b6cb1870d07316a, type: 3}
     - target: {fileID: 1508790090253839246, guid: 959570488e4a7dc49a75c8bfd8b3619d, type: 3}
       propertyPath: m_Color.b
       value: 0.18431373
@@ -824,7 +848,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5211049069126853560, guid: 959570488e4a7dc49a75c8bfd8b3619d, type: 3}
       propertyPath: m_TileSpriteArray.Array.data[0].m_RefCount
-      value: 4
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 5211049069126853560, guid: 959570488e4a7dc49a75c8bfd8b3619d, type: 3}
+      propertyPath: m_Tiles.Array.data[0].second.m_TileSpriteIndex
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5211049069126853560, guid: 959570488e4a7dc49a75c8bfd8b3619d, type: 3}
+      propertyPath: m_Tiles.Array.data[1].second.m_TileSpriteIndex
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5211049069126853560, guid: 959570488e4a7dc49a75c8bfd8b3619d, type: 3}
+      propertyPath: m_Tiles.Array.data[2].second.m_TileSpriteIndex
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5211049069126853560, guid: 959570488e4a7dc49a75c8bfd8b3619d, type: 3}
+      propertyPath: m_Tiles.Array.data[3].second.m_TileSpriteIndex
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5428419646545770502, guid: 959570488e4a7dc49a75c8bfd8b3619d, type: 3}
       propertyPath: m_AnchorMax.x
@@ -2016,7 +2056,10 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3318864556794084617, guid: 959570488e4a7dc49a75c8bfd8b3619d, type: 3}
       insertIndex: 3
       addedObject: {fileID: 366396591}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8464904184967434479, guid: 959570488e4a7dc49a75c8bfd8b3619d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 912716306}
   m_SourcePrefab: {fileID: 100100000, guid: 959570488e4a7dc49a75c8bfd8b3619d, type: 3}
 --- !u!114 &1510845273 stripped
 MonoBehaviour:

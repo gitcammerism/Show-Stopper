@@ -20,6 +20,44 @@ public class AnimalInput : MonoBehaviour
 
     private void OnDisable() { }
 
+    // CAMI - focus on a pressed animal
+    public void FocusOnAnimal(Animal animal)
+    {
+        if (selectedAnimal != null && selectedAnimal != animal)
+        {
+            // If another animal is already selected, close its interaction UI
+            UnfocusCurrAnimal();
+        }
+
+        selectedAnimal = animal;
+        selectedAnimal.SetFocusState(true);
+
+        if (selectedAnimal.TryGetComponent(out AnimalTween tween))
+        { 
+            tween.Zoom();
+        }
+
+        OpenInteractUI();
+    }
+
+    // CAMI - call to unfocus on currently selected animal
+    public void UnfocusCurrAnimal()
+    {
+        if (selectedAnimal != null)
+        {
+            // if an animal is currently selected, close its interaction UI
+            selectedAnimal.SetFocusState(false);
+
+            if (selectedAnimal.TryGetComponent(out AnimalTween tween))
+            {
+                tween.Unzoom();
+            }
+
+            selectedAnimal = null;
+        }
+        CloseInteractUI();
+    }
+
     // FROM CHANDLER - open interaction UI
     private void OpenInteractUI()
     {

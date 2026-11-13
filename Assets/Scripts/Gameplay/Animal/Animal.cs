@@ -2,6 +2,7 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class Animal : MonoBehaviour
 {
@@ -21,23 +22,34 @@ public class Animal : MonoBehaviour
     [SerializeField] private int affectionIncrease = 5;
 
     private InputManager inputManager;
+    private AnimalInput _animalInput;
     private AnimalData animalData;
+    private Button _animalButton;
+    private bool inFocus = false;
+
+    private void Awake()
+    {
+        _animalButton = GetComponent<Button>();
+        _animalButton.onClick.AddListener(OnTouch);
+
+        _animalInput = FindFirstObjectByType<AnimalInput>();
+    }
 
     private void OnEnable()
     {
-        inputManager = InputManager.instance;
+        //inputManager = InputManager.instance;
 
-        if (inputManager != null)
-        {
-            inputManager.OnStartTouch += OnTouch;
-        }
+        //if (inputManager != null)
+        //{
+        //    inputManager.OnStartTouch += OnTouch;
+        //}
     }
     private void OnDisable()
     {
-        if (inputManager != null)
-        {
-            inputManager.OnStartTouch -= OnTouch;
-        }
+        //if (inputManager != null)
+        //{
+        //    inputManager.OnStartTouch -= OnTouch;
+        //}
 
         StopAllCoroutines();
     }
@@ -48,6 +60,8 @@ public class Animal : MonoBehaviour
         LoadAnimalData();
 
         StartCoroutine(DecayNeeds());
+
+
     }
 
     // Load animal individual saved data
@@ -208,8 +222,21 @@ public class Animal : MonoBehaviour
         DataPersistenceManager.instance.UpdateAnimalData(animalType, animalData);
     }
 
-    private void OnTouch(Vector3 position, float time, InputAction.CallbackContext context)
+    // public setter for inFocus state
+    public void SetFocusState(bool state)
     {
-        // Zoom in on animal here
+        inFocus = state;
+    }
+
+    private void OnTouch()
+    {
+        // zoom on animal, stop the jumping around and show the needs UI
+
+        if (!inFocus && _animalInput != null)
+        {
+            inFocus = true;
+            _animalInput.FocusOnAnimal(this);
+        }
+
     }
 }
