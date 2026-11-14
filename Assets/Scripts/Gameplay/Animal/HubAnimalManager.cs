@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 /*
  * This script is responsible for spawning all saved animals in the hub level. 

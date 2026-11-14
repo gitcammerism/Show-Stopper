@@ -1106,9 +1106,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 856352684}
-        m_TargetAssemblyTypeName: SceneSwitcher, Assembly-CSharp
-        m_MethodName: LoadLevelSelect
+      - m_Target: {fileID: 2141914784}
+        m_TargetAssemblyTypeName: AnimalInput, Assembly-CSharp
+        m_MethodName: UnfocusCurrAnimal
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2980,6 +2980,7 @@ MonoBehaviour:
     spawnPoint: {fileID: 1876973439}
   - animalType: 9
     spawnPoint: {fileID: 474507326}
+  returnButton: {fileID: 0}
 --- !u!1 &1526265557
 GameObject:
   m_ObjectHideFlags: 0
