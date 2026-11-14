@@ -19,12 +19,7 @@ public class TimerDisplay : MonoBehaviour
 
     void Update()
     {
-        if (timer.TimeRemaining <= 0)
-        {
-            if (slider.gameObject.activeSelf) slider.gameObject.SetActive(false);
-            return;
-        }
-
+        if (timer.TimeRemaining <= 0) return;
         float t = timer.TimeRemaining / timer.Duration;
         slider.value = t;
         fillImage.color = colorOverTime.Evaluate(t);

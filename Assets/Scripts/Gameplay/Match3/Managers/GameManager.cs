@@ -20,6 +20,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI gameWinText;
     [SerializeField] private Button restartButton;
     [SerializeField] private Button restartButtonWin;
+    [SerializeField] private Button nextLevelButton;
     [SerializeField] private GoalTracker goalTracker;
     [SerializeField] private GameObject fireworkVFX;
     [SerializeField] private GameObject darkBackground;
@@ -58,7 +59,7 @@ public class GameManager : MonoBehaviour
             }
         }
     }
-    #endif
+#endif
 
     void OnEnable() => timer.TimeUp += OnTimeUp;
     void OnDisable() => timer.TimeUp -= OnTimeUp;
@@ -79,7 +80,7 @@ public class GameManager : MonoBehaviour
         _audioManager = AudioManager.Instance;
         _audioManager.PlayMusic(_audioManager.bgMusicArray[3]);
 
-    
+
     }
 
     // game over, player lost
@@ -108,7 +109,7 @@ public class GameManager : MonoBehaviour
     // drains the timer visibly while score increases based on time left
     private IEnumerator DrainBonus()
     {
-        float drainRate = 30f; // seconds of timer converted per real second
+        float drainRate = 20f; // seconds of timer converted per real second
         float owed = 0f; // fractional points carried between frames
 
         while (timer.TimeRemaining > 0f)
@@ -132,6 +133,9 @@ public class GameManager : MonoBehaviour
         EarnedStars = starRating.CalculateStars(scoreManager.Score);
 
         yield return new WaitForSeconds(0.3f); // small pause before continuing
+        darkBackground.SetActive(true);
+        nextLevelButton.gameObject.SetActive(true);
+
 
         if (AudioManager.Instance != null)
             AudioManager.Instance.PlaySFX(AudioManager.Instance.sfxArray[2]); // play win sfx
