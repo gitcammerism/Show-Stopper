@@ -27249,16 +27249,16 @@ MonoBehaviour:
   spawnPosition: {fileID: 977382684938638317}
   animalScaleMultiplier: 0
   animalPrefab:
-  - {fileID: 3183018147582250530, guid: 27f45ebba17f83a429d67932907ff463, type: 3}
-  - {fileID: 3183018147582250530, guid: 58ade1a46d1d8fc438efb67525b944f4, type: 3}
-  - {fileID: 941363430684914365, guid: 1affae94f8f5ccf469cef956be599cd6, type: 3}
-  - {fileID: 6572259859696477519, guid: 7e62e94383d823e46b6cb1870d07316a, type: 3}
-  - {fileID: 4100670617638286338, guid: 10f50a154d7d0d045994e445a8ad08c0, type: 3}
-  - {fileID: 7400552170135380747, guid: d86f4c11eb464694b82aaa78ed2b348f, type: 3}
-  - {fileID: 3183018147582250530, guid: d2b97e4386e56094d8e6c199ce980d83, type: 3}
-  - {fileID: 7251040609430175309, guid: 0674f9ca07f64ba408ae45d542bb723c, type: 3}
-  - {fileID: 7251040609430175309, guid: 3598202add5647149b363da8bd7e383a, type: 3}
-  - {fileID: 7251040609430175309, guid: 680fffdeff41b0a4481f59b13409a7c6, type: 3}
+  - {fileID: 4337044026323666338, guid: 2a5f9ff3ce2d0bd448c946b54859cc26, type: 3}
+  - {fileID: 4306214911170889874, guid: 8ee7aeaf5fde72e44bbdf220aaee30bf, type: 3}
+  - {fileID: 5758567469295529241, guid: e4b6cdb8fc441c848aaed09937e71d90, type: 3}
+  - {fileID: 5352830944134576275, guid: b07468ce75eeadb479a5303d836c8c55, type: 3}
+  - {fileID: 4860126061319886194, guid: a725d6a336e7e5c42aa789d4c96fc97f, type: 3}
+  - {fileID: 2147354970561544765, guid: 3fe9ae330c277304ea3d5f930f7faff8, type: 3}
+  - {fileID: 1584462880779149963, guid: 5c21f8e839124a84b8f2234ca802ab40, type: 3}
+  - {fileID: 6731229160772286892, guid: c302ec358a3424e47b79aad6374c452a, type: 3}
+  - {fileID: 3968520753520246377, guid: 049bbb7327ed6ef44acc1a4e23fb1eb0, type: 3}
+  - {fileID: 1407331631022269749, guid: 2b1bec129bf6c3a4ea5f8716df7548b2, type: 3}
   currentAnimal: {fileID: 0}
   animalType: 0
   isUnlocked: 0
