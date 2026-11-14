@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -34,6 +35,16 @@ public class HubAnimalManager : MonoBehaviour
     {
         if (DataPersistenceManager.instance == null) return;
 
+        // CHANDLER - if all animals are unlocked, unlock all of them then spawn
+        if (DataPersistenceManager.instance.areAllAnimalsUnlocked)
+        {
+            foreach (AnimalManager.AnimalType animal in Enum.GetValues(typeof(AnimalManager.AnimalType)))
+            {
+                if (animal == AnimalManager.AnimalType.none) continue;
+                DataPersistenceManager.instance.UnlockAnimal(animal);
+            }
+        }
+
         foreach (AnimalSpawnData spawnData in spawnPoints)
         {
             if (spawnData.animalType == AnimalManager.AnimalType.none) continue;
@@ -55,6 +66,6 @@ public class HubAnimalManager : MonoBehaviour
 
         animal.AddComponent<AnimalTween>();
 
-        Debug.Log($"Spawned {spawnData.animalType}");
+        // Debug.Log($"Spawned {spawnData.animalType}");
     }
 }

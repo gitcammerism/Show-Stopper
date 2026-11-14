@@ -49,7 +49,7 @@ public class AnimalManager : MonoBehaviour, IDataPersistence
         }
         else
         {
-            Debug.Log("animal not created");
+            // Debug.Log("animal not created");
         }
     }
 
@@ -93,7 +93,7 @@ public class AnimalManager : MonoBehaviour, IDataPersistence
             isUnlocked = false;
         }
 
-        Debug.Log($"{animalID} unlocked = {isUnlocked}");
+        // Debug.Log($"{animalID} unlocked = {isUnlocked}");
     }
 
     // FROM COLIN - Called when scene is saved (Exited/Level Completed)
@@ -133,6 +133,6 @@ public class AnimalManager : MonoBehaviour, IDataPersistence
             DataPersistenceManager.instance.UnlockAnimal(animalType);
         }
 
-        Debug.Log($"{animalType} has been unlocked");
+        // Debug.Log($"{animalType} has been unlocked");
     }
 }

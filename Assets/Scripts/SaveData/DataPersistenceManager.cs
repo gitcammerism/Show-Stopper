@@ -9,18 +9,21 @@ public class DataPersistenceManager : MonoBehaviour
     [Header("File Storage Config")]
     [SerializeField] private string fileName;
     [SerializeField] private bool useEncryption;
-    
+
     private GameData gameData;
 
     public List<IDataPersistence> dataPersistenceObjects;
     private FileDataHandler dataHandler;
-    
+
     // Instance can be referenced publicy
     // Instance can only be modified in this class
     public static DataPersistenceManager instance { get; private set; }
 
     // CAMI - whether all levels are unlocked or not
     public bool areAllLevelsUnlocked = false;
+
+    // CHANDLER - whether all animals are unlocked or not
+    public bool areAllAnimalsUnlocked = false;
 
     // Makes sure there are no other Managers on objects in the scene
     private void Awake()
@@ -57,8 +60,8 @@ public class DataPersistenceManager : MonoBehaviour
     // When Scene Loaded, find all files using IDataPersistence
     public void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        Debug.Log("Loaded Called");
-        
+        // Debug.Log("Loaded Called");
+
         this.dataPersistenceObjects = FindAllDataPersistenceObjects();
 
         LoadGame();
@@ -67,7 +70,7 @@ public class DataPersistenceManager : MonoBehaviour
     // Save Game whenever player leaves a screen
     public void OnSceneUnloaded(Scene scene)
     {
-        Debug.Log("Unloaded Called");
+        // Debug.Log("Unloaded Called");
 
         SaveGame();
     }
@@ -84,14 +87,14 @@ public class DataPersistenceManager : MonoBehaviour
     // Re-intalizes Game Data to start a new game with clear data
     public void NewGame()
     {
-        Debug.Log("New Game");
+        // Debug.Log("New Game");
 
         this.gameData = new GameData();
     }
 
     public void LoadGame()
     {
-        Debug.Log("Loaded Game");
+        // Debug.Log("Loaded Game");
 
         // Load save data from a file
         this.gameData = dataHandler.Load();
@@ -99,7 +102,7 @@ public class DataPersistenceManager : MonoBehaviour
         // If no game data is found, start a new game instead
         if (this.gameData == null)
         {
-            Debug.Log("No data was found. Starting a New Game.");
+            // Debug.Log("No data was found. Starting a New Game.");
             NewGame();
         }
 
@@ -112,11 +115,11 @@ public class DataPersistenceManager : MonoBehaviour
 
     public void SaveGame()
     {
-        Debug.Log("Saved Game");
+        // Debug.Log("Saved Game");
 
         if (this.gameData == null)
         {
-            Debug.Log("No data was found. Starting a New Game.");
+            // Debug.Log("No data was found. Starting a New Game.");
             NewGame();
         }
 
@@ -164,10 +167,16 @@ public class DataPersistenceManager : MonoBehaviour
         areAllLevelsUnlocked = isUnlocked;
     }
 
+    // CHANDLER - method to toggle unlocking all animals
+    public void ToggleUnlockAllAnimals(bool isUnlocked)
+    {
+        areAllAnimalsUnlocked = isUnlocked;
+    }
+
     // Grabs the high score for each level
     public int GetLevelHighScore(string levelID)
     {
-        
+
         // Load game data
         if (gameData == null)
         {
@@ -224,7 +233,7 @@ public class DataPersistenceManager : MonoBehaviour
 
             dataHandler.Save(gameData);
 
-            Debug.Log($"New high score for {levelID}: {newScore}");
+            // Debug.Log($"New high score for {levelID}: {newScore}");
         }
     }
 
@@ -354,10 +363,7 @@ public class DataPersistenceManager : MonoBehaviour
             }
         }
 
-        if (gameData.animals == null)
-        {
-            return false;
-        }
+        if (gameData.animals == null) return false;
 
         string animalID = animalType.ToString();
 
