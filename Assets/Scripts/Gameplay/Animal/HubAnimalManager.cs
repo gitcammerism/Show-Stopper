@@ -32,28 +32,13 @@ public class HubAnimalManager : MonoBehaviour
     // Search for save data for any animals that have been unlocked
     private void SpawnUnlockedAnimals()
     {
-        if (DataPersistenceManager.instance == null)
-        {
-            return;
-        }
+        if (DataPersistenceManager.instance == null) return;
 
         foreach (AnimalSpawnData spawnData in spawnPoints)
         {
-            if (spawnData.animalType == AnimalManager.AnimalType.none)
-            {
-                continue;
-            }
-
-            if (spawnData.spawnPoint == null)
-            {
-                continue;
-            }
-
-            if (!DataPersistenceManager.instance.IsAnimalUnlocked(spawnData.animalType))
-            {
-                continue;
-            }
-
+            if (spawnData.animalType == AnimalManager.AnimalType.none) continue;
+            if (spawnData.spawnPoint == null) continue;
+            if (!DataPersistenceManager.instance.IsAnimalUnlocked(spawnData.animalType)) continue;
             SpawnAnimal(spawnData);
         }
     }
@@ -62,11 +47,7 @@ public class HubAnimalManager : MonoBehaviour
     private void SpawnAnimal(AnimalSpawnData spawnData)
     {
         int prefabIndex = (int)spawnData.animalType;
-
-        if (prefabIndex < 0 || prefabIndex >= animalPrefabs.Length)
-        {
-            return;
-        }
+        if (prefabIndex < 0 || prefabIndex >= animalPrefabs.Length) return;
 
         GameObject animal = Instantiate(animalPrefabs[prefabIndex], spawnData.spawnPoint);
         animal.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;

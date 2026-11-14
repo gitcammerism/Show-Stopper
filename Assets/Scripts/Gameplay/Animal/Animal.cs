@@ -58,10 +58,7 @@ public class Animal : MonoBehaviour
     private void Start()
     {
         LoadAnimalData();
-
         StartCoroutine(DecayNeeds());
-
-
     }
 
     // Load animal individual saved data

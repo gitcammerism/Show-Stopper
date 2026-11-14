@@ -36,64 +36,13 @@ public class AnimalManager : MonoBehaviour, IDataPersistence
 
     private void Start()
     {
-        if (spawnPosition)
-        {
-            SpawnAnimal();
-        }
-        else
-        {
-            Debug.LogError("Spawn position is not assigned.");
-        }
+        if (spawnPosition) SpawnAnimal();
+        else Debug.LogError("Spawn position is not assigned.");
     }
 
     private void SpawnAnimal()
     {
         InstantiateAnimal();
-        // switch (animalType)
-        // {
-        //     case AnimalType.none:
-        //         Debug.Log("No animal selected.");
-        //         break;
-        //     case AnimalType.Elephant:
-        //         InstantiateAnimal();
-        //         Debug.Log("This is an elephant.");
-        //         break;
-        //     case AnimalType.Giraffe:
-        //         InstantiateAnimal();
-        //         Debug.Log("This is a giraffe.");
-        //         break;
-        //     case AnimalType.Horse:
-        //         InstantiateAnimal();
-        //         Debug.Log("This is a horse.");
-        //         break;
-        //     case AnimalType.Lion:
-        //         InstantiateAnimal();
-        //         Debug.Log("This is a lion.");
-        //         break;
-        //     case AnimalType.Parrot:
-        //         InstantiateAnimal();
-        //         Debug.Log("This is a parrot.");
-        //         break;
-        //     case AnimalType.Rabbit:
-        //         InstantiateAnimal();
-        //         Debug.Log("This is a rabbit.");
-        //         break;
-        //     case AnimalType.Seal:
-        //         InstantiateAnimal();
-        //         Debug.Log("This is a seal.");
-        //         break;
-        //     case AnimalType.Zebra:
-        //         InstantiateAnimal();
-        //         Debug.Log("This is a zebra.");
-        //         break;
-        //     case AnimalType.Bear:
-        //         InstantiateAnimal();
-        //         Debug.Log("This is a bear.");
-        //         break;
-        //     default:
-        //         Debug.Log("Unknown animal type.");
-        //         break;
-        // }
         if (currentAnimal != null)
         {
             currentAnimal.transform.DOScale(currentAnimal.transform.localScale * 1.1f, 1f).SetEase(Ease.OutBounce).SetLoops(-1, LoopType.Yoyo);
@@ -150,10 +99,7 @@ public class AnimalManager : MonoBehaviour, IDataPersistence
     // FROM COLIN - Called when scene is saved (Exited/Level Completed)
     public void SaveData(ref GameData data)
     {
-        if (animalType == AnimalType.none)
-        {
-            return;
-        }
+        if (animalType == AnimalType.none) return;
 
         if (data.animals == null)
         {
@@ -179,11 +125,7 @@ public class AnimalManager : MonoBehaviour, IDataPersistence
     // FROM COLIN - Call when animal should be unlocked
     public void UnlockAnimal()
     {
-        if (isUnlocked)
-        {
-            return;
-        }
-
+        if (isUnlocked) return;
         isUnlocked = true;
 
         if (DataPersistenceManager.instance != null)
