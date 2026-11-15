@@ -24,6 +24,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GoalTracker goalTracker;
     [SerializeField] private GameObject fireworkVFX;
     [SerializeField] private GameObject darkBackground;
+    [SerializeField] private VictoryStarDisplay victoryStarDisplay;
 
     [SerializeField] private AnimalManager _animManager;
     [SerializeField] private LevelStarRating starRating;
@@ -129,13 +130,18 @@ public class GameManager : MonoBehaviour
         // waits for the displayed score to catch up
         while (!scoreDisplay.IsSettled) yield return null;
 
-        // Calculate stars using score
+        // Calculate stars using final score
         EarnedStars = starRating.CalculateStars(scoreManager.Score);
 
-        yield return new WaitForSeconds(0.3f); // small pause before continuing
+        // Show victory background
         darkBackground.SetActive(true);
-        nextLevelButton.gameObject.SetActive(true);
 
+        // Animate earned stars
+        victoryStarDisplay.ShowStars(EarnedStars);
+
+        yield return new WaitForSeconds(0.3f);
+
+        nextLevelButton.gameObject.SetActive(true);
 
         if (AudioManager.Instance != null)
             AudioManager.Instance.PlaySFX(AudioManager.Instance.sfxArray[2]); // play win sfx
