@@ -20,8 +20,11 @@ public class GameManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI gameWinText;
     [SerializeField] private Button restartButton;
     [SerializeField] private Button restartButtonWin;
+    [SerializeField] private Button nextLevelButton;
     [SerializeField] private GoalTracker goalTracker;
     [SerializeField] private GameObject fireworkVFX;
+    [SerializeField] private GameObject darkBackground;
+    [SerializeField] private VictoryStarDisplay victoryStarDisplay;
 
     [SerializeField] private AnimalManager _animManager;
     [SerializeField] private LevelStarRating starRating;
@@ -57,7 +60,7 @@ public class GameManager : MonoBehaviour
             }
         }
     }
-    #endif
+#endif
 
     void OnEnable() => timer.TimeUp += OnTimeUp;
     void OnDisable() => timer.TimeUp -= OnTimeUp;
@@ -78,7 +81,7 @@ public class GameManager : MonoBehaviour
         _audioManager = AudioManager.Instance;
         _audioManager.PlayMusic(_audioManager.bgMusicArray[3]);
 
-    
+
     }
 
     // game over, player lost
@@ -107,7 +110,7 @@ public class GameManager : MonoBehaviour
     // drains the timer visibly while score increases based on time left
     private IEnumerator DrainBonus()
     {
-        float drainRate = 30f; // seconds of timer converted per real second
+        float drainRate = 20f; // seconds of timer converted per real second
         float owed = 0f; // fractional points carried between frames
 
         while (timer.TimeRemaining > 0f)
@@ -127,10 +130,18 @@ public class GameManager : MonoBehaviour
         // waits for the displayed score to catch up
         while (!scoreDisplay.IsSettled) yield return null;
 
-        // Calculate stars using score
+        // Calculate stars using final score
         EarnedStars = starRating.CalculateStars(scoreManager.Score);
 
-        yield return new WaitForSeconds(0.3f); // small pause before continuing
+        // Show victory background
+        darkBackground.SetActive(true);
+
+        // Animate earned stars
+        victoryStarDisplay.ShowStars(EarnedStars);
+
+        yield return new WaitForSeconds(0.3f);
+
+        nextLevelButton.gameObject.SetActive(true);
 
         if (AudioManager.Instance != null)
             AudioManager.Instance.PlaySFX(AudioManager.Instance.sfxArray[2]); // play win sfx
@@ -149,6 +160,7 @@ public class GameManager : MonoBehaviour
         // logic that goes after drain completes
         gameWinText.gameObject.SetActive(true);
         restartButtonWin.gameObject.SetActive(true);
+        darkBackground.gameObject.SetActive(true);
     }
 
     public void TogglePauseMenu()

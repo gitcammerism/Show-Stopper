@@ -20,6 +20,9 @@ public class AnimalData
     // Name of the animal
     public string animalName;
 
+    // FROM CHANDLER - randomizer for starting needs
+    private static readonly System.Random randomizer = new();
+
     // For the JSON serializer
     public AnimalData()
     {
@@ -27,11 +30,11 @@ public class AnimalData
 
         affection = 0;
 
-        comfort = 100;
-        food = 100;
-        water = 100;
-        treats = 100;
-        toys = 100;
+        comfort = randomizer.Next(50, 101);
+        food = randomizer.Next(50, 101);
+        water = randomizer.Next(50, 101);
+        treats = randomizer.Next(50, 101);
+        toys = randomizer.Next(50, 101);
 
         animalName = "";
     }

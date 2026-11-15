@@ -35,22 +35,8 @@ public class Animal : MonoBehaviour
         _animalInput = FindFirstObjectByType<AnimalInput>();
     }
 
-    private void OnEnable()
-    {
-        //inputManager = InputManager.instance;
-
-        //if (inputManager != null)
-        //{
-        //    inputManager.OnStartTouch += OnTouch;
-        //}
-    }
     private void OnDisable()
     {
-        //if (inputManager != null)
-        //{
-        //    inputManager.OnStartTouch -= OnTouch;
-        //}
-
         StopAllCoroutines();
     }
 
@@ -58,10 +44,7 @@ public class Animal : MonoBehaviour
     private void Start()
     {
         LoadAnimalData();
-
         StartCoroutine(DecayNeeds());
-
-
     }
 
     // Load animal individual saved data

@@ -33,7 +33,7 @@ public class AnimalInput : MonoBehaviour
         selectedAnimal.SetFocusState(true);
 
         if (selectedAnimal.TryGetComponent(out AnimalTween tween))
-        { 
+        {
             tween.Zoom();
         }
 

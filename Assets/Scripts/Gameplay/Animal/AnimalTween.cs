@@ -118,6 +118,12 @@ public class AnimalTween : MonoBehaviour
     {
         StopAllCoroutines();
         rectTransform.DOKill();
+        
+        if (rectTransform.parent != null)
+        {
+            rectTransform.parent.SetAsLastSibling();
+        }
+
         rectTransform.DOAnchorPos(Vector2.zero, 0.5f).SetEase(Ease.OutCubic);
         rectTransform.DOScale(startingScale * 2f, 0.5f).SetEase(Ease.OutCubic);
     }
@@ -126,7 +132,12 @@ public class AnimalTween : MonoBehaviour
     public void Unzoom()
     {
         rectTransform.DOKill();
-        rectTransform.DOScale(endScale, moveDuration).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.OutQuint);
-        StartCoroutine(AnimalMovement());
+        // wait for unzoom to finish before resuming movement
+        rectTransform.DOScale(endScale, moveDuration).SetEase(Ease.OutCubic).OnComplete(() =>
+        {
+            rectTransform.DOScale(startingScale, moveDuration).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.OutQuint);
+            StartCoroutine(AnimalMovement());
+        });
+
     }
 }

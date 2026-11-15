@@ -9,7 +9,8 @@ using UnityEngine.SceneManagement;
 
 public class SceneSwitcher : MonoBehaviour
 {
-    
+    [SerializeField] private GameManager gameManager;
+
     public void LoadMainMenu()
     {
         AudioManager.Instance.PlaySFX(AudioManager.Instance.sfxArray[3]);
@@ -34,6 +35,16 @@ public class SceneSwitcher : MonoBehaviour
     {
         AudioManager.Instance.PlaySFX(AudioManager.Instance.sfxArray[3]);
         SceneManager.LoadScene("Level" + levelNum);
+    }
+
+    public void LoadNextLevel()
+    {
+        AudioManager.Instance.PlaySFX(AudioManager.Instance.sfxArray[3]);
+        if (int.TryParse(gameManager.levelID, out int levelNum))
+        {
+            levelNum++;
+            SceneManager.LoadScene("Level" + levelNum.ToString());
+        }
     }
 
     public void QuitGame()

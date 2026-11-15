@@ -1,4 +1,6 @@
+using System;
 using UnityEngine;
+using UnityEngine.UI;
 
 /*
  * This script is responsible for spawning all saved animals in the hub level. 
@@ -31,28 +33,23 @@ public class HubAnimalManager : MonoBehaviour
     // Search for save data for any animals that have been unlocked
     private void SpawnUnlockedAnimals()
     {
-        if (DataPersistenceManager.instance == null)
+        if (DataPersistenceManager.instance == null) return;
+
+        // CHANDLER - if all animals are unlocked, unlock all of them then spawn
+        if (DataPersistenceManager.instance.areAllAnimalsUnlocked)
         {
-            return;
+            foreach (AnimalManager.AnimalType animal in Enum.GetValues(typeof(AnimalManager.AnimalType)))
+            {
+                if (animal == AnimalManager.AnimalType.none) continue;
+                DataPersistenceManager.instance.UnlockAnimal(animal);
+            }
         }
 
         foreach (AnimalSpawnData spawnData in spawnPoints)
         {
-            if (spawnData.animalType == AnimalManager.AnimalType.none)
-            {
-                continue;
-            }
-
-            if (spawnData.spawnPoint == null)
-            {
-                continue;
-            }
-
-            if (!DataPersistenceManager.instance.IsAnimalUnlocked(spawnData.animalType))
-            {
-                continue;
-            }
-
+            if (spawnData.animalType == AnimalManager.AnimalType.none) continue;
+            if (spawnData.spawnPoint == null) continue;
+            if (!DataPersistenceManager.instance.IsAnimalUnlocked(spawnData.animalType)) continue;
             SpawnAnimal(spawnData);
         }
     }
@@ -61,11 +58,7 @@ public class HubAnimalManager : MonoBehaviour
     private void SpawnAnimal(AnimalSpawnData spawnData)
     {
         int prefabIndex = (int)spawnData.animalType;
-
-        if (prefabIndex < 0 || prefabIndex >= animalPrefabs.Length)
-        {
-            return;
-        }
+        if (prefabIndex < 0 || prefabIndex >= animalPrefabs.Length) return;
 
         GameObject animal = Instantiate(animalPrefabs[prefabIndex], spawnData.spawnPoint);
         animal.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
@@ -73,6 +66,6 @@ public class HubAnimalManager : MonoBehaviour
 
         animal.AddComponent<AnimalTween>();
 
-        Debug.Log($"Spawned {spawnData.animalType}");
+        // Debug.Log($"Spawned {spawnData.animalType}");
     }
 }

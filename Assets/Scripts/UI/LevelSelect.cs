@@ -18,6 +18,7 @@ public class LevelSelect : MonoBehaviour
     private void OnEnable()
     {
         comingSoonPanel.SetActive(false);
+        GreyOutButtons();
     }
 
     private void Start()
@@ -25,6 +26,11 @@ public class LevelSelect : MonoBehaviour
         _audioManager = AudioManager.Instance;
         _audioManager.PlayMusic(_audioManager.bgMusicArray[1]);
         _gameData = DataPersistenceManager.instance.GetGameData();
+    }
+
+    private void GreyOutButtons()
+    {
+        
     }
 
     // checks if a level is locked or unlocked

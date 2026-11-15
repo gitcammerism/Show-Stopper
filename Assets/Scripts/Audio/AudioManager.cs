@@ -42,11 +42,11 @@ public class AudioManager : MonoBehaviour
             musicSource.clip = bgMusicArray[0];
             musicSource.Play();
             musicSource.loop = true;
-            Debug.Log("mainmenu music playing");
+            // Debug.Log("mainmenu music playing");
         }
         else
         {
-            Debug.Log("mainmenu music not playing");
+            // Debug.Log("mainmenu music not playing");
 
         }
     }
@@ -63,7 +63,7 @@ public class AudioManager : MonoBehaviour
             musicSource.clip = bgMusicArray[0];
             musicSource.Play();
             musicSource.loop = true;
-            Debug.Log("mainmenu music playing");
+            // Debug.Log("mainmenu music playing");
         }
     }
 
@@ -80,7 +80,7 @@ public class AudioManager : MonoBehaviour
         musicSource.clip = clip;
         musicSource.Play();
         musicSource.loop = true;
-        Debug.Log($"playing {clip.name}");
+        // Debug.Log($"playing {clip.name}");
     }
 
     // Stops when the player gets a Game Over

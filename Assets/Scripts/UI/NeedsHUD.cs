@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -23,7 +24,7 @@ public class NeedsHUD : MonoBehaviour
 
     // variables for HUD/UI logic
     private UIDocument document;
-    private readonly Dictionary<TileType, RingData> _rings = new();
+    private Dictionary<TileType, RingData> _rings;
     private Label _valueLabel;
     TileType _selected = TileType.None;
 
@@ -31,11 +32,15 @@ public class NeedsHUD : MonoBehaviour
     // on enable, loop through each ring and have them subscribe to click event
     private void OnEnable()
     {
+        if (_rings == null) _rings = new();
+
         // ensures null ref can't get through
         if (animal == AnimalManager.AnimalType.none) return;
 
         // get corresponding animal's current need values
         animalData = DataPersistenceManager.instance.GetAnimalData(animal);
+
+        // check if need values are getting properly obtained here
 
         // get document ref from parent gameobject 
         document = GetComponentInParent<UIDocument>();
@@ -46,23 +51,24 @@ public class NeedsHUD : MonoBehaviour
         _valueLabel = root.Q<Label>("value-label");
         _valueLabel.style.display = DisplayStyle.None;
 
-        // finds every ringle in UXML document
+        // finds every ring in UXML document
         root.Query<RadialFillElement>().ForEach(ring =>
         {
-            _rings[ring.TileType] = new RingData
+            _rings.Add(ring.TileType, new RingData
             {
                 element = ring,
                 current = ring.TileType switch
                 {
-                    TileType.Comfort => animalData.comfort,
-                    TileType.Food => animalData.food,
-                    TileType.Toy => animalData.toys,
-                    TileType.Treat => animalData.treats,
-                    TileType.Water => animalData.water,
+                    TileType.Comfort => animalData.comfort / 100,
+                    TileType.Food => animalData.food / 100,
+                    TileType.Toy => animalData.toys / 100,
+                    TileType.Treat => animalData.treats / 100,
+                    TileType.Water => animalData.water / 100,
                     _ => ring.Fill * 100f // default if no values match
                 },
                 max = 100f
-            };
+            });
+            ring.Fill = _rings[ring.TileType].current;
             ring.RegisterCallback<ClickEvent>(OnRingClicked);
         });
     }
