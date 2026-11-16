@@ -6,6 +6,7 @@ public class AnimalInput : MonoBehaviour
 {
     // FROM CHANDLER - animal information variables
     private Animal selectedAnimal;
+    public Animal SelectedAnimal => selectedAnimal;
 
     // FROM CHANDLER - interaction UI variables
     [SerializeField] private GameObject interactUI;
