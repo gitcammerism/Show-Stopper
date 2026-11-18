@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -16,12 +17,19 @@ public class DraggableButton : MonoBehaviour, IBeginDragHandler, IDragHandler, I
     private Vector2 _originalPos;
     [SerializeField] private float moveDuration = 0.5f;
 
+    private Animal currentAnimal;
+
     private void Awake()
     {
         _rectTransform = (RectTransform)transform;
         _parentRect = (RectTransform)_rectTransform.parent;
         _canvas = transform.root.GetComponent<Canvas>().rootCanvas;
         _originalPos = _rectTransform.anchoredPosition;
+    }
+
+    private void OnDisable()
+    {
+        currentAnimal = null;
     }
 
     private Camera EventCam => _canvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : _canvas.worldCamera;
@@ -52,6 +60,22 @@ public class DraggableButton : MonoBehaviour, IBeginDragHandler, IDragHandler, I
     public void OnEndDrag(PointerEventData e)
     {
         if (e.pointerId == _activePointerID) _activePointerID = NoPointer;
+
+        if (currentAnimal == null)
+        {
+            List<RaycastResult> results = new();
+            EventSystem.current.RaycastAll(e, results);
+
+            foreach (RaycastResult result in results)
+            {
+                if (result.gameObject.TryGetComponent<Animal>(out var animal))
+                {
+                    Debug.Log("Dropped item on: " + animal.name);
+                    currentAnimal = animal;
+                    break;
+                }
+            }
+        }
 
         if (_moveCoroutine == null) _moveCoroutine = StartCoroutine(ReturnToSlot(moveDuration));
     }
