@@ -1,6 +1,6 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <ui:Template name="NeedsRing" src="project://database/Assets/Scripts/UI/NeedsRing.uxml?fileID=9197481963319205126&amp;guid=463b0ab3a6c0e7f42b59541c69fde80b&amp;type=3#NeedsRing" />
-    <ui:VisualElement name="Row" style="flex-grow: 1; flex-direction: row; justify-content: space-evenly; align-items: center; bottom: auto; top: 90px;">
+    <ui:VisualElement name="Row" picking-mode="Ignore" style="flex-grow: 1; flex-direction: row; justify-content: space-evenly; align-items: center; bottom: auto; top: 90px;">
         <ui:Instance template="NeedsRing" name="Food" style="height: 100px; width: 100px; flex-direction: column; align-items: center; justify-content: flex-start; align-self: stretch;">
             <AttributeOverrides element-name="ring" tile-type="Food" />
         </ui:Instance>
