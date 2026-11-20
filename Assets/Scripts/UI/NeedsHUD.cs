@@ -40,8 +40,6 @@ public class NeedsHUD : MonoBehaviour
         // get corresponding animal's current need values
         animalData = DataPersistenceManager.instance.GetAnimalData(animal);
 
-        // check if need values are getting properly obtained here
-
         // get document ref from parent gameobject 
         document = GetComponentInParent<UIDocument>();
         if (document == null) return;
@@ -54,16 +52,17 @@ public class NeedsHUD : MonoBehaviour
         // finds every ring in UXML document
         root.Query<RadialFillElement>().ForEach(ring =>
         {
+            // add new entry to the dictionary, ringdata calculated based on animal need levels
             _rings.Add(ring.TileType, new RingData
             {
                 element = ring,
                 current = ring.TileType switch
                 {
-                    TileType.Comfort => animalData.comfort / 100,
-                    TileType.Food => animalData.food / 100,
-                    TileType.Toy => animalData.toys / 100,
-                    TileType.Treat => animalData.treats / 100,
-                    TileType.Water => animalData.water / 100,
+                    TileType.Comfort => (float) animalData.comfort / 100,
+                    TileType.Food => (float) animalData.food / 100,
+                    TileType.Toy => (float) animalData.toys / 100,
+                    TileType.Treat => (float) animalData.treats / 100,
+                    TileType.Water => (float) animalData.water / 100,
                     _ => ring.Fill * 100f // default if no values match
                 },
                 max = 100f
@@ -104,7 +103,7 @@ public class NeedsHUD : MonoBehaviour
     private void RefreshLabel()
     {
         if (!_rings.TryGetValue(_selected, out var data)) return;
-        _valueLabel.text = $"{_selected}: {data.current:0} / {data.max:0}";
+        _valueLabel.text = $"{_selected}: {data.current * 100:0} / {data.max:0}";
     }
 
     // method that lets you set the animal when enabled

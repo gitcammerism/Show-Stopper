@@ -4,6 +4,10 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
+/**
+ * This script is responsible for loading animal data, managing player input, and managing the needs of an individual animal in the hub.
+ */
+
 public class Animal : MonoBehaviour
 {
     [Header("Animal")]
@@ -21,7 +25,6 @@ public class Animal : MonoBehaviour
     [SerializeField] private int needIncrease = 25;
     [SerializeField] private int affectionIncrease = 5;
 
-    private InputManager inputManager;
     private AnimalInput _animalInput;
     private AnimalData animalData;
     private Button _animalButton;
