@@ -28,6 +28,7 @@ public class Animal : MonoBehaviour
     private AnimalInput _animalInput;
     private AnimalData animalData;
     private Button _animalButton;
+    private AnimalUI careUI;
     private bool inFocus = false;
 
     private void Awake()
@@ -48,6 +49,12 @@ public class Animal : MonoBehaviour
     {
         LoadAnimalData();
         StartCoroutine(DecayNeeds());
+    }
+
+    public void Initialize(AnimalUI sharedUI)
+    {
+        careUI = sharedUI;
+        LoadAnimalData();
     }
 
     // Load animal individual saved data
@@ -146,12 +153,13 @@ public class Animal : MonoBehaviour
         animalData.affection = Mathf.Clamp(animalData.affection + affectionIncrease, 0, 100);
 
         SaveAnimalData();
+        careUI?.Refresh();
 
         Debug.Log(animalType + " gained affection!");
     }
 
     // Get the current value of a need
-    private int GetNeedValue(string resourceID)
+    public int GetNeedValue(string resourceID)
     {
         switch (resourceID)
         {
@@ -221,6 +229,12 @@ public class Animal : MonoBehaviour
         if (!inFocus && _animalInput != null)
         {
             inFocus = true;
+
+            if (careUI != null)
+            {
+                careUI.Show(this);
+            }
+
             _animalInput.FocusOnAnimal(this);
         }
 

@@ -798,6 +798,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6948910e805e2548949c87814a5477f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  moveDuration: 0.5
 --- !u!1 &474507325
 GameObject:
   m_ObjectHideFlags: 0
@@ -1347,6 +1348,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6948910e805e2548949c87814a5477f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  moveDuration: 0.5
 --- !u!1 &561896640
 GameObject:
   m_ObjectHideFlags: 0
@@ -1480,6 +1482,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6948910e805e2548949c87814a5477f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  moveDuration: 0.5
 --- !u!1 &584290458
 GameObject:
   m_ObjectHideFlags: 0
@@ -1513,7 +1516,7 @@ RectTransform:
   m_Father: {fileID: 1509102606}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0.25, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -2504,6 +2507,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6948910e805e2548949c87814a5477f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  moveDuration: 0.5
 --- !u!1 &1218905210
 GameObject:
   m_ObjectHideFlags: 0
@@ -3213,6 +3217,7 @@ MonoBehaviour:
     spawnPoint: {fileID: 1876973439}
   - animalType: 9
     spawnPoint: {fileID: 474507326}
+  animalUI: {fileID: 0}
 --- !u!1 &1526265557
 GameObject:
   m_ObjectHideFlags: 0
@@ -3841,6 +3846,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6948910e805e2548949c87814a5477f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  moveDuration: 0.5
 --- !u!1 &1876973438
 GameObject:
   m_ObjectHideFlags: 0
@@ -3965,13 +3971,14 @@ GameObject:
   - component: {fileID: 1962365232}
   - component: {fileID: 1962365231}
   - component: {fileID: 1962365233}
+  - component: {fileID: 1962365234}
   m_Layer: 5
   m_Name: AnimalFocus
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1962365230
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4049,6 +4056,29 @@ MonoBehaviour:
     itemType: 3
   - itemButton: {fileID: 539616150}
     itemType: 4
+--- !u!114 &1962365234
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1962365229}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28cd73a474ae7ae40bb68c8a14d017ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  carePanel: {fileID: 1962365229}
+  comfortResourceCount: {fileID: 677205100}
+  foodResourceCount: {fileID: 55491184}
+  waterResourceCount: {fileID: 616762171}
+  treatResourceCount: {fileID: 1409435765}
+  toyResourceCount: {fileID: 492541587}
+  comfortButton: {fileID: 1851441350}
+  foodButton: {fileID: 1098006637}
+  waterButton: {fileID: 539616150}
+  treatButton: {fileID: 363639680}
+  toyButton: {fileID: 561896644}
 --- !u!1 &2039927893
 GameObject:
   m_ObjectHideFlags: 0
