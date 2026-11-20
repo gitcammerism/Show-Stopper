@@ -94,6 +94,7 @@ public class FileDataHandler
                     writer.Write(dataToStore);
                 }
             }
+            Debug.Log($"Saved data to: {fullPath}");
 
         } catch (Exception e)
         {
