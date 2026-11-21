@@ -104,6 +104,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "Screenshot",
+                    "type": "Button",
+                    "id": "70748ba2-8a92-429f-872f-f9d98a43071c",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "Press",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "TouchPress",
                     "type": "Button",
                     "id": "cf1f2ef3-aa81-4b1b-989c-97974fa1eb36",
@@ -131,6 +140,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Restart Game",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d5ca8ee0-5f4a-4096-8c8a-b40ed40f8d57",
+                    "path": "<Keyboard>/p",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Screenshot",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -27,6 +28,8 @@ public class InputManager : MonoBehaviour
     public event StartMouseTouchEvent OnStartMouseTouch;
     public delegate void EndMouseTouchEvent(Vector3 position, float time, InputAction.CallbackContext context);
     public event EndMouseTouchEvent OnEndMouseTouch;
+    public delegate void StartScreenshotEvent(float isPressed, InputAction.CallbackContext context);
+    public event StartScreenshotEvent OnStartScreenshot;
 
     // Input Asset script
     private TouchControls _touchControls;
@@ -73,7 +76,15 @@ public class InputManager : MonoBehaviour
         _touchControls.Debug.TouchPress.canceled += ctx => EndTouch(ctx);
 
         _touchControls.Debug.RestartGame.started += ctx => RestartGame(ctx);
+        _touchControls.Debug.Screenshot.started += ctx => TakeScreenshot(ctx);
 
+    }
+
+    private void TakeScreenshot(InputAction.CallbackContext ctx)
+    {
+        if (OnStartScreenshot != null) OnStartScreenshot(_touchControls.Debug.Screenshot.ReadValue<float>(), ctx);
+        ScreenCapture.CaptureScreenshot("Screenshot.png");
+        Debug.Log("Screenshot taken");
     }
 
     // using New Input System

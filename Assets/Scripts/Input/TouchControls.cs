@@ -190,6 +190,15 @@ public partial class @TouchControls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""Screenshot"",
+                    ""type"": ""Button"",
+                    ""id"": ""70748ba2-8a92-429f-872f-f9d98a43071c"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": ""Press"",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""TouchPress"",
                     ""type"": ""Button"",
                     ""id"": ""cf1f2ef3-aa81-4b1b-989c-97974fa1eb36"",
@@ -217,6 +226,17 @@ public partial class @TouchControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Restart Game"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d5ca8ee0-5f4a-4096-8c8a-b40ed40f8d57"",
+                    ""path"": ""<Keyboard>/p"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Screenshot"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -256,6 +276,7 @@ public partial class @TouchControls: IInputActionCollection2, IDisposable
         // Debug
         m_Debug = asset.FindActionMap("Debug", throwIfNotFound: true);
         m_Debug_RestartGame = m_Debug.FindAction("Restart Game", throwIfNotFound: true);
+        m_Debug_Screenshot = m_Debug.FindAction("Screenshot", throwIfNotFound: true);
         m_Debug_TouchPress = m_Debug.FindAction("TouchPress", throwIfNotFound: true);
         m_Debug_TouchPosition = m_Debug.FindAction("TouchPosition", throwIfNotFound: true);
     }
@@ -469,6 +490,7 @@ public partial class @TouchControls: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Debug;
     private List<IDebugActions> m_DebugActionsCallbackInterfaces = new List<IDebugActions>();
     private readonly InputAction m_Debug_RestartGame;
+    private readonly InputAction m_Debug_Screenshot;
     private readonly InputAction m_Debug_TouchPress;
     private readonly InputAction m_Debug_TouchPosition;
     /// <summary>
@@ -486,6 +508,10 @@ public partial class @TouchControls: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Debug/RestartGame".
         /// </summary>
         public InputAction @RestartGame => m_Wrapper.m_Debug_RestartGame;
+        /// <summary>
+        /// Provides access to the underlying input action "Debug/Screenshot".
+        /// </summary>
+        public InputAction @Screenshot => m_Wrapper.m_Debug_Screenshot;
         /// <summary>
         /// Provides access to the underlying input action "Debug/TouchPress".
         /// </summary>
@@ -523,6 +549,9 @@ public partial class @TouchControls: IInputActionCollection2, IDisposable
             @RestartGame.started += instance.OnRestartGame;
             @RestartGame.performed += instance.OnRestartGame;
             @RestartGame.canceled += instance.OnRestartGame;
+            @Screenshot.started += instance.OnScreenshot;
+            @Screenshot.performed += instance.OnScreenshot;
+            @Screenshot.canceled += instance.OnScreenshot;
             @TouchPress.started += instance.OnTouchPress;
             @TouchPress.performed += instance.OnTouchPress;
             @TouchPress.canceled += instance.OnTouchPress;
@@ -543,6 +572,9 @@ public partial class @TouchControls: IInputActionCollection2, IDisposable
             @RestartGame.started -= instance.OnRestartGame;
             @RestartGame.performed -= instance.OnRestartGame;
             @RestartGame.canceled -= instance.OnRestartGame;
+            @Screenshot.started -= instance.OnScreenshot;
+            @Screenshot.performed -= instance.OnScreenshot;
+            @Screenshot.canceled -= instance.OnScreenshot;
             @TouchPress.started -= instance.OnTouchPress;
             @TouchPress.performed -= instance.OnTouchPress;
             @TouchPress.canceled -= instance.OnTouchPress;
@@ -632,6 +664,13 @@ public partial class @TouchControls: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnRestartGame(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Screenshot" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnScreenshot(InputAction.CallbackContext context);
         /// <summary>
         /// Method invoked when associated input action "TouchPress" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
