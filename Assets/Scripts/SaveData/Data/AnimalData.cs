@@ -9,6 +9,7 @@ public class AnimalData
 
     // Affection level of animal
     public int affection;
+    public int affectionLevel;
 
     // Every animal stat
     public int comfort;
@@ -29,6 +30,7 @@ public class AnimalData
         isUnlocked = false;
 
         affection = 0;
+        affectionLevel = 0;
 
         comfort = randomizer.Next(50, 101);
         food = randomizer.Next(50, 101);

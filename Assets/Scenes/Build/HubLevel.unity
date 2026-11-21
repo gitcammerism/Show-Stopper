@@ -3327,23 +3327,7 @@ MonoBehaviour:
     spawnPoint: {fileID: 1876973439}
   - animalType: 9
     spawnPoint: {fileID: 474507326}
---- !u!114 &1515570932
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1515570929}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 758dee8393eb04b41971610ce42440f3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  comfortText: {fileID: 677205100}
-  foodText: {fileID: 55491184}
-  toyText: {fileID: 492541587}
-  treatText: {fileID: 1409435765}
-  waterText: {fileID: 616762171}
+  animalUI: {fileID: 1962365234}
 --- !u!1 &1526265557
 GameObject:
   m_ObjectHideFlags: 0
@@ -4095,6 +4079,7 @@ GameObject:
   - component: {fileID: 1962365232}
   - component: {fileID: 1962365231}
   - component: {fileID: 1962365233}
+  - component: {fileID: 1962365234}
   m_Layer: 5
   m_Name: AnimalFocus
   m_TagString: Untagged
@@ -4179,46 +4164,32 @@ MonoBehaviour:
     itemType: 3
   - itemButton: {fileID: 539616150}
     itemType: 4
---- !u!1 &2024313829
-GameObject:
+--- !u!114 &1962365234
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2024313830}
-  m_Layer: 5
-  m_Name: Text
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &2024313830
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2024313829}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.75, y: 0.75, z: 0.75}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 55491183}
-  - {fileID: 677205099}
-  - {fileID: 1409435764}
-  - {fileID: 492541586}
-  - {fileID: 616762170}
-  m_Father: {fileID: 2094682171}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_GameObject: {fileID: 1962365229}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28cd73a474ae7ae40bb68c8a14d017ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  carePanel: {fileID: 1962365229}
+  needsHUD: {fileID: 1962365232}
+  comfortResourceCount: {fileID: 677205100}
+  foodResourceCount: {fileID: 55491184}
+  waterResourceCount: {fileID: 616762171}
+  treatResourceCount: {fileID: 1409435765}
+  toyResourceCount: {fileID: 492541587}
+  comfortButton: {fileID: 1851441350}
+  foodButton: {fileID: 1098006637}
+  waterButton: {fileID: 539616150}
+  treatButton: {fileID: 363639680}
+  toyButton: {fileID: 561896644}
+  affectionBar: {fileID: 1505317646}
+  affectionLevelText: {fileID: 1652962842}
 --- !u!1 &2039927893
 GameObject:
   m_ObjectHideFlags: 0
