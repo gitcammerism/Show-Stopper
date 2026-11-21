@@ -3217,7 +3217,7 @@ MonoBehaviour:
     spawnPoint: {fileID: 1876973439}
   - animalType: 9
     spawnPoint: {fileID: 474507326}
-  animalUI: {fileID: 0}
+  animalUI: {fileID: 1962365234}
 --- !u!1 &1526265557
 GameObject:
   m_ObjectHideFlags: 0
@@ -4069,6 +4069,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   carePanel: {fileID: 1962365229}
+  needsHUD: {fileID: 1962365232}
   comfortResourceCount: {fileID: 677205100}
   foodResourceCount: {fileID: 55491184}
   waterResourceCount: {fileID: 616762171}
@@ -4079,6 +4080,8 @@ MonoBehaviour:
   waterButton: {fileID: 539616150}
   treatButton: {fileID: 363639680}
   toyButton: {fileID: 561896644}
+  affectionBar: {fileID: 1505317646}
+  affectionLevelText: {fileID: 1652962842}
 --- !u!1 &2039927893
 GameObject:
   m_ObjectHideFlags: 0

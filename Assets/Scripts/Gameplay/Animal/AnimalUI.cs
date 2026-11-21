@@ -6,6 +6,7 @@ public class AnimalUI : MonoBehaviour
 {
     [Header("UI Panel")]
     [SerializeField] private GameObject carePanel;
+    [SerializeField] private NeedsHUD needsHUD;
 
     [Header("Resource Counters")]
     [SerializeField] private TMP_Text comfortResourceCount;
@@ -20,6 +21,10 @@ public class AnimalUI : MonoBehaviour
     [SerializeField] private Button waterButton;
     [SerializeField] private Button treatButton;
     [SerializeField] private Button toyButton;
+
+    [Header("Affection UI")]
+    [SerializeField] private Slider affectionBar;
+    [SerializeField] private TMP_Text affectionLevelText;
 
     private Animal selectedAnimal;
 
@@ -51,7 +56,7 @@ public class AnimalUI : MonoBehaviour
     // Call when animal is selected
     public void Show(Animal animal)
     {
-        selectedAnimal = animal;
+        SetSelectedAnimal(animal);
 
         if (carePanel != null)
         {
@@ -64,6 +69,8 @@ public class AnimalUI : MonoBehaviour
     // Update counters and needs
     public void Refresh()
     {
+        Debug.Log("Refreshed!");
+
         if (selectedAnimal == null || DataPersistenceManager.instance == null)
         {
             return;
@@ -82,6 +89,23 @@ public class AnimalUI : MonoBehaviour
         waterButton.interactable = data.GetResourceCount("Water") > 0 && selectedAnimal.GetNeedValue("Water") < 100;
         treatButton.interactable = data.GetResourceCount("Treat") > 0 && selectedAnimal.GetNeedValue("Treat") < 100;
         toyButton.interactable = data.GetResourceCount("Toy") > 0 && selectedAnimal.GetNeedValue("Toy") < 100;
+
+        // Update affection bar and level counter
+        if (affectionBar != null)
+        {
+            affectionBar.maxValue = 100;
+            affectionBar.value = selectedAnimal.GetAffection();
+        }
+
+        if (affectionLevelText != null)
+        {
+            affectionLevelText.text = "" + selectedAnimal.GetAffectionLevel();
+        }
+
+        if (needsHUD != null)
+        {
+            needsHUD.RefreshRings();
+        }
     }
 
     private void FeedComfort() => selectedAnimal?.ImproveComfort();
@@ -89,4 +113,15 @@ public class AnimalUI : MonoBehaviour
     private void FeedWater() => selectedAnimal?.GiveWater();
     private void FeedTreat() => selectedAnimal?.GiveTreat();
     private void FeedToy() => selectedAnimal?.GiveToy();
+
+    // Set the animal selected for Needs HUD
+    public void SetSelectedAnimal(Animal animal)
+    {
+        selectedAnimal = animal;
+
+        if (needsHUD != null)
+        {
+            needsHUD.SetAnimal(animal.AnimalType);
+        }
+    }
 }

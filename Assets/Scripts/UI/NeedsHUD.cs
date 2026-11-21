@@ -103,11 +103,17 @@ public class NeedsHUD : MonoBehaviour
     private void RefreshLabel()
     {
         if (!_rings.TryGetValue(_selected, out var data)) return;
-        _valueLabel.text = $"{_selected}: {data.current * 100:0} / {data.max:0}";
+        _valueLabel.text = $"{_selected}: {data.current:0} / {data.max:0}";
     }
 
     // method that lets you set the animal when enabled
-    public void SetAnimal(AnimalManager.AnimalType animalClicked) => animal = animalClicked;
+    public void SetAnimal(AnimalManager.AnimalType animalClicked)
+    {
+        animal = animalClicked;
+        animalData = DataPersistenceManager.instance.GetAnimalData(animal);
+
+        RefreshRings();
+    }
 
     // public method that lets you change a given ring value
     public void SetValue(TileType type, float current, float max)
@@ -123,5 +129,20 @@ public class NeedsHUD : MonoBehaviour
 
         // if the given label is open, update values
         if (type == _selected) RefreshLabel();
+    }
+
+    // Refresh all rings using animals saved values
+    public void RefreshRings()
+    {
+        if (animalData == null)
+        {
+            return;
+        }
+
+        SetValue(TileType.Comfort, animalData.comfort, 100);
+        SetValue(TileType.Food, animalData.food, 100);
+        SetValue(TileType.Toy, animalData.toys, 100);
+        SetValue(TileType.Treat, animalData.treats, 100);
+        SetValue(TileType.Water, animalData.water, 100);
     }
 }

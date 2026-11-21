@@ -61,6 +61,12 @@ public class Animal : MonoBehaviour
     private void LoadAnimalData()
     {
         animalData = DataPersistenceManager.instance.GetAnimalData(animalType);
+
+        if (animalData.affectionLevel < 0)
+        {
+            animalData.affectionLevel = 0;
+            SaveAnimalData();
+        }
     }
 
     // Gradually decrease every need over time
@@ -77,6 +83,7 @@ public class Animal : MonoBehaviour
             animalData.toys = Mathf.Max(0, animalData.toys - decayAmount);
 
             SaveAnimalData();
+            careUI?.Refresh();
         }
     }
 
@@ -150,7 +157,7 @@ public class Animal : MonoBehaviour
         SetNeedValue(resourceID, Mathf.Clamp(GetNeedValue(resourceID) + needIncrease, 0, 100));
 
         // Increase affection
-        animalData.affection = Mathf.Clamp(animalData.affection + affectionIncrease, 0, 100);
+        AddAffection(affectionIncrease);
 
         SaveAnimalData();
         careUI?.Refresh();
@@ -207,6 +214,31 @@ public class Animal : MonoBehaviour
             case "Toy":
                 animalData.toys = value;
                 break;
+        }
+    }
+
+    // Affection methods
+    public int GetAffection()
+    {
+        return animalData != null ? animalData.affection : 0;
+    }
+
+    public int GetAffectionLevel()
+    {
+        return animalData != null ? animalData.affectionLevel : 0;
+    }
+
+    // Level up affection when 100 is reached
+    private void AddAffection(int amount)
+    {
+        animalData.affection += amount;
+
+        while (animalData.affection >= 100)
+        {
+            animalData.affection -= 100;
+            animalData.affectionLevel++;
+
+            Debug.Log(animalType + " reached affection level " + animalData.affectionLevel);
         }
     }
 
