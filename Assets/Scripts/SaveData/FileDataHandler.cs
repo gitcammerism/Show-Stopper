@@ -92,8 +92,6 @@ public class FileDataHandler
                 using (StreamWriter writer = new StreamWriter(stream))
                 {
                     writer.Write(dataToStore);
-
-                    Debug.Log(fullPath);
                 }
             }
             Debug.Log($"Saved data to: {fullPath}");

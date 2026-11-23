@@ -38161,9 +38161,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stars:
+  - {fileID: 1970842629021193584}
   - {fileID: 9073141830995942834}
   - {fileID: 4967860974422978332}
-  - {fileID: 1970842629021193584}
   popDuration: 0.35
   popDelay: 0.2
   popScale: 1.4
