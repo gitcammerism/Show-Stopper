@@ -25,6 +25,10 @@ public class Animal : MonoBehaviour
     [SerializeField] private int needIncrease = 25;
     [SerializeField] private int affectionIncrease = 5;
 
+    [Header("VFX")]
+    [SerializeField] private int lowNeedThreshold = 50;
+    private AnimalVFX _animalVFX;
+
     private AnimalInput _animalInput;
     private AnimalData animalData;
     private Button _animalButton;
@@ -37,6 +41,8 @@ public class Animal : MonoBehaviour
         _animalButton.onClick.AddListener(OnTouch);
 
         _animalInput = FindFirstObjectByType<AnimalInput>();
+
+        _animalVFX = FindFirstObjectByType<AnimalVFX>();
     }
 
     private void OnDisable()
@@ -74,6 +80,11 @@ public class Animal : MonoBehaviour
     {
         while (true)
         {
+            if (inFocus)
+            {
+                RefreshVFX();
+            }
+            
             yield return new WaitForSeconds(decayInterval);
 
             animalData.comfort = Mathf.Max(0, animalData.comfort - decayAmount);
@@ -84,6 +95,7 @@ public class Animal : MonoBehaviour
 
             SaveAnimalData();
             careUI?.Refresh();
+
         }
     }
 
@@ -161,6 +173,11 @@ public class Animal : MonoBehaviour
 
         SaveAnimalData();
         careUI?.Refresh();
+
+        if (inFocus)
+        {
+            RefreshVFX();
+        }
 
         Debug.Log(animalType + " gained affection!");
     }
@@ -252,6 +269,15 @@ public class Animal : MonoBehaviour
     public void SetFocusState(bool state)
     {
         inFocus = state;
+
+        if(inFocus)
+        {
+            RefreshVFX();
+        }
+        else
+        {
+            _animalVFX.HideAll();
+        }
     }
 
     private void OnTouch()
@@ -260,7 +286,7 @@ public class Animal : MonoBehaviour
 
         if (!inFocus && _animalInput != null)
         {
-            inFocus = true;
+            SetFocusState(true);
 
             if (careUI != null)
             {
@@ -270,5 +296,24 @@ public class Animal : MonoBehaviour
             _animalInput.FocusOnAnimal(this);
         }
 
+    }
+
+    // Check if any need is below the lowNeedThreshold
+    private bool HasLowNeed()
+    {
+        return animalData.comfort <= lowNeedThreshold ||
+               animalData.food <= lowNeedThreshold ||
+               animalData.water <= lowNeedThreshold ||
+               animalData.treats <= lowNeedThreshold ||
+               animalData.toys <= lowNeedThreshold;
+    }
+
+    // Refresh the VFX based on the animal's current needs
+    private void RefreshVFX()
+    {
+        if (animalData != null && _animalVFX != null)
+        {
+            _animalVFX.SetMood(HasLowNeed());
+        }
     }
 }
