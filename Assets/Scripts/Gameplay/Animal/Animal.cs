@@ -28,7 +28,6 @@ public class Animal : MonoBehaviour
     private AnimalInput _animalInput;
     private AnimalData animalData;
     private Button _animalButton;
-    private AnimalUI careUI;
     private bool inFocus = false;
 
     private void Awake()
@@ -51,22 +50,10 @@ public class Animal : MonoBehaviour
         StartCoroutine(DecayNeeds());
     }
 
-    public void Initialize(AnimalUI sharedUI)
-    {
-        careUI = sharedUI;
-        LoadAnimalData();
-    }
-
     // Load animal individual saved data
     private void LoadAnimalData()
     {
         animalData = DataPersistenceManager.instance.GetAnimalData(animalType);
-
-        if (animalData.affectionLevel < 0)
-        {
-            animalData.affectionLevel = 0;
-            SaveAnimalData();
-        }
     }
 
     // Gradually decrease every need over time
@@ -83,7 +70,6 @@ public class Animal : MonoBehaviour
             animalData.toys = Mathf.Max(0, animalData.toys - decayAmount);
 
             SaveAnimalData();
-            careUI?.Refresh();
         }
     }
 
@@ -157,16 +143,15 @@ public class Animal : MonoBehaviour
         SetNeedValue(resourceID, Mathf.Clamp(GetNeedValue(resourceID) + needIncrease, 0, 100));
 
         // Increase affection
-        AddAffection(affectionIncrease);
+        animalData.affection = Mathf.Clamp(animalData.affection + affectionIncrease, 0, 100);
 
         SaveAnimalData();
-        careUI?.Refresh();
 
         Debug.Log(animalType + " gained affection!");
     }
 
     // Get the current value of a need
-    public int GetNeedValue(string resourceID)
+    private int GetNeedValue(string resourceID)
     {
         switch (resourceID)
         {
@@ -217,31 +202,6 @@ public class Animal : MonoBehaviour
         }
     }
 
-    // Affection methods
-    public int GetAffection()
-    {
-        return animalData != null ? animalData.affection : 0;
-    }
-
-    public int GetAffectionLevel()
-    {
-        return animalData != null ? animalData.affectionLevel : 0;
-    }
-
-    // Level up affection when 100 is reached
-    private void AddAffection(int amount)
-    {
-        animalData.affection += amount;
-
-        while (animalData.affection >= 100)
-        {
-            animalData.affection -= 100;
-            animalData.affectionLevel++;
-
-            Debug.Log(animalType + " reached affection level " + animalData.affectionLevel);
-        }
-    }
-
     // Save this animal data
     private void SaveAnimalData()
     {
@@ -261,12 +221,6 @@ public class Animal : MonoBehaviour
         if (!inFocus && _animalInput != null)
         {
             inFocus = true;
-
-            if (careUI != null)
-            {
-                careUI.Show(this);
-            }
-
             _animalInput.FocusOnAnimal(this);
         }
 

@@ -422,16 +422,6 @@ public class DataPersistenceManager : MonoBehaviour
             return false;
         }
 
-        if (gameData == null)
-        {
-            gameData = dataHandler.Load();
-
-            if (gameData == null)
-            {
-                gameData = new GameData();
-            }
-        }
-
         int currentAmount = GetResourceCount(resourceID);
 
         if (currentAmount < amount)

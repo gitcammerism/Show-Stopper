@@ -21,9 +21,6 @@ public class HubAnimalManager : MonoBehaviour
     [Header("Animal Spawn Points")]
     [SerializeField] private AnimalSpawnData[] spawnPoints;
 
-    [Header("Shared Animal UI")]
-    [SerializeField] private AnimalUI animalUI;
-
     // Spawn all the unlocked animals into hub at start
     private void Start()
     {
@@ -68,18 +65,6 @@ public class HubAnimalManager : MonoBehaviour
         animal.GetComponent<RectTransform>().localScale = Vector3.one;
 
         animal.AddComponent<AnimalTween>();
-
-        // Connect animal to UI
-        Animal animalComponent = animal.GetComponentInChildren<Animal>();
-
-        if (animalComponent != null)
-        {
-            animalComponent.Initialize(animalUI);
-        }
-        else
-        {
-            Debug.LogError("Spawned animal has no Animal component: " + spawnData.animalType);
-        }
 
         // Debug.Log($"Spawned {spawnData.animalType}");
     }
