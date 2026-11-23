@@ -3970,7 +3970,6 @@ GameObject:
   - component: {fileID: 1962365230}
   - component: {fileID: 1962365232}
   - component: {fileID: 1962365231}
-  - component: {fileID: 1962365233}
   - component: {fileID: 1962365234}
   m_Layer: 5
   m_Name: AnimalFocus
@@ -4032,30 +4031,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 824f8ee869c2f4544a7d730ffdd00218, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1962365233
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1962365229}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6c0d1d9b13baadd4bbe272b9ac43005b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animalInput: {fileID: 2141914784}
-  inventory:
-  - itemButton: {fileID: 1098006637}
-    itemType: 1
-  - itemButton: {fileID: 1851441350}
-    itemType: 0
-  - itemButton: {fileID: 561896644}
-    itemType: 2
-  - itemButton: {fileID: 363639680}
-    itemType: 3
-  - itemButton: {fileID: 539616150}
-    itemType: 4
 --- !u!114 &1962365234
 MonoBehaviour:
   m_ObjectHideFlags: 0
