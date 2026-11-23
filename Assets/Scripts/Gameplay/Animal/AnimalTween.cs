@@ -10,7 +10,6 @@ public class AnimalTween : MonoBehaviour
 
     private Vector3 startingScale;
     private Vector3 endScale;
-    private Vector3 animalPos;
     private Vector3 cameraPos;
     private Vector3 currentPos;
     private Vector2 targetPosition;
