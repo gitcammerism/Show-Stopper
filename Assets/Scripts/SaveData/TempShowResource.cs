@@ -14,10 +14,10 @@ public class TempShowResource : MonoBehaviour
     {
         DataPersistenceManager save = DataPersistenceManager.instance;
 
-        comfortText.SetText("Comfort: {0}", save.GetResourceCount("Comfort"));
-        foodText.SetText("Food: {0}", save.GetResourceCount("Food"));
-        toyText.SetText("Toy: {0}", save.GetResourceCount("Toy"));
-        treatText.SetText("Treat: {0}", save.GetResourceCount("Treat"));
-        waterText.SetText("Water: {0}", save.GetResourceCount("Water"));
+        comfortText.SetText("{0}", save.GetResourceCount("Comfort"));
+        foodText.SetText("{0}", save.GetResourceCount("Food"));
+        toyText.SetText("{0}", save.GetResourceCount("Toy"));
+        treatText.SetText("{0}", save.GetResourceCount("Treat"));
+        waterText.SetText("{0}", save.GetResourceCount("Water"));
     }
 }

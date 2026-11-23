@@ -96,6 +96,7 @@ public class FileDataHandler
                     Debug.Log(fullPath);
                 }
             }
+            Debug.Log($"Saved data to: {fullPath}");
 
         } catch (Exception e)
         {
